@@ -1,0 +1,26 @@
+.pantalla {
+  display: grid; gap: 32px; align-items: center; justify-items: center; text-align: center;
+  min-height: calc(100svh - var(--alto-header) - var(--alto-nav-movil)); padding-block: 48px 80px;
+}
+.arte { display: grid; place-items: center; }
+.numero {
+  display: flex; align-items: center; gap: 0.08em;
+  font-size: clamp(7rem, 4rem + 14vw, 13rem); font-weight: 600; line-height: 1; letter-spacing: -0.06em; color: var(--marca);
+}
+/* El ícono ocupa el lugar del cero y se ajusta a la altura de los números. */
+.numeroIcono { height: 0.86em; width: auto; margin-inline: 0.12em; }
+.texto { display: grid; gap: 14px; justify-items: center; max-width: 34rem; }
+.etiqueta {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 2px 12px;
+  border-radius: var(--radio-control); background: var(--superficie-2);
+  font-size: var(--t-chico); font-weight: 600; color: var(--texto-suave);
+}
+.titulo { font-size: var(--t-display); line-height: 1.05; letter-spacing: -0.03em; }
+.bajada { font-size: var(--t-sub); color: var(--texto-suave); }
+.acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px; }
+@media (min-width: 900px) {
+  .pantalla { grid-template-columns: 1fr 1fr; gap: 64px; justify-items: start; text-align: left; min-height: calc(100svh - var(--alto-header)); }
+  .arte { justify-self: center; }
+  .texto { justify-items: start; }
+  .acciones { justify-content: flex-start; }
+}

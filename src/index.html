@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es-PA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kirei Technology | Tecnología en Panamá</title>
+  <meta name="description" content="Audífonos, relojes inteligentes y accesorios con garantía. Retiro gratis o envío a domicilio en Panamá. Reparación de computadoras.">
+  <meta name="theme-color" content="#F7F5F1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="preload" as="image" href="./fotos/redmi-hp-2-l.webp" imagesrcset="./fotos/redmi-hp-2-m.webp 600w, ./fotos/redmi-hp-2-l.webp 1200w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" href="./fuentes/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fuentes/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 300; font-display: swap; src: url('./fuentes/poppins-latin-300-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap; src: url('./fuentes/poppins-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 600; font-display: swap; src: url('./fuentes/poppins-latin-600-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    /* Pantalla de arranque: se ve mientras carga la app y React la reemplaza al montar. */
+    body { margin: 0; }
+    .arranque { min-height: 100svh; display: grid; place-items: center; align-content: center; gap: 14px; background: #F7F5F1; }
+    .arranque .o { stroke: #F7931E; animation: senal 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+    .arranque .o2 { animation-delay: 0.15s; } .arranque .o3 { animation-delay: 0.3s; }
+    @keyframes senal { 0%, 100% { opacity: 0.15; } 40% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .arranque .o { animation: none; } }
+  </style>
+</head>
+<body>
+  <div id="root"><div class="arranque" role="status" aria-label="Cargando Kirei Technology">
+    <svg viewBox="14 8 92 214" width="38" height="88" aria-hidden="true">
+      <circle class="o" cx="60" cy="58" r="7" fill="#F7931E" stroke="none"/>
+      <path class="o o2" d="M38,44 A26,26 0 0 1 82,44" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path class="o o3" d="M26,34 A42,42 0 0 1 94,34" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <rect x="57.5" y="62" width="5" height="50" fill="#0B1F33"/>
+      <rect x="42" y="106" width="36" height="112" rx="18" fill="#0B1F33"/>
+      <rect x="49" y="124" width="5" height="76" rx="2.5" fill="#F7F5F1"/>
+    </svg>
+  </div></div>
+  <script type="module" src="./main.jsx"></script>
+</body>
+</html>

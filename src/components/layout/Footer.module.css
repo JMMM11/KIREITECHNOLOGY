@@ -1,0 +1,36 @@
+.pie { padding-block: 56px 24px; background: var(--superficie); border-top: 1px solid var(--borde); }
+.rejilla { display: grid; gap: 36px 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.marca { grid-column: 1 / -1; display: grid; gap: 12px; justify-items: start; align-content: start; }
+.logo { max-width: 100%; height: auto; }
+.redes { list-style: none; display: grid; gap: 4px; }
+.red { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-size: var(--t-chico); font-weight: 600; color: var(--marca); text-decoration: none; }
+.titulo { margin-bottom: 12px; font-size: 0.9375rem; font-weight: 600; letter-spacing: 0; }
+.tituloPagos { margin: 10px 0 0; }
+.lista { list-style: none; display: grid; gap: 6px; }
+.lista a { display: inline-flex; align-items: center; min-height: 32px; color: var(--texto-suave); text-decoration: none; }
+.contacto { grid-column: 1 / -1; display: grid; gap: 10px; justify-items: start; align-content: start; }
+.pagos { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+/* Etiqueta tipo tarjeta, como los logos de pago de las tiendas. */
+.pago {
+  display: inline-grid; place-items: center; min-width: 76px; height: 40px; padding: 0 14px;
+  border: 1px solid var(--borde); border-radius: var(--radio-detalle); background: var(--superficie);
+  font-size: var(--t-chico); font-weight: 600; color: var(--marca);
+}
+.pago img { display: block; height: 22px; width: auto; }
+.base {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--borde);
+  font-size: var(--t-chico); color: var(--texto-suave);
+}
+.legales { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.legales a { display: inline-flex; align-items: center; min-height: 32px; color: inherit; }
+.aviso { flex-basis: 100%; }
+@media (min-width: 900px) {
+  .rejilla { grid-template-columns: 1.4fr 1fr 1fr 1.3fr; }
+  .marca, .contacto { grid-column: auto; }
+  .aviso { flex-basis: auto; margin-left: auto; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .lista a:hover, .legales a:hover { color: var(--marca); text-decoration: underline; text-underline-offset: 4px; }
+  .red:hover span { text-decoration: underline; text-underline-offset: 4px; }
+}

@@ -1,0 +1,7 @@
+.miniatura {
+  display: grid; place-items: center; flex: none; overflow: hidden;
+  width: var(--tam); height: var(--tam); border-radius: 50%;
+  background: var(--superficie-2); color: var(--marca);
+}
+.miniatura img { width: 100%; height: 100%; object-fit: cover; }
+.recorte img { width: 80%; height: 80%; object-fit: contain; }

@@ -1,0 +1,33 @@
+.raiz { position: relative; }
+.boton {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px;
+  border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-control); background: var(--superficie);
+  font-size: var(--t-chico); white-space: nowrap; cursor: pointer;
+}
+.boton[aria-expanded="true"] { border-color: var(--marca); }
+/* En celular el prefijo "Ordenar:" solo lo lee el lector de pantalla, para que quepa al lado del filtro. */
+.prefijo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.valor { font-weight: 600; }
+.flecha { display: grid; margin-left: 2px; transition: rotate var(--dur) var(--ease-salida); }
+.girada { rotate: 180deg; }
+.lista {
+  position: absolute; z-index: 15; top: calc(100% + 8px); right: 0; min-width: 100%; width: max-content;
+  list-style: none; display: grid; gap: 2px; padding: 6px;
+  border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie);
+  box-shadow: 0 16px 40px rgba(11, 31, 51, 0.14); transform-origin: top right;
+}
+/* El foco lo marca la opción activa, no el contorno de la lista. */
+.lista:focus-visible { outline: none; }
+.opcion {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  min-height: 44px; padding: 10px 14px; border-radius: var(--radio-detalle);
+  font-size: var(--t-chico); cursor: pointer;
+}
+.activa { background: var(--superficie-2); }
+.opcion[aria-selected="true"] { font-weight: 600; color: var(--marca); }
+.marca { display: grid; color: var(--marca); }
+@media (min-width: 700px) {
+  .prefijo { position: static; width: auto; height: auto; overflow: visible; clip: auto; color: var(--texto-suave); }
+  .lista { left: 0; right: auto; transform-origin: top left; }
+}
+@media (hover: hover) and (pointer: fine) { .boton:hover { border-color: var(--marca); } }

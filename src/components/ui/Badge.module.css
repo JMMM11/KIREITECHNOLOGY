@@ -1,0 +1,8 @@
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: var(--radio-control);
+  background: var(--bg); color: var(--fg);
+  font-size: var(--t-mini); font-weight: 600; line-height: 1.3; white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+}
+.lleno { border-color: transparent; }

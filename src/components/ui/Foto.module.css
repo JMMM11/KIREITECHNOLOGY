@@ -1,0 +1,6 @@
+.vacia {
+  display: grid; place-items: center; align-content: center; gap: 10px;
+  width: 100%; height: 100%;
+  background: var(--superficie-2); color: var(--texto-suave); font-size: var(--t-chico);
+}
+.vacia img { opacity: 0.35; }

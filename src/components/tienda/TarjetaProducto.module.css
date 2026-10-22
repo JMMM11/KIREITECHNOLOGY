@@ -1,0 +1,35 @@
+.tarjeta {
+  position: relative; display: flex; flex-direction: column;
+  border: 1px solid var(--borde); border-radius: var(--radio-tarjeta);
+  background: var(--superficie); overflow: hidden;
+}
+.media { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--superficie); }
+.media img { width: 100%; height: 100%; object-fit: contain; padding: 8%; transition: transform var(--dur-larga) var(--ease-salida); }
+.oscuro { background: #061F32; }
+.oscuro img { padding: 4%; }
+.foto img { object-fit: cover; padding: 0; }
+.insignias { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.cuerpo { display: grid; gap: 4px; padding: 14px 14px 16px; flex: 1; align-content: start; }
+.categoria { font-size: var(--t-mini); color: var(--texto-suave); }
+.nombre { font-size: 0.9375rem; font-weight: 600; line-height: 1.3; letter-spacing: 0; }
+.enlace { text-decoration: none; }
+.enlace::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.enlace:focus-visible { outline: none; }
+.tarjeta:has(.enlace:focus-visible) { outline: 3px solid var(--foco); outline-offset: 3px; }
+.pie { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
+.rapido {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 44px; height: 44px; flex: none; padding: 0;
+  border: 1.5px solid var(--marca); border-radius: 50%; background: var(--superficie); color: var(--marca);
+  transition: transform var(--dur-corta) var(--ease-salida);
+}
+.rapido:active { transform: scale(0.92); }
+@media (min-width: 700px) {
+  .cuerpo { padding: 16px 18px 18px; }
+  .nombre { font-size: 1rem; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .tarjeta:hover { border-color: var(--borde-fuerte); }
+  .tarjeta:hover .media img { transform: scale(1.04); }
+  .rapido:hover { background: var(--marca); color: var(--marca-texto); }
+}

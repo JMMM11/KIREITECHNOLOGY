@@ -1,38 +1,47 @@
 # Kirei Technology
 
-Tienda online en HTML, CSS y JavaScript, sin dependencias.
+Tienda en línea de Kirei Technology (Panamá). React 19 + Vite, rutas con `#`, animaciones con Motion.
+Todavía no hay base de datos: todo sale de `src/data/` a través de `src/services/tienda.js`.
 
-## Ver la web
+## Uso diario
 
-Abre `index.html` en el navegador. También puedes servirla con `python -m http.server`.
+```
+npm install        # una sola vez
+npm run dev        # servidor de desarrollo con recarga
+npm test           # pruebas de precios, totales, validación, datos y contraste
+npm run build      # compila la web en la raíz del repo
+```
+
+Después de `npm run build`, abre `index.html` con **Go Live** en VS Code.
+El código fuente vive en `src/`. Lo compilado (index.html, assets/, fotos/, fuentes/, marca/) queda en la raíz.
+
+## Publicar en GitHub Pages
+
+1. Sube el repo a GitHub con el build ya hecho (`npm run build` y commit).
+2. En GitHub: **Settings > Pages > Build and deployment**.
+3. En **Source** elige **Deploy from a branch**, rama `main` y carpeta `/ (root)`. Guarda.
+4. En unos minutos la web queda en `https://<tu-usuario>.github.io/<repo>/`.
+
+Si borras o renombras un archivo de `public/`, bórralo también de la raíz: el build no lo elimina solo.
 
 ## Dónde editar
 
-- `js/data.js`: productos, precios (en centavos), stock, servicios, teléfonos, correo y tarifas.
-  - `precio: null` muestra "[precio]" y cambia el botón por "Consultar precio por WhatsApp".
-  - `imgs: []` muestra "Foto pendiente". Las fotos van en `assets/img/`.
-- `css/styles.css`: tokens de color y tipografía en `:root`.
-- `js/totales.js`: cálculo de subtotal, envío y contra entrega.
+| Qué | Archivo |
+|---|---|
+| Productos, precios (centavos), stock, fotos | `src/data/productos.js` |
+| Teléfono, correo, tarifas, modo vista previa | `src/data/sitio.js` |
+| Categorías y orden | `src/data/catalogos.js` |
+| Servicios de reparación | `src/data/servicios.js` |
+| Textos de portada y ayuda | `src/data/textos.js` |
+| Colores y tipografía | `src/styles/tokens.css` |
 
-## Pruebas
+- `precioCentavos: null` muestra "Precio [pendiente]" y un botón para consultar por WhatsApp.
+- `fotos: []` muestra "Foto pendiente". Cada foto necesita `nombre-m.webp` (600 px) y `nombre-l.webp` (1200 px) en `public/fotos/`.
+- `estado: 'borrador'` oculta el producto. La Zona Anime muestra "Próximamente" hasta que publiques uno.
+- `SITIO.vistaPrevia = true` muestra estados de ejemplo (marcados "Ejemplo"). Ponlo en `false` al lanzar.
 
-```
-node tests/totales.test.js
-```
+## Cómo funciona un pedido hoy
 
-## Cómo funciona el pedido
-
-El carrito guarda solo productos y cantidades en el navegador. Al finalizar, la web arma
-el mensaje del pedido y abre WhatsApp. No se guardan datos personales ni de pago.
-El botón de pago de Yappy necesita un backend y credenciales de comercio. Está pendiente.
-
-## Modelo de datos (para el backend futuro)
-
-- categoria: id, nombre, linea (electronica, anime)
-- producto: id, categoria, nombre, resumen, precio_centavos, imagenes
-- variante: id, producto, nombre, stock
-- cliente: nombre, telefono, correo, direccion (tabla aparte, Ley 81 de 2019)
-- pedido: cliente, estado (pendiente, pagado, en_camino, entregado, cancelado), entrega, pago, cargos en centavos
-- linea_pedido: pedido, variante, cantidad, precio_unitario_centavos (copiado al comprar)
-- cita_reparacion: cliente, equipo, servicio, problema, fecha, estado (solicitada, confirmada, en_revision, lista, entregada, cancelada)
-- mensaje_soporte: cliente, canal, texto, estado (abierto, respondido, cerrado)
+El carrito se guarda en el navegador. En el checkout se arma el pedido y se abre WhatsApp con el mensaje.
+No se guardan datos personales ni de pago. Yappy se conecta cuando exista la cuenta de comercio.
+Cuando se conecte Firebase, `src/services/tienda.js` guardará pedidos y citas, y el servidor recalculará los totales.

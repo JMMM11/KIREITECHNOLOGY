@@ -1,0 +1,6 @@
+.precio { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.grande { font-size: 1.75rem; letter-spacing: -0.02em; }
+.pendiente { font-weight: 400; color: var(--texto-suave); font-size: 0.9375rem; }
+.grande .pendiente { font-size: 1.125rem; }
+.antes { font-weight: 400; color: var(--texto-suave); font-size: 0.875em; }
+.descuento { font-size: var(--t-mini); color: var(--e-oferta-fg); }

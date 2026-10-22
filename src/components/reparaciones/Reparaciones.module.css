@@ -1,0 +1,61 @@
+/* Portada */
+.portada {
+  display: grid; overflow: hidden; margin-top: 24px;
+  border-radius: var(--radio-tarjeta); background: var(--marca); color: #FFFFFF; --foco: #FFFFFF;
+}
+.portadaTexto { display: grid; gap: 16px; align-content: center; justify-items: start; padding: 32px 24px; }
+.portadaTitulo { font-size: var(--t-display); line-height: 1.04; letter-spacing: -0.03em; }
+.portadaBajada { font-size: var(--t-sub); color: #D8D8D8; max-width: 40ch; }
+.portadaAcciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.fantasmaClaro { color: #FFFFFF; }
+.portadaFoto { aspect-ratio: 4 / 3; overflow: hidden; }
+.portadaFoto img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 900px) {
+  .portada { grid-template-columns: 1.2fr 1fr; margin-top: 40px; }
+  .portadaTexto { padding: 56px; }
+  .portadaFoto { aspect-ratio: auto; min-height: 420px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .fantasmaClaro:hover { background: #FFFFFF; border-color: #FFFFFF; color: var(--marca); }
+}
+
+/* Servicios con pestañas */
+.serviciosCabecera { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.pestanas { display: grid; grid-template-columns: 1fr 1fr; width: 100%; padding: 4px; border-radius: var(--radio-control); background: var(--superficie-2); }
+.pestana {
+  position: relative; flex: none; min-height: 44px; padding: 8px 18px; border: 0; border-radius: var(--radio-control);
+  background: none; font-size: 0.875rem; line-height: 1.25; color: var(--texto-suave);
+}
+.pestana[aria-selected="true"] { color: var(--texto); font-weight: 600; }
+.pestanaFondo { position: absolute; inset: 0; border-radius: inherit; background: var(--superficie); border: 1px solid var(--borde); }
+.pestanaTexto { position: relative; }
+.panel { border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); overflow: hidden; }
+.lista { list-style: none; }
+.fila {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: center;
+  padding: 18px 20px;
+}
+.fila + .fila { border-top: 1px solid var(--borde); }
+.filaTexto { display: grid; gap: 2px; }
+.filaNombre { font-size: 1rem; font-weight: 600; letter-spacing: 0; }
+.filaDetalle { font-size: var(--t-chico); color: var(--texto-suave); }
+.filaPrecio { font-size: var(--t-chico); font-weight: 600; color: var(--texto-suave); justify-self: end; }
+.agendar {
+  grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 6px;
+  min-height: 40px; padding: 6px 14px; border: 1.5px solid var(--marca); border-radius: var(--radio-control);
+  background: none; color: var(--marca); font-size: var(--t-chico); font-weight: 600;
+  transition: transform var(--dur-corta) var(--ease-salida);
+}
+.agendar:active { transform: scale(0.97); }
+.nota { margin-top: 12px; font-size: var(--t-chico); color: var(--texto-suave); }
+@media (min-width: 700px) {
+  .pestanas { display: inline-flex; width: auto; }
+  .pestana { font-size: 0.9375rem; white-space: nowrap; }
+  .fila { grid-template-columns: minmax(0, 1fr) auto auto; padding: 20px 28px; }
+  .agendar { grid-column: auto; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .fila:hover { background: var(--bg); }
+  .agendar:hover { background: var(--marca); color: var(--marca-texto); }
+  .pestana:not([aria-selected="true"]):hover { color: var(--texto); }
+}

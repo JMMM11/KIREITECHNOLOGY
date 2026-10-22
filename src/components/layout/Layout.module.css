@@ -1,0 +1,10 @@
+.saltar {
+  position: absolute; left: var(--gutter); top: -60px; z-index: 200;
+  padding: 10px 18px; border-radius: var(--radio-control);
+  background: var(--marca); color: var(--marca-texto); font-weight: 600; text-decoration: none;
+}
+.saltar:focus { top: 12px; }
+.main { display: block; min-height: 60svh; }
+.main:focus { outline: none; }
+:global(body) { padding-bottom: calc(var(--alto-nav-movil) + env(safe-area-inset-bottom)); }
+@media (min-width: 900px) { :global(body) { padding-bottom: 0; } }

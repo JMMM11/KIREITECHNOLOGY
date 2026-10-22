@@ -1,0 +1,7 @@
+.lista { list-style: none; }
+.fila { display: flex; justify-content: space-between; gap: 12px; font-size: 1.0625rem; }
+.nota { font-size: var(--t-chico); color: var(--texto-suave); }
+.verCarrito { justify-self: center; min-height: 44px; }
+.vacio { display: grid; justify-items: center; gap: 12px; padding-block: 48px; text-align: center; }
+.vacioIcono { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: var(--superficie-2); color: var(--marca); }
+.vacioTitulo { font-size: 1.25rem; font-weight: 600; }

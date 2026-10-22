@@ -1,0 +1,7 @@
+.rejilla { list-style: none; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.tarjeta { display: grid; gap: 10px; padding-bottom: 12px; }
+.foto, .linea { display: block; border-radius: var(--radio-detalle); background: var(--superficie-2); animation: pulso 1.4s ease-in-out infinite; }
+.foto { aspect-ratio: 1; border-radius: var(--radio-tarjeta); }
+.linea { height: 14px; }
+.corta { width: 50%; }
+@keyframes pulso { 50% { opacity: 0.55; } }

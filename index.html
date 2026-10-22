@@ -1,111 +1,36 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-PA">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kirei Technology | Tecnología en Panamá</title>
-  <meta name="description" content="Audífonos, relojes inteligentes, accesorios y artículos anime. Retiro gratis o envío a domicilio en Panamá.">
+  <meta name="description" content="Audífonos, relojes inteligentes y accesorios con garantía. Retiro gratis o envío a domicilio en Panamá. Reparación de computadoras.">
   <meta name="theme-color" content="#F7F5F1">
-  <link rel="icon" href="assets/logo/kirei-icono-naranja.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="preload" as="image" href="./fotos/redmi-hp-2-l.webp" imagesrcset="./fotos/redmi-hp-2-m.webp 600w, ./fotos/redmi-hp-2-l.webp 1200w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" href="./fuentes/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fuentes/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <style>@font-face{font-family:Poppins;font-style:normal;font-weight:300;font-display:swap;src:url(./fuentes/poppins-latin-300-normal.woff2)format("woff2");unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(./fuentes/poppins-latin-400-normal.woff2)format("woff2");unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/poppins-latin-600-normal.woff2)format("woff2");unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}body{margin:0}.arranque{background:#f7f5f1;align-content:center;place-items:center;gap:14px;min-height:100svh;display:grid}.arranque .o{stroke:#f7931e;animation:1.2s cubic-bezier(.22,1,.36,1) infinite senal}.arranque .o2{animation-delay:.15s}.arranque .o3{animation-delay:.3s}@keyframes senal{0%,to{opacity:.15}40%{opacity:1}}@media (prefers-reduced-motion:reduce){.arranque .o{animation:none}}</style>
+  <script type="module" crossorigin src="./assets/index-CLRlEynU.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/useTituloPagina-Cgk5dkXU.js">
+  <link rel="modulepreload" crossorigin href="./assets/sitio-DDPfiCtv.js">
+  <link rel="modulepreload" crossorigin href="./assets/Foto-DNZBIyH5.js">
+  <link rel="modulepreload" crossorigin href="./assets/iconos-BdbjLSAJ.js">
+  <link rel="stylesheet" crossorigin href="./assets/Foto-CecEcC0N.css">
+  <link rel="stylesheet" crossorigin href="./assets/index-mOwvf9Vh.css">
 </head>
-<body data-pagina="inicio">
-  <a class="skip" href="#main">Saltar al contenido</a>
-  <header class="site-header" id="cabecera"></header>
-
-  <main id="main">
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__text">
-          <h1 class="hero__title">Tecnología que te acompaña todo el día.</h1>
-          <p class="lead">Audífonos, relojes inteligentes y accesorios. Retira gratis o recibe en casa por <span data-tarifa="envioDomicilio"></span>.</p>
-          <a class="btn btn--primary hero__cta" href="#tienda">Ver ofertas</a>
-        </div>
-        <div class="hero__media">
-          <img src="assets/img/thinkplus-1.webp" alt="Audífonos Lenovo thinkplus en rosa, blanco, negro y morado" width="1080" height="1080" fetchpriority="high">
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="categorias" aria-labelledby="categorias-titulo">
-      <div class="container">
-        <div class="section__head"><h2 class="display" id="categorias-titulo">Elige por categoría.</h2></div>
-        <div class="cat-grid" id="categorias-grid"></div>
-      </div>
-    </section>
-
-    <section class="section band-navy stage" aria-labelledby="hp-titulo">
-      <div class="container">
-        <div class="stage__text reveal">
-          <p class="eyebrow">Redmi Buds 4</p>
-          <h2 class="display" id="hp-titulo">Edición Harry Potter.</h2>
-          <p class="lead">Estuche temático, funda de cuero con snitch dorada y caja de colección.</p>
-          <a class="link" href="producto.html?id=redmi-buds-4-harry-potter">Ver producto <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-        </div>
-        <div class="stage__media reveal">
-          <img src="assets/img/redmi-hp-2.webp" alt="Caja de colección Hogwarts con los Redmi Buds 4 y su funda de cuero" width="1400" height="1400" loading="lazy">
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="tienda" aria-labelledby="tienda-titulo">
-      <div class="container">
-        <div class="section__head">
-          <h2 class="display" id="tienda-titulo">La tienda.</h2>
-          <p class="lead">Precios en dólares. Envíos dentro de Panamá.</p>
-        </div>
-        <div class="chips" id="tienda-filtros" role="group" aria-label="Filtrar por categoría"></div>
-        <div class="grid" id="tienda-grid"></div>
-      </div>
-    </section>
-
-    <section class="section band-white" aria-labelledby="pikachu-titulo">
-      <div class="container split">
-        <div class="split__media reveal">
-          <img src="assets/img/pikachu-2.webp" alt="Audífonos Razer amarillos dentro del estuche Poké Ball" width="570" height="380" loading="lazy">
-        </div>
-        <div class="split__text reveal">
-          <p class="eyebrow">Razer</p>
-          <h2 class="display" id="pikachu-titulo">Pikachu va contigo.</h2>
-          <p class="lead">Audífonos amarillos con estuche en forma de Poké Ball.</p>
-          <a class="link" href="producto.html?id=razer-pikachu">Ver producto <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="anime" aria-labelledby="anime-titulo">
-      <div class="container">
-        <div class="section__head">
-          <p class="eyebrow">Para fans</p>
-          <h2 class="display" id="anime-titulo">Zona Anime.</h2>
-          <p class="lead">Llaveros, peluches, pines y más de tus series favoritas.</p>
-        </div>
-        <div class="grid" id="anime-grid"></div>
-      </div>
-    </section>
-
-    <section class="section band-white" aria-labelledby="rep-titulo">
-      <div class="container split split--rev">
-        <div class="split__media reveal">
-          <img src="assets/img/reparacion.webp" alt="Técnico reparando la placa de una laptop" width="394" height="394" loading="lazy">
-        </div>
-        <div class="split__text reveal">
-          <p class="eyebrow">Reparaciones</p>
-          <h2 class="display" id="rep-titulo">¿Tu computadora falla?</h2>
-          <p class="lead">Diagnóstico, cambio de pantalla, batería o teclado e instalación de Windows.</p>
-          <a class="btn btn--ghost" href="reparaciones.html">Agenda tu cita</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer" id="pie"></footer>
-  <script src="js/data.js"></script>
-  <script src="js/totales.js"></script>
-  <script src="js/app.js"></script>
+<body>
+  <div id="root"><div class="arranque" role="status" aria-label="Cargando Kirei Technology">
+    <svg viewBox="14 8 92 214" width="38" height="88" aria-hidden="true">
+      <circle class="o" cx="60" cy="58" r="7" fill="#F7931E" stroke="none"/>
+      <path class="o o2" d="M38,44 A26,26 0 0 1 82,44" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path class="o o3" d="M26,34 A42,42 0 0 1 94,34" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <rect x="57.5" y="62" width="5" height="50" fill="#0B1F33"/>
+      <rect x="42" y="106" width="36" height="112" rx="18" fill="#0B1F33"/>
+      <rect x="49" y="124" width="5" height="76" rx="2.5" fill="#F7F5F1"/>
+    </svg>
+  </div></div>
 </body>
 </html>

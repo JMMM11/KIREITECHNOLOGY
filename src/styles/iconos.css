@@ -1,0 +1,23 @@
+/* Movimiento de íconos al pasar el cursor. Cada data-mov fija su animación en --mov. */
+[data-mov] { display: inline-flex; flex: none; }
+[data-mov="latido"] { --mov: mov-latido; }
+[data-mov="sacudir"] { --mov: mov-sacudir; }
+[data-mov="gota"] { --mov: mov-gota; }
+[data-mov="empujar"] { --mov: mov-empujar; }
+[data-mov="atras"] { --mov: mov-atras; }
+[data-mov="girar90"] { --mov: mov-girar90; }
+[data-mov="giro"] { --mov: mov-giro; }
+[data-mov="aparecer"] { --mov: mov-aparecer; }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :is(a, button, [data-tarjeta]):hover [data-mov] { animation: var(--mov) 420ms var(--ease-salida); }
+}
+
+@keyframes mov-latido { 40% { transform: scale(1.22); } 70% { transform: scale(0.95); } }
+@keyframes mov-sacudir { 25% { transform: rotate(-14deg); } 50% { transform: rotate(12deg); } 75% { transform: rotate(-6deg); } }
+@keyframes mov-gota { 0% { transform: translateY(-6px); } 60% { transform: translateY(2px); } 80% { transform: translateY(-1px); } }
+@keyframes mov-empujar { 50% { transform: translateX(4px); } }
+@keyframes mov-atras { 50% { transform: translateX(-4px); } }
+@keyframes mov-girar90 { to { transform: rotate(90deg); } }
+@keyframes mov-giro { to { transform: rotate(360deg); } }
+@keyframes mov-aparecer { from { transform: scale(0.6); opacity: 0.4; } }

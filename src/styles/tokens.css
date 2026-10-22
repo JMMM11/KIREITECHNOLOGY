@@ -1,0 +1,62 @@
+/* Tokens por rol. Colores de marca: naranja #F7931E (acción), azul marino #0B1F33 (marca), papel #F7F5F1 (fondo).
+   Los pares texto/fondo se verifican en tests/contraste.test.js. */
+:root {
+  color-scheme: light;
+
+  --bg: #F7F5F1;
+  --superficie: #FFFFFF;
+  --superficie-2: #EFECE6;
+  --texto: #111111;
+  --texto-suave: #4A4A4A;
+  --borde: #DDD8CF;
+  --borde-fuerte: #8A857C;
+
+  --accion: #F7931E;
+  --accion-texto: #111111;
+  --accion-hover: #E5850F;
+
+  --marca: #0B1F33;
+  --marca-texto: #FFFFFF;
+  --marca-hover: #16324F;
+  --foco: #0B1F33;
+
+  --error: #B3261E;
+  --error-bg: #FCEDEC;
+
+  /* Estados de producto */
+  --e-nuevo-fg: #0B4F8A;     --e-nuevo-bg: #E3EEF8;
+  --e-oferta-fg: #8A4B00;    --e-oferta-bg: #FDEBD3;
+  --e-ultimas-fg: #8C2F0B;   --e-ultimas-bg: #FBE4D8;
+  --e-agotado-fg: #FFFFFF;   --e-agotado-bg: #4A4A4A;
+  /* Estados de pedido */
+  --e-recibido-fg: #3D3A35;  --e-recibido-bg: #ECE9E3;
+  --e-confirmado-fg: #0B4F8A; --e-confirmado-bg: #E3EEF8;
+  --e-enviado-fg: #5B3591;   --e-enviado-bg: #EFE7F8;
+  --e-entregado-fg: #FFFFFF; --e-entregado-bg: #1E6B3A;
+  /* Ejemplo */
+  --e-ejemplo-fg: #4A4A4A;   --e-ejemplo-bg: #ECE9E3;
+
+  --fuente: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --t-hero: clamp(2.5rem, 1.5rem + 4.6vw, 4.75rem);
+  --t-display: clamp(2rem, 1.35rem + 2.9vw, 3.5rem);
+  --t-titulo: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+  --t-sub: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --t-cuerpo: 1rem;
+  --t-chico: 0.875rem;
+  --t-mini: 0.75rem;
+
+  --radio-control: 999px;
+  --radio-tarjeta: 14px;
+  --radio-detalle: 8px;
+
+  --ease-salida: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-corta: 150ms;
+  --dur: 200ms;
+  --dur-larga: 250ms;
+
+  --gutter: 16px;
+  --ancho: 1240px;
+  --alto-header: 72px;
+  --alto-nav-movil: 68px;
+}
+@media (min-width: 768px) { :root { --gutter: 32px; } }

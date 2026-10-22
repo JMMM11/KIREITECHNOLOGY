@@ -1,0 +1,7 @@
+.cargando {
+  display: grid; place-items: center; align-content: center; gap: 16px;
+  min-height: calc(100svh - var(--alto-header) - var(--alto-nav-movil));
+  animation: aparecer var(--dur-larga) var(--ease-salida) 300ms both;
+}
+.texto { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto-suave); }
+@keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }

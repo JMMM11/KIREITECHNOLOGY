@@ -1,0 +1,2 @@
+.cabecera { display: grid; gap: 14px; justify-items: start; padding-block: 40px 32px; }
+@media (min-width: 900px) { .cabecera { padding-block: 64px 40px; } }

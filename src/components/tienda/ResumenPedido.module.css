@@ -1,0 +1,9 @@
+.resumen { display: grid; gap: 8px; padding: 20px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); align-self: start; }
+.titulo { font-size: 1.25rem; }
+.lista { list-style: none; }
+.totales { display: grid; gap: 8px; margin: 8px 0 0; padding-top: 14px; border-top: 1px solid var(--borde); }
+.totales div { display: flex; justify-content: space-between; gap: 12px; }
+.totales dt { color: var(--texto-suave); }
+.totales dd { margin: 0; font-variant-numeric: tabular-nums; }
+.total { padding-top: 10px; border-top: 1px solid var(--borde); font-size: 1.125rem; font-weight: 600; }
+.total dt { color: var(--texto); }

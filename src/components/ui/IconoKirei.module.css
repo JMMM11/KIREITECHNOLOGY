@@ -1,0 +1,19 @@
+.icono { display: block; flex: none; overflow: visible; }
+.ondaInterna, .ondaExterna { stroke: var(--accion); }
+.punto { fill: var(--accion); }
+.cuerpo { fill: var(--marca); }
+.ranura { fill: var(--bg); }
+
+/* Sin señal: ondas apagadas, la externa punteada. */
+.sinSenal .ondaInterna, .sinSenal .ondaExterna { stroke: var(--borde-fuerte); }
+.sinSenal .ondaExterna { stroke-dasharray: 2 14; }
+.sinSenal .punto { fill: var(--borde-fuerte); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cargando .ondaInterna, .cargando .ondaExterna, .cargando .punto { animation: senal 1.2s var(--ease-salida) infinite; }
+  .cargando .ondaInterna { animation-delay: 0.15s; }
+  .cargando .ondaExterna { animation-delay: 0.3s; }
+  .sinSenal .ondaInterna { animation: parpadeo 2.4s steps(1) infinite; }
+}
+@keyframes senal { 0%, 100% { opacity: 0.15; } 40% { opacity: 1; } }
+@keyframes parpadeo { 0%, 70%, 100% { opacity: 1; } 78%, 92% { opacity: 0.15; } }
