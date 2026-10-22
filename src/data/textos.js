@@ -4,7 +4,7 @@ import { SITIO, TARIFAS } from './sitio.js';
 
 // Portada: la foto se recoge en una tarjeta al bajar. Los botones se ven desde el primer momento.
 export const HERO = {
-  foto: { base: 'redmi-hp-2', ancho: 2560, alto: 2560 },
+  foto: { src: 'Productos/principal.png', ancho: 2560, alto: 1440 },
   titulo: 'Tecnología que te acompaña todo el día.',
   texto: `Audífonos, relojes y accesorios con garantía. Retira gratis o recibe en casa por ${formatoPrecio(TARIFAS.envioDomicilio)}.`,
   principal: { texto: 'Ver tecnología', a: '/tecnologia' },

@@ -3,4 +3,5 @@
   width: 100%; height: 100%;
   background: var(--superficie-2); color: var(--texto-suave); font-size: var(--t-chico);
 }
-.vacia img { opacity: 0.35; }
+/* Doble clase para ganarle a ".media img" de las tarjetas, que estira las fotos al 100%. */
+.vacia .icono { width: 20px; height: auto; padding: 0; object-fit: contain; opacity: 0.35; }

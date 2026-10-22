@@ -31,7 +31,7 @@ export default function PortadaReparaciones({ onAgendar }) {
           </div>
         </div>
         <motion.div className={s.portadaFoto} initial={{ scale: 0.94, rotate: -2 }} animate={{ scale: 1, rotate: 0 }} transition={{ duration: 0.7, ease: SUAVE }}>
-          <Foto foto={{ base: 'reparacion', ancho: 394, alto: 394 }} alt="Técnico reparando la placa de una laptop" prioridad sizes="(min-width: 900px) 34vw, 90vw" />
+          <Foto foto={{ base: 'fotos/reparacion', ancho: 394, alto: 394 }} alt="Técnico reparando la placa de una laptop" prioridad sizes="(min-width: 900px) 34vw, 90vw" />
         </motion.div>
       </div>
     </section>

@@ -8,7 +8,7 @@ import { SITIO } from '../../data/sitio.js';
 import s from './Footer.module.css';
 
 // Métodos de pago. Los que tienen logo lo muestran (public/pagos); el resto va como texto.
-const PAGOS = [{ nombre: SITIO.pagoEnLinea, logo: './pagos/yappy.webp' }, { nombre: 'Efectivo', clase: 'efectivo', icono: ICONOS.pago }];
+const PAGOS = [{ nombre: SITIO.pagoEnLinea, logo: './pagos/yappy.png' }, { nombre: 'Efectivo', clase: 'efectivo', icono: ICONOS.pago }];
 
 // Pie claro: marca e Instagram, tienda, ayuda, contacto, métodos de pago y legales abajo.
 export default function Footer() {

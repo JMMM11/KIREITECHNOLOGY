@@ -2,7 +2,6 @@ import { Link } from 'wouter';
 import Foto from '../ui/Foto.jsx';
 import MiniaturaCategoria from '../ui/MiniaturaCategoria.jsx';
 import Icono from '../ui/Icono.jsx';
-import Profundidad, { Capa } from '../ui/Profundidad.jsx';
 import { ICONOS } from '../iconos.js';
 import { SECCIONES } from '../../data/catalogos.js';
 import { INICIO } from '../../data/textos.js';
@@ -16,7 +15,8 @@ export default function SeccionesInicio() {
   const [tecno, anime] = SECCIONES;
   const subcategorias = categorias.filter((c) => c.seccion === 'tecnologia');
   const cuantos = (seccion) => productos.filter((p) => categorias.find((c) => c.id === p.categoriaId)?.seccion === seccion).length;
-  const recortes = ['lenovo-thinkplus-xt62', 'reloj-dorado'].map((id) => productoPorId(id)?.recorte).filter(Boolean);
+  // Foto de ambiente: los thinkplus en sus colores.
+  const escena = productoPorId('lenovo-thinkplus-xt62')?.fotos[4];
   const hayAnime = cuantos('anime') > 0;
 
   return (
@@ -40,13 +40,9 @@ export default function SeccionesInicio() {
               </ul>
               <Link href={tecno.ruta} className="btn btn-marca">Ver tecnología</Link>
             </div>
-            <Profundidad className={s.seccionEscena} intensidad={10}>
-              {recortes.map((r, i) => (
-                <Capa key={r.base} z={30 + i * 50} className={`${s.seccionRecorte} ${s[`recorte${i}`]}`}>
-                  <Foto foto={r} alt="" sizes="(min-width: 900px) 22vw, 45vw" />
-                </Capa>
-              ))}
-            </Profundidad>
+            <div className={s.seccionEscena}>
+              {escena && <Foto foto={escena} alt="" sizes="(min-width: 900px) 30vw, 90vw" />}
+            </div>
           </article>
 
           <article className={s.seccionAnime} aria-labelledby="sec-anime">

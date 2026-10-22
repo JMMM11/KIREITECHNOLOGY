@@ -1,15 +1,31 @@
 import s from './Foto.module.css';
 
-const RUTA = './fotos/';
+const RUTA = './';
 
-// Foto en dos tamaños (-m y -l) con ancho y alto definidos para que no salte el diseño.
+// Foto con ancho y alto definidos para que no salte el diseño.
+// foto.src: archivo original tal cual (carpeta Productos/). foto.base: versión en dos tamaños (-m y -l).
 export default function Foto({ foto, alt = '', sizes = '(min-width: 900px) 40vw, 90vw', prioridad = false, className = '' }) {
   if (!foto) {
     return (
       <span className={`${s.vacia} ${className}`}>
-        <img src="./marca/kirei-icono.svg" alt="" width="20" height="38" />
+        <img className={s.icono} src="./marca/kirei-icono.svg" alt="" width="20" height="38" />
         <span>Foto pendiente</span>
       </span>
+    );
+  }
+  if (foto.src) {
+    return (
+      <img
+        className={className}
+        src={`${RUTA}${encodeURI(foto.src)}`}
+        width={foto.ancho}
+        height={foto.alto}
+        alt={alt}
+        loading={prioridad ? 'eager' : 'lazy'}
+        fetchPriority={prioridad ? 'high' : undefined}
+        decoding="async"
+        draggable="false"
+      />
     );
   }
   const m = Math.min(600, foto.ancho);

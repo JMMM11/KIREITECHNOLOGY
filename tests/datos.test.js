@@ -47,3 +47,10 @@ test('cada marca tiene productos y logo', async () => {
     assert.ok(existsSync(new URL(`../public/marcas/${m.logo}.svg`, import.meta.url)), `${m.logo}.svg no existe`);
   }
 });
+
+test('cada foto de producto y de portada existe', async () => {
+  const { existsSync } = await import('node:fs');
+  const { HERO } = await import('../src/data/textos.js');
+  const fotos = [HERO.foto, ...PRODUCTOS.flatMap((p) => p.fotos ?? [])];
+  for (const f of fotos) assert.ok(existsSync(new URL(`../${f.src}`, import.meta.url)), `${f.src} no existe`);
+});
