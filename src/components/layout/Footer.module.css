@@ -12,11 +12,13 @@
 .pagos { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
 /* Etiqueta tipo tarjeta, como los logos de pago de las tiendas. */
 .pago {
-  display: inline-grid; place-items: center; min-width: 76px; height: 40px; padding: 0 14px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 76px; height: 40px; padding: 0 14px;
   border: 1px solid var(--borde); border-radius: var(--radio-detalle); background: var(--superficie);
   font-size: var(--t-chico); font-weight: 600; color: var(--marca);
 }
 .pago img { display: block; height: 22px; width: auto; }
+.efectivo { border-color: var(--efectivo-bg); background: var(--efectivo-bg); color: var(--efectivo-fg); }
+.efectivo span { display: grid; }
 .base {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;
   margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--borde);

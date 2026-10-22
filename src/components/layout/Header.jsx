@@ -4,6 +4,8 @@ import Logo from './Logo.jsx';
 import EnlaceNav from './EnlaceNav.jsx';
 import Icono from '../ui/Icono.jsx';
 import { ICONOS } from '../iconos.js';
+import { SITIO, TARIFAS } from '../../data/sitio.js';
+import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { useCarrito } from '../../context/CarritoContext.jsx';
 import s from './Header.module.css';
 
@@ -18,31 +20,30 @@ function Buscador() {
       onSubmit={(e) => { e.preventDefault(); navegar(q.trim() ? `/buscar/${encodeURIComponent(q.trim())}` : '/buscar'); }}
     >
       <label htmlFor={id} className="sr-only">Buscar productos</label>
-      <span className={s.lupa}><Icono de={ICONOS.buscar.de} mov={ICONOS.buscar.mov} entrada={false} tam={18} /></span>
       <input id={id} type="search" className={s.campo} placeholder="Buscar productos" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
+      <button type="submit" className={s.lupa} aria-label="Buscar">
+        <Icono de={ICONOS.buscar.de} mov={ICONOS.buscar.mov} entrada={false} tam={18} />
+      </button>
     </form>
   );
 }
 
-// Cabecera clara: logo, dos secciones (Tecnología y Anime), reparaciones, buscador y carrito.
+// Dos filas, como las tiendas grandes: arriba logo, buscador y accesos; abajo las secciones.
+// En celular el buscador baja a su propia fila y las secciones viven en la barra inferior.
 export default function Header() {
   const { articulos, abrir } = useCarrito();
   return (
     <header className={s.header}>
       <div className={`contenedor ${s.barra}`}>
         <Link href="/" className={s.logo} aria-label="Kirei Technology, inicio"><Logo variante="claro" alto={44} /></Link>
-        <nav aria-label="Principal" className={s.nav}>
-          <ul className={s.lista}>
-            <li><EnlaceNav href="/">Inicio</EnlaceNav></li>
-            <li><EnlaceNav href="/tecnologia">Tecnología</EnlaceNav></li>
-            <li><EnlaceNav href="/anime">Anime</EnlaceNav></li>
-            <li><EnlaceNav href="/reparaciones">Reparaciones</EnlaceNav></li>
-          </ul>
-        </nav>
         <Buscador />
-        <Link href="/buscar" className={s.buscarMovil} aria-label="Buscar productos">
-          <Icono de={ICONOS.buscar.de} mov={ICONOS.buscar.mov} entrada={false} tam={22} />
-        </Link>
+        <a className={s.acceso} href={`https://wa.me/${SITIO.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label={`¿Dudas? Escríbenos por WhatsApp al ${SITIO.telefono}`}>
+          <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={22} />
+          <span className={s.accesoTexto}>
+            <span className={s.accesoMini}>¿Dudas? Escríbenos</span>
+            <span className={s.accesoFuerte}>{SITIO.telefono}</span>
+          </span>
+        </a>
         <button type="button" className={`btn btn-marca ${s.carrito}`} onClick={abrir} aria-haspopup="dialog">
           <Icono de={ICONOS.bolsa.de} mov={ICONOS.bolsa.mov} entrada={false} tam={18} />
           Carrito
@@ -51,6 +52,20 @@ export default function Header() {
             <span className="sr-only">, {articulos} {articulos === 1 ? 'artículo' : 'artículos'}</span>
           </span>
         </button>
+      </div>
+      <div className={s.fila2}>
+        <div className={`contenedor ${s.fila2Interior}`}>
+          <nav aria-label="Principal">
+            <ul className={s.lista}>
+              <li><EnlaceNav href="/">Inicio</EnlaceNav></li>
+              <li><EnlaceNav href="/tecnologia">Tecnología</EnlaceNav></li>
+              <li><EnlaceNav href="/anime">Anime</EnlaceNav></li>
+              <li><EnlaceNav href="/reparaciones">Reparaciones</EnlaceNav></li>
+              <li><EnlaceNav href="/ayuda">Ayuda</EnlaceNav></li>
+            </ul>
+          </nav>
+          <p className={s.aviso}>Retiro gratis · Envío a domicilio {formatoPrecio(TARIFAS.envioDomicilio)}</p>
+        </div>
       </div>
     </header>
   );

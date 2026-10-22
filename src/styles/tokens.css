@@ -33,6 +33,8 @@
   --e-confirmado-fg: #0B4F8A; --e-confirmado-bg: #E3EEF8;
   --e-enviado-fg: #5B3591;   --e-enviado-bg: #EFE7F8;
   --e-entregado-fg: #FFFFFF; --e-entregado-bg: #1E6B3A;
+  /* Pago en efectivo: verde billete */
+  --efectivo-fg: #1E6B3A;    --efectivo-bg: #E6F2EA;
   /* Ejemplo */
   --e-ejemplo-fg: #4A4A4A;   --e-ejemplo-bg: #ECE9E3;
 
@@ -56,7 +58,7 @@
 
   --gutter: 16px;
   --ancho: 1240px;
-  --alto-header: 72px;
+  --alto-header: 120px; /* dos filas: logo y buscador, luego secciones (o buscador en celular) */
   --alto-nav-movil: 68px;
 }
 @media (min-width: 768px) { :root { --gutter: 32px; } }

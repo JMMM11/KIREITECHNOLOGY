@@ -8,7 +8,7 @@ import { SITIO } from '../../data/sitio.js';
 import s from './Footer.module.css';
 
 // Métodos de pago. Los que tienen logo lo muestran (public/pagos); el resto va como texto.
-const PAGOS = [{ nombre: SITIO.pagoEnLinea, logo: './pagos/yappy.webp' }, { nombre: 'Efectivo' }];
+const PAGOS = [{ nombre: SITIO.pagoEnLinea, logo: './pagos/yappy.webp' }, { nombre: 'Efectivo', clase: 'efectivo', icono: ICONOS.pago }];
 
 // Pie claro: marca e Instagram, tienda, ayuda, contacto, métodos de pago y legales abajo.
 export default function Footer() {
@@ -52,8 +52,10 @@ export default function Footer() {
           <h2 className={`${s.titulo} ${s.tituloPagos}`}>Métodos de pago</h2>
           <ul className={s.pagos}>
             {PAGOS.map((p) => (
-              <li key={p.nombre} className={s.pago}>
-                {p.logo ? <img src={p.logo} alt={p.nombre} width="88" height="22" /> : p.nombre}
+              <li key={p.nombre} className={`${s.pago} ${p.clase ? s[p.clase] : ''}`}>
+                {p.logo ? <img src={p.logo} alt={p.nombre} width="88" height="22" /> : (
+                  <>{p.icono && <Icono de={p.icono.de} mov={p.icono.mov} entrada={false} tam={18} />}{p.nombre}</>
+                )}
               </li>
             ))}
           </ul>

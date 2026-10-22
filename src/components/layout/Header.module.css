@@ -1,38 +1,64 @@
 .header { position: relative; z-index: 20; background: var(--superficie); border-bottom: 1px solid var(--borde); }
-.barra { display: flex; align-items: center; gap: 20px; height: var(--alto-header); }
-.logo { display: block; flex: none; border-radius: 4px; }
+
+/* Fila 1: logo, buscador, WhatsApp y carrito. En celular: logo y WhatsApp arriba, buscador abajo. */
+.barra {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px 16px;
+  padding-block: 10px 12px;
+}
+.logo { display: block; border-radius: 4px; }
 .logo svg { display: block; width: auto; height: 36px; }
-.nav { display: none; }
-.lista { list-style: none; display: flex; align-items: center; gap: 2px; }
+
+.buscador { position: relative; grid-column: 1 / -1; grid-row: 2; }
+.campo {
+  width: 100%; min-height: 46px; padding: 8px 56px 8px 18px;
+  border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-control); background: var(--bg);
+}
+.campo:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px; }
+.lupa {
+  position: absolute; right: 4px; top: 50%; translate: 0 -50%;
+  display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 50%;
+  background: var(--accion); color: var(--accion-texto); cursor: pointer;
+}
+
+/* Acceso de dos líneas: texto chico arriba, dato en negrita abajo. */
+.acceso { grid-column: 3; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; justify-content: center; text-decoration: none; color: var(--texto); }
+.accesoTexto { display: none; line-height: 1.2; }
+.accesoMini { display: block; font-size: var(--t-mini); color: var(--texto-suave); }
+.accesoFuerte { display: block; font-size: var(--t-chico); font-weight: 600; white-space: nowrap; }
+
+.carrito { display: none; min-height: 44px; padding: 8px 16px; }
+.cuenta {
+  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: 11px; background: var(--accion); color: var(--accion-texto); font-size: var(--t-mini);
+}
+
+/* Fila 2: secciones y aviso de entregas. Solo en pantallas grandes; en celular está la barra inferior. */
+.fila2 { display: none; border-top: 1px solid var(--borde); }
+.fila2Interior { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.lista { list-style: none; display: flex; align-items: center; gap: 2px; margin-left: -12px; }
 .enlace {
   position: relative; display: inline-flex; align-items: center; gap: 6px;
   min-height: 44px; padding: 8px 12px; border: 0; background: none;
   font-size: 0.9375rem; text-decoration: none; color: inherit;
 }
 .enlace[aria-current="page"] { font-weight: 600; }
-.indicador { position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px; border-radius: 2px; background: var(--marca); }
+.indicador { position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px; background: var(--marca); }
+.aviso { font-size: var(--t-chico); color: var(--texto-suave); white-space: nowrap; }
 
-.buscador { position: relative; display: none; flex: 1; max-width: 360px; margin-left: auto; }
-.lupa { position: absolute; left: 14px; top: 50%; translate: 0 -50%; color: var(--texto-suave); pointer-events: none; }
-.campo {
-  width: 100%; min-height: 44px; padding: 8px 14px 8px 42px;
-  border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-control); background: var(--bg);
-}
-.campo:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px; }
-.buscarMovil { display: grid; place-items: center; width: 44px; height: 44px; margin-left: auto; border-radius: 50%; color: var(--texto); }
-.carrito { display: none; min-height: 44px; padding: 8px 16px; flex: none; }
-.cuenta {
-  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px;
-  border-radius: 11px; background: var(--accion); color: var(--accion-texto); font-size: var(--t-mini);
-}
 @media (min-width: 900px) {
+  .barra { grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 28px; padding-block: 12px; }
   .logo svg { height: 44px; }
-  .nav { display: block; }
+  /* Solo el logo se va hacia el borde izquierdo de la pantalla; el resto sigue en el ancho del contenido.
+     translate no mueve a los demás elementos. */
+  .logo { translate: calc(-1 * max(0px, (100vw - var(--ancho)) / 2 - 8px)) 0; }
+  .buscador { grid-column: 2; grid-row: 1; max-width: 640px; width: 100%; justify-self: center; }
   .carrito { display: inline-flex; }
-  .buscarMovil { display: none; }
-  .buscador { display: block; }
+  .fila2 { display: block; }
 }
+@media (min-width: 1100px) { .accesoTexto { display: block; } }
 
 @media (hover: hover) and (pointer: fine) {
   .enlace:hover { color: var(--marca); }
+  .lupa:hover { background: var(--accion-hover); }
+  .acceso:hover .accesoFuerte { color: var(--marca); text-decoration: underline; text-underline-offset: 3px; }
 }
