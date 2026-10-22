@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 230" width="120" height="230"><title>Kirei icono naranja</title><g fill="none" stroke="#F7931E" stroke-width="8" stroke-linecap="round">
+  <path d="M38,44 A26,26 0 0 1 82,44"/>
+  <path d="M26,34 A42,42 0 0 1 94,34"/>
+</g>
+<circle cx="60" cy="58" r="7" fill="#F7931E"/>
+<rect x="57.5" y="62" width="5" height="50" fill="#111111"/>
+<rect x="42" y="106" width="36" height="112" rx="18" fill="#111111"/>
+<rect x="49" y="124" width="5" height="76" rx="2.5" fill="#FFFFFF"/></svg>

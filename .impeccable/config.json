@@ -1,0 +1,80 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-22T02:51:44.718Z",
+        "reason": "branding-kirei-technology.md: Gris claro #D8D8D8 es el color definido para texto sobre fondos oscuros; contraste ~12:1 sobre #0B1F33"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-22T02:55:30.718Z",
+        "reason": "branding-kirei-technology.md define Papel #F7F5F1 como fondo general; brief del usuario: fondo papel con azul marino solo para contraste"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "producto.html"
+        ],
+        "createdAt": "2026-10-22T02:55:31.237Z",
+        "reason": "branding-kirei-technology.md define Papel #F7F5F1 como fondo general; brief del usuario: fondo papel con azul marino solo para contraste"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "checkout.html"
+        ],
+        "createdAt": "2026-10-22T02:55:31.642Z",
+        "reason": "branding-kirei-technology.md define Papel #F7F5F1 como fondo general; brief del usuario: fondo papel con azul marino solo para contraste"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "reparaciones.html"
+        ],
+        "createdAt": "2026-10-22T02:55:32.035Z",
+        "reason": "branding-kirei-technology.md define Papel #F7F5F1 como fondo general; brief del usuario: fondo papel con azul marino solo para contraste"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "legal.html"
+        ],
+        "createdAt": "2026-10-22T02:55:32.299Z",
+        "reason": "branding-kirei-technology.md define Papel #F7F5F1 como fondo general; brief del usuario: fondo papel con azul marino solo para contraste"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-22T02:55:32.602Z",
+        "reason": "falso positivo: el inset lo da el hijo .container (16px/32px) y .section (72px+); verificado en capturas a 375px y 1366px"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "reparaciones.html"
+        ],
+        "createdAt": "2026-10-22T02:55:32.939Z",
+        "reason": "falso positivo: el inset lo da el hijo .container (16px/32px) y .section (72px+); verificado en capturas a 375px y 1366px"
+      }
+    ]
+  }
+}

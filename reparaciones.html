@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reparación de computadoras | Kirei Technology</title>
+  <meta name="description" content="Diagnóstico, reparación, mantenimiento e instalación de Windows para laptops y PCs en Panamá Oeste.">
+  <meta name="theme-color" content="#F7F5F1">
+  <link rel="icon" href="assets/logo/kirei-icono-naranja.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-pagina="reparaciones">
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <header class="site-header" id="cabecera"></header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <h1 class="hero__title">Reparamos tu computadora.</h1>
+          <p class="lead">Laptops y PCs con sistema Windows. Diagnóstico, piezas, mantenimiento e instalación.</p>
+          <a class="btn btn--ghost hero__cta" href="#cita">Agenda tu cita</a>
+        </div>
+        <div class="hero__media hero__media--foto">
+          <img src="assets/img/reparacion.webp" alt="Técnico reparando la placa de una laptop" width="394" height="394" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <section class="section band-white" aria-labelledby="servicios-titulo">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="display" id="servicios-titulo">Servicios.</h2>
+          <p class="lead">Solo sistemas basados en Windows.</p>
+        </div>
+        <ul class="services" id="servicios"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="cita" aria-labelledby="cita-titulo">
+      <div class="container split split--top">
+        <div class="split__text">
+          <h2 class="display" id="cita-titulo">Agenda tu cita.</h2>
+          <p class="lead">Cuéntanos qué le pasa a tu equipo. Te respondemos para confirmar la fecha.</p>
+          <ul class="contact-list" id="contacto-reparaciones"></ul>
+        </div>
+
+        <form id="form-cita" class="panel form" novalidate>
+          <div class="field">
+            <label for="cita-nombre">Nombre</label>
+            <input class="input" id="cita-nombre" name="nombre" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="cita-telefono">Teléfono</label>
+            <input class="input" id="cita-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6000 0000" required>
+          </div>
+          <div class="field">
+            <label for="cita-correo">Correo <span class="muted">(opcional)</span></label>
+            <input class="input" id="cita-correo" name="correo" type="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="cita-equipo">Equipo</label>
+            <select class="input" id="cita-equipo" name="equipo" required>
+              <option value="">Elige tu equipo</option>
+              <option>Laptop</option>
+              <option>PC de escritorio</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cita-modelo">Marca y modelo <span class="muted">(opcional)</span></label>
+            <input class="input" id="cita-modelo" name="modelo">
+          </div>
+          <div class="field">
+            <label for="cita-servicio">Servicio</label>
+            <select class="input" id="cita-servicio" name="servicio" required></select>
+          </div>
+          <div class="field">
+            <label for="cita-problema">¿Qué le pasa?</label>
+            <textarea class="input" id="cita-problema" name="problema" required placeholder="Por ejemplo: no enciende, la pantalla parpadea"></textarea>
+          </div>
+          <div class="field">
+            <label for="cita-fecha">Fecha preferida <span class="muted">(opcional)</span></label>
+            <input class="input" id="cita-fecha" name="fecha" type="date">
+          </div>
+          <label class="check"><input type="checkbox" name="acepto" required><span>Acepto que Kirei Technology use mis datos solo para gestionar esta cita. Lee la <a href="legal.html#privacidad">política de privacidad</a>.</span></label>
+          <button class="btn btn--primary btn--block" type="submit">Enviar por WhatsApp</button>
+          <button class="btn btn--ghost btn--block" type="button" id="cita-correo-btn" hidden>Enviar por correo</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="pie"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/totales.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
