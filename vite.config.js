@@ -3,15 +3,17 @@ import react from '@vitejs/plugin-react';
 import { createReadStream, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-// En desarrollo la raíz es src/: este plugin sirve también las fotos originales de Productos/ (en el build ya están en la raíz).
+// En desarrollo la raíz es src/: este plugin sirve también las fotos originales de Productos/ y reparaciones/ (en el build ya están en la raíz).
 const fotosProductos = {
   name: 'fotos-productos',
   configureServer(server) {
-    server.middlewares.use('/Productos', (req, res, next) => {
-      const ruta = resolve('Productos', decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, ''));
-      if (!ruta.startsWith(resolve('Productos')) || !existsSync(ruta)) return next();
-      createReadStream(ruta).pipe(res);
-    });
+    for (const carpeta of ['Productos', 'reparaciones']) {
+      server.middlewares.use(`/${carpeta}`, (req, res, next) => {
+        const ruta = resolve(carpeta, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, ''));
+        if (!ruta.startsWith(resolve(carpeta)) || !existsSync(ruta)) return next();
+        createReadStream(ruta).pipe(res);
+      });
+    }
   },
 };
 

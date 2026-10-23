@@ -1,21 +1,26 @@
 import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Icono from '../ui/Icono.jsx';
+import Foto from '../ui/Foto.jsx';
 import { ICONOS } from '../iconos.js';
 import { GRUPOS_SERVICIO } from '../../data/servicios.js';
 import s from './Reparaciones.module.css';
 
 // Servicios en dos pestañas. Cada fila lleva directo al formulario con el servicio elegido.
+// Al lado, la foto del grupo; si el servicio señalado tiene foto propia, se cambia por esa.
 export default function ListaServicios({ onElegir }) {
   const [activo, setActivo] = useState(0);
   const pestanas = useRef([]);
   const grupo = GRUPOS_SERVICIO[activo];
+  const [senalado, setSenalado] = useState(null);
+  const foto = grupo.servicios.find((x) => x.id === senalado)?.foto ?? grupo.foto;
 
   const tecla = (e, i) => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
     e.preventDefault();
     const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + GRUPOS_SERVICIO.length) % GRUPOS_SERVICIO.length;
     setActivo(n);
+    setSenalado(null);
     pestanas.current[n]?.focus();
   };
 
@@ -36,7 +41,7 @@ export default function ListaServicios({ onElegir }) {
                 aria-controls={`panel-${g.id}`}
                 tabIndex={i === activo ? 0 : -1}
                 className={s.pestana}
-                onClick={() => setActivo(i)}
+                onClick={() => { setActivo(i); setSenalado(null); }}
                 onKeyDown={(e) => tecla(e, i)}
               >
                 {i === activo && <motion.span layoutId="pestana-activa" className={s.pestanaFondo} transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
@@ -46,11 +51,19 @@ export default function ListaServicios({ onElegir }) {
           </div>
         </div>
 
+        <div className={s.cuerpo}>
+        <div className={s.fotoServicio} aria-hidden="true">
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.div key={foto.src} className={s.fotoCapa} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+              <Foto foto={foto} sizes="(min-width: 900px) 40vw, 90vw" />
+            </motion.div>
+          </AnimatePresence>
+        </div>
         <div role="tabpanel" id={`panel-${grupo.id}`} aria-labelledby={`pestana-${grupo.id}`} className={s.panel}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.ul key={grupo.id} className={s.lista} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               {grupo.servicios.map((sv) => (
-                <li key={sv.id} className={s.fila}>
+                <li key={sv.id} className={s.fila} onPointerEnter={() => setSenalado(sv.id)} onFocus={() => setSenalado(sv.id)}>
                   <div className={s.filaTexto}>
                     <h3 className={s.filaNombre}>{sv.nombre}</h3>
                     <p className={s.filaDetalle}>{sv.detalle}</p>
@@ -63,6 +76,7 @@ export default function ListaServicios({ onElegir }) {
               ))}
             </motion.ul>
           </AnimatePresence>
+        </div>
         </div>
         <p className={s.nota}>Solo sistemas basados en Windows.</p>
       </div>

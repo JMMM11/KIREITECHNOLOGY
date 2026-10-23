@@ -9,7 +9,14 @@
 .portadaAcciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
 .fantasmaClaro { color: #FFFFFF; }
 .portadaFoto { aspect-ratio: 4 / 3; overflow: hidden; }
-.portadaFoto img { width: 100%; height: 100%; object-fit: cover; }
+.portadaFoto { position: relative; }
+.portadaFoto img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.82) saturate(0.9); }
+/* Velo azul marino: baja la luz de la foto y la une con el fondo de la tarjeta. */
+.portadaFoto::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(11, 31, 51, 0.55), rgba(11, 31, 51, 0.2) 60%), rgba(11, 31, 51, 0.18);
+  mix-blend-mode: multiply;
+}
 @media (min-width: 900px) {
   .portada { grid-template-columns: 1.2fr 1fr; margin-top: 40px; }
   .portadaTexto { padding: 56px; }
@@ -29,6 +36,15 @@
 .pestana[aria-selected="true"] { color: var(--texto); font-weight: 600; }
 .pestanaFondo { position: absolute; inset: 0; border-radius: inherit; background: var(--superficie); border: 1px solid var(--borde); }
 .pestanaTexto { position: relative; }
+/* Foto del servicio al lado de la lista: arriba en celular, a la izquierda en pantallas grandes. */
+.cuerpo { display: grid; gap: 16px; }
+.fotoServicio { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radio-tarjeta); background: var(--superficie-2); }
+.fotoCapa { position: absolute; inset: 0; }
+.fotoCapa img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 900px) {
+  .cuerpo { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 24px; align-items: stretch; }
+  .fotoServicio { aspect-ratio: auto; min-height: 100%; }
+}
 .panel { border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); overflow: hidden; }
 .lista { list-style: none; }
 .fila {

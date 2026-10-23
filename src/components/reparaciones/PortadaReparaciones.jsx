@@ -3,6 +3,7 @@ import Foto from '../ui/Foto.jsx';
 import Icono from '../ui/Icono.jsx';
 import { ICONOS } from '../iconos.js';
 import { SITIO } from '../../data/sitio.js';
+import { FOTOS_REPARACION } from '../../data/servicios.js';
 import s from './Reparaciones.module.css';
 
 const SUAVE = [0.22, 1, 0.36, 1];
@@ -31,7 +32,7 @@ export default function PortadaReparaciones({ onAgendar }) {
           </div>
         </div>
         <motion.div className={s.portadaFoto} initial={{ scale: 0.94, rotate: -2 }} animate={{ scale: 1, rotate: 0 }} transition={{ duration: 0.7, ease: SUAVE }}>
-          <Foto foto={{ base: 'fotos/reparacion', ancho: 394, alto: 394 }} alt="Técnico reparando la placa de una laptop" prioridad sizes="(min-width: 900px) 34vw, 90vw" />
+          <Foto foto={FOTOS_REPARACION.portada} alt="Técnico reparando una laptop con lupa y destornillador" prioridad sizes="(min-width: 900px) 34vw, 90vw" />
         </motion.div>
       </div>
     </section>

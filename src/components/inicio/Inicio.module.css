@@ -42,22 +42,6 @@
 .categoriaFoto { transition: transform var(--dur-larga) var(--ease-salida), box-shadow var(--dur-larga) var(--ease-salida); }
 .categoria:active .categoriaFoto { transform: scale(0.96); }
 
-/* Marcas */
-.marcas { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.marca {
-  display: grid; justify-items: center; gap: 6px; padding: 20px 8px;
-  border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie);
-  text-decoration: none; color: var(--texto);
-}
-.marcaLogo { width: 40px; height: 40px; }
-.marcaNombre { font-weight: 600; }
-.marcaConteo { font-size: var(--t-mini); color: var(--texto-suave); }
-@media (min-width: 900px) {
-  .marcas { gap: 20px; }
-  .marca { grid-template-columns: auto 1fr; justify-items: start; align-items: center; gap: 2px 18px; padding: 28px 32px; }
-  .marcaLogo { grid-row: span 2; width: 48px; height: 48px; }
-  .marcaNombre { font-size: 1.125rem; }
-}
 .seccionEscena { position: relative; min-height: 260px; background: var(--superficie-2); }
 .seccionEscena img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .seccionAnime {
@@ -74,7 +58,6 @@
 @media (hover: hover) and (pointer: fine) {
   .categoria:hover { background: var(--bg); }
   .categoria:hover .categoriaFoto { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(11, 31, 51, 0.14); }
-  .marca:hover { border-color: var(--marca); }
   .seccionAnime :global(.btn-fantasma):hover { background: #FFFFFF; border-color: #FFFFFF; color: var(--marca); }
 }
 

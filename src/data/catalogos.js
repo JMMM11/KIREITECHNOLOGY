@@ -12,14 +12,6 @@ export const CATEGORIAS = [
   { id: 'anime', seccion: 'anime', nombre: 'Anime', frase: 'Llaveros, peluches y pines', orden: 5, visible: true },
 ];
 
-// Marcas que vende la tienda. "logo" es el archivo en public/marcas (Simple Icons, licencia CC0).
-// Cada producto lleva su campo "marca"; la búsqueda también mira ese campo.
-export const MARCAS = [
-  { nombre: 'Lenovo', logo: 'lenovo' },
-  { nombre: 'Xiaomi', logo: 'xiaomi' },
-  { nombre: 'Razer', logo: 'razer' },
-];
-
 export const ORDENES = [
   { id: 'relevancia', nombre: 'Destacados primero' },
   { id: 'precio-asc', nombre: 'Precio: menor a mayor' },

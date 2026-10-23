@@ -39,18 +39,10 @@ test('la búsqueda encuentra por marca', async () => {
   assert.equal(filtrarCatalogo(lista, { texto: 'Lenovo' }).length, 2);
 });
 
-test('cada marca tiene productos y logo', async () => {
-  const { MARCAS } = await import('../src/data/catalogos.js');
-  const { existsSync } = await import('node:fs');
-  for (const m of MARCAS) {
-    assert.ok(PRODUCTOS.some((p) => p.marca === m.nombre), `${m.nombre} sin productos`);
-    assert.ok(existsSync(new URL(`../public/marcas/${m.logo}.svg`, import.meta.url)), `${m.logo}.svg no existe`);
-  }
-});
-
 test('cada foto de producto y de portada existe', async () => {
   const { existsSync } = await import('node:fs');
   const { HERO } = await import('../src/data/textos.js');
-  const fotos = [HERO.foto, ...PRODUCTOS.flatMap((p) => p.fotos ?? [])];
+  const { FOTOS_REPARACION, SERVICIOS, GRUPOS_SERVICIO } = await import('../src/data/servicios.js');
+  const fotos = [HERO.foto, ...PRODUCTOS.flatMap((p) => p.fotos ?? []), ...Object.values(FOTOS_REPARACION), ...[...GRUPOS_SERVICIO, ...SERVICIOS].map((x) => x.foto).filter(Boolean)];
   for (const f of fotos) assert.ok(existsSync(new URL(`../${f.src}`, import.meta.url)), `${f.src} no existe`);
 });
