@@ -14,9 +14,14 @@ const Reparaciones = lazy(() => import('./pages/Reparaciones.jsx'));
 const Ayuda = lazy(() => import('./pages/Ayuda.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
 const NoEncontrada = lazy(() => import('./pages/NoEncontrada.jsx'));
+const Admin = lazy(() => import('./pages/Admin.jsx'));
 
 export default function App() {
   const [ubicacion] = useLocation();
+  // El panel va sin el encabezado ni el pie de la tienda.
+  if (ubicacion.startsWith('/admin')) {
+    return <LimiteError ubicacion={ubicacion}><Suspense fallback={<Cargando />}><Admin /></Suspense></LimiteError>;
+  }
   return (
     <Layout>
       <LimiteError ubicacion={ubicacion}>

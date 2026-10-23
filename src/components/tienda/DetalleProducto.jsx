@@ -46,7 +46,7 @@ export default function DetalleProducto({ producto: p }) {
         {p.fotos.length > 1 && (
           <div className={s.miniaturas} role="group" aria-label="Fotos del producto">
             {p.fotos.map((f, i) => (
-              <button key={f.base} type="button" className={s.miniatura} onClick={() => setFotoIndice(i)} aria-label={`Ver foto ${i + 1} de ${p.fotos.length}`} aria-current={i === fotoIndice ? 'true' : undefined}>
+              <button key={f.src ?? f.base} type="button" className={s.miniatura} onClick={() => setFotoIndice(i)} aria-label={`Ver foto ${i + 1} de ${p.fotos.length}`} aria-current={i === fotoIndice ? 'true' : undefined}>
                 <Foto foto={f} sizes="72px" />
                 {i === fotoIndice && <motion.span layoutId="miniatura-activa" className={s.miniaturaActiva} />}
               </button>

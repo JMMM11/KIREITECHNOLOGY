@@ -1,0 +1,1 @@
+import{H as e}from"./react-1ANRH0H5.js";import{c as t,h as n,m as r}from"./index.esm-CMdF1fIc.js";n(`firebase`,`13.1.0`,`app`);var i=e({app:()=>a,db:()=>o}),a=r({apiKey:void 0,authDomain:void 0,projectId:void 0,appId:void 0}),o=t(a);export{o as n,i as r,a as t};

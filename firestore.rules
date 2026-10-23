@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// Cualquiera lee los productos publicados; solo el administrador lee borradores y escribe.
+// Reemplaza UID_DEL_ADMIN por el UID de tu usuario (Firebase > Authentication > Users).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function esAdmin() {
+      return request.auth != null && request.auth.uid == 'UID_DEL_ADMIN';
+    }
+    match /productos/{id} {
+      allow read: if resource.data.estado == 'publicado' || esAdmin();
+      allow write: if esAdmin();
+    }
+  }
+}

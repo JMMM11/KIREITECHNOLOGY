@@ -3,7 +3,7 @@ import s from './Foto.module.css';
 const RUTA = './';
 
 // Foto con ancho y alto definidos para que no salte el diseño.
-// foto.src: archivo original tal cual (carpeta Productos/). foto.base: versión en dos tamaños (-m y -l).
+// foto.src: archivo original tal cual (carpeta Productos/) o URL completa de Cloudinary. foto.base: versión en dos tamaños (-m y -l).
 export default function Foto({ foto, alt = '', sizes = '(min-width: 900px) 40vw, 90vw', prioridad = false, className = '' }) {
   if (!foto) {
     return (
@@ -17,7 +17,7 @@ export default function Foto({ foto, alt = '', sizes = '(min-width: 900px) 40vw,
     return (
       <img
         className={className}
-        src={`${RUTA}${encodeURI(foto.src)}`}
+        src={/^https?:/.test(foto.src) ? foto.src : `${RUTA}${encodeURI(foto.src)}`}
         width={foto.ancho}
         height={foto.alto}
         alt={alt}

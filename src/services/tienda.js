@@ -1,5 +1,5 @@
-// Única puerta a los datos. Hoy lee los archivos de data/; cuando exista Firebase, estas mismas
-// funciones consultarán Firestore y los componentes no cambian.
+// Única puerta a los datos. Con Firebase configurado (.env.local) lee Firestore; si no, los archivos de data/.
+// Los componentes no se enteran de la diferencia.
 import { PRODUCTOS } from '../data/productos.js';
 import { CATEGORIAS } from '../data/catalogos.js';
 import { SITIO } from '../data/sitio.js';
@@ -20,17 +20,30 @@ function preparar(p, vistaPrevia) {
   return { ...base, slug: base.slug ?? base.id, estadoVenta: estadoProducto(base) };
 }
 
+export const conFirebase = Boolean(import.meta.env?.VITE_FIREBASE_PROJECT_ID);
+
+// Firebase se descarga solo si está configurado. Una consulta por visita; si falla, se puede reintentar.
+let enNube = null;
+function publicadosNube() {
+  enNube ??= Promise.all([import('./firebase.js'), import('firebase/firestore')])
+    .then(([{ db }, { collection, getDocs, query, where }]) => getDocs(query(collection(db, 'productos'), where('estado', '==', 'publicado'))))
+    .then((snap) => snap.docs.map((d) => preparar({ id: d.id, ...d.data() }, false)))
+    .catch((e) => { enNube = null; throw e; });
+  return enNube;
+}
+
 const publicados = (vistaPrevia) => PRODUCTOS.filter((p) => p.estado === 'publicado').map((p) => preparar(p, vistaPrevia));
 const categoriasVisibles = () => CATEGORIAS.filter((c) => c.visible).sort((a, b) => a.orden - b.orden);
 
 // Datos disponibles al instante mientras son locales, para que la primera vista salga completa.
 // Con backend devolverá null y la interfaz mostrará esqueletos.
 export function datosIniciales() {
+  if (conFirebase) return null;
   return { productos: publicados(SITIO.vistaPrevia), categorias: categoriasVisibles() };
 }
 
 export async function listarProductos() {
-  return publicados(SITIO.vistaPrevia);
+  return conFirebase ? publicadosNube() : publicados(SITIO.vistaPrevia);
 }
 
 export async function listarCategorias() {
@@ -38,7 +51,7 @@ export async function listarCategorias() {
 }
 
 export async function obtenerProducto(slug) {
-  return publicados(SITIO.vistaPrevia).find((p) => p.slug === slug) ?? null;
+  return (await listarProductos()).find((p) => p.slug === slug) ?? null;
 }
 
 export async function listarPedidosEjemplo() {
