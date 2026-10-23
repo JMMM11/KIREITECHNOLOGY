@@ -1,0 +1,23 @@
+{
+  "firestore": { "rules": "firestore.rules" },
+  "hosting": {
+    "site": "kirie-technology-93481",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "firestore.rules",
+      "**/.*",
+      "**/node_modules/**",
+      "src/**",
+      "tests/**",
+      "public/**",
+      "package.json",
+      "package-lock.json",
+      "vite.config.js",
+      "README.md"
+    ],
+    "headers": [
+      { "source": "assets/**", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+    ]
+  }
+}
