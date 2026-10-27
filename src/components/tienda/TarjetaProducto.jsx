@@ -4,6 +4,7 @@ import Foto from '../ui/Foto.jsx';
 import Badge from '../ui/Badge.jsx';
 import Icono from '../ui/Icono.jsx';
 import Precio from './Precio.jsx';
+import BotonFavorito from './BotonFavorito.jsx';
 import { ICONOS } from '../iconos.js';
 import { useCarrito, variantesDe } from '../../context/CarritoContext.jsx';
 import { useDatos } from '../../context/DatosContext.jsx';
@@ -24,6 +25,7 @@ export default function TarjetaProducto({ producto: p, prioridad = false }) {
           {p.estadoVenta && <Badge estado={p.estadoVenta} />}
           {p.ejemplo && <Badge estado="ejemplo" />}
         </div>
+        <BotonFavorito producto={p} />
       </div>
       <div className={s.cuerpo}>
         <p className={s.categoria}>{categoriaPorId(p.categoriaId)?.nombre}</p>

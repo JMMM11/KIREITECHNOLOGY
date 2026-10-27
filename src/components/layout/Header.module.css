@@ -2,7 +2,7 @@
 
 /* Fila 1: logo, buscador, WhatsApp y carrito. En celular: logo y WhatsApp arriba, buscador abajo. */
 .barra {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px 16px;
+  display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px 8px;
   padding-block: 10px 12px;
 }
 .logo { display: block; border-radius: 4px; }
@@ -22,6 +22,7 @@
 
 /* Acceso de dos líneas: texto chico arriba, dato en negrita abajo. */
 .acceso { grid-column: 3; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; justify-content: center; text-decoration: none; color: var(--texto); }
+.cuentaAcceso { grid-column: 4; }
 .accesoTexto { display: none; line-height: 1.2; }
 .accesoMini { display: block; font-size: var(--t-mini); color: var(--texto-suave); }
 .accesoFuerte { display: block; font-size: var(--t-chico); font-weight: 600; white-space: nowrap; }
@@ -46,7 +47,7 @@
 .aviso { font-size: var(--t-chico); color: var(--texto-suave); white-space: nowrap; }
 
 @media (min-width: 900px) {
-  .barra { grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 28px; padding-block: 12px; }
+  .barra { grid-template-columns: auto minmax(0, 1fr) auto auto auto; gap: 24px; padding-block: 12px; }
   .logo svg { height: 44px; }
   /* Solo el logo se va hacia el borde izquierdo de la pantalla; el resto sigue en el ancho del contenido.
      translate no mueve a los demás elementos. */

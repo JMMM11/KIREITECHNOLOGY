@@ -1,5 +1,5 @@
 // Solo lo usa el panel /admin: sesión, escritura de productos y subida de fotos.
-import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { app, db } from './firebase.js';
 import { PRODUCTOS } from '../data/productos.js';
@@ -26,6 +26,14 @@ export async function importarLocales() {
   for (const { id, ...datos } of PRODUCTOS) lote.set(doc(db, 'productos', id), limpio(datos));
   await lote.commit();
 }
+
+// Pedidos de clientes con cuenta. El administrador cambia el estado y deja una nota de seguimiento.
+export async function todosLosPedidos() {
+  const snap = await getDocs(collection(db, 'pedidos'));
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.creadoEn?.seconds ?? 0) - (a.creadoEn?.seconds ?? 0));
+}
+export const actualizarPedido = (id, { estado, seguimiento }) =>
+  updateDoc(doc(db, 'pedidos', id), { estado, seguimiento, actualizadoEn: serverTimestamp() });
 
 // Subida sin firma: el preset público de Cloudinary limita formato, tamaño y carpeta. La clave secreta nunca va aquí.
 export async function subirFoto(archivo) {

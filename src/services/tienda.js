@@ -4,6 +4,7 @@ import { PRODUCTOS } from '../data/productos.js';
 import { CATEGORIAS } from '../data/catalogos.js';
 import { SITIO } from '../data/sitio.js';
 import { ESTADOS_EJEMPLO, PEDIDOS_EJEMPLO } from '../data/productosEjemplo.js';
+import { numeroPedido } from '../lib/cuenta.js';
 
 // El estado lo decide la capa de datos, no el componente.
 export function estadoProducto(p) {
@@ -35,11 +36,10 @@ function publicadosNube() {
 const publicados = (vistaPrevia) => PRODUCTOS.filter((p) => p.estado === 'publicado').map((p) => preparar(p, vistaPrevia));
 const categoriasVisibles = () => CATEGORIAS.filter((c) => c.visible).sort((a, b) => a.orden - b.orden);
 
-// Datos disponibles al instante mientras son locales, para que la primera vista salga completa.
-// Con backend devolverá null y la interfaz mostrará esqueletos.
+// Lo que se puede mostrar al instante. Las categorías son locales; los productos de Firebase llegan después
+// (productos: null) y mientras tanto la interfaz muestra esqueletos.
 export function datosIniciales() {
-  if (conFirebase) return null;
-  return { productos: publicados(SITIO.vistaPrevia), categorias: categoriasVisibles() };
+  return { productos: conFirebase ? null : publicados(SITIO.vistaPrevia), categorias: categoriasVisibles() };
 }
 
 export async function listarProductos() {
@@ -58,23 +58,24 @@ export async function listarPedidosEjemplo() {
   return SITIO.vistaPrevia ? PEDIDOS_EJEMPLO : [];
 }
 
-let consecutivo = 1000;
-
-// Hoy el pedido vive solo en esta sesión. Con backend: guardar en Firestore "pedidos" y que el servidor
-// recalcule precios y totales; nunca confiar en los del navegador.
-export async function crearPedido({ cliente, entrega, pago, items, totales }) {
+// Con sesión, el pedido se guarda en Firestore "pedidos" y aparece en Mis pedidos. Sin sesión vive solo en esta visita.
+// Los totales vienen del navegador: la tienda los confirma por WhatsApp antes de cobrar.
+export async function crearPedido({ uid, cliente, entrega, pago, items, totales }) {
   if (!items?.length) throw new Error('El pedido no tiene productos.');
-  consecutivo += 1;
-  return {
-    id: `KT-${consecutivo}`,
+  const pedido = {
+    numero: numeroPedido(),
     estado: 'recibido',
-    creadoEn: new Date().toISOString(),
     cliente, entrega, pago, items,
     subtotalCentavos: totales.subtotal,
     envioCentavos: totales.envio ?? 0,
     totalCentavos: totales.total,
-    local: true,
   };
+  const creadoEn = new Date().toISOString();
+  if (uid && conFirebase) {
+    const docId = await (await import('./cuenta.js')).guardarPedido({ ...pedido, uid });
+    return { ...pedido, id: pedido.numero, docId, creadoEn };
+  }
+  return { ...pedido, id: pedido.numero, creadoEn, local: true };
 }
 
 // Igual que los pedidos: hoy queda en la sesión; luego irá a la colección "citas".

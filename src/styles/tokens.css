@@ -33,15 +33,20 @@
   --e-confirmado-fg: #0B4F8A; --e-confirmado-bg: #E3EEF8;
   --e-enviado-fg: #5B3591;   --e-enviado-bg: #EFE7F8;
   --e-entregado-fg: #FFFFFF; --e-entregado-bg: #1E6B3A;
+  --e-cancelado-fg: #B3261E; --e-cancelado-bg: #FCEDEC;
   /* Pago en efectivo: verde billete */
   --efectivo-fg: #1E6B3A;    --efectivo-bg: #E6F2EA;
+  /* Favorito: el corazón marcado */
+  --favorito: #C2185B;
   /* Ejemplo */
   --e-ejemplo-fg: #4A4A4A;   --e-ejemplo-bg: #ECE9E3;
 
   --fuente: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --t-hero: clamp(2.5rem, 1.5rem + 4.6vw, 4.75rem);
-  --t-display: clamp(2rem, 1.35rem + 2.9vw, 3.5rem);
-  --t-titulo: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+  /* Títulos: Unbounded, ancha y técnica, da la voz propia; Poppins queda para leer. */
+  --fuente-display: 'Unbounded', 'Poppins', system-ui, sans-serif;
+  --t-hero: clamp(2rem, 1.2rem + 4vw, 4.25rem);
+  --t-display: clamp(1.75rem, 1.2rem + 2.6vw, 3.125rem);
+  --t-titulo: clamp(1.375rem, 1.1rem + 1.1vw, 1.875rem);
   --t-sub: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
   --t-cuerpo: 1rem;
   --t-chico: 0.875rem;

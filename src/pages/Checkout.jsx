@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'wouter';
 import { AnimatePresence, motion } from 'motion/react';
 import CabeceraPagina from '../components/ui/CabeceraPagina.jsx';
@@ -13,6 +13,8 @@ import { formatoPrecio } from '../lib/formatoPrecio.js';
 import { errores, validarCorreo, validarNombre, validarRequerido, validarTelefono } from '../lib/validacion.js';
 import { crearPedido } from '../services/tienda.js';
 import { useCarrito } from '../context/CarritoContext.jsx';
+import { useCuenta } from '../context/CuentaContext.jsx';
+import { conFirebase } from '../services/tienda.js';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import { SITIO, TARIFAS } from '../data/sitio.js';
 import s from './Checkout.module.css';
@@ -51,6 +53,19 @@ export default function Checkout() {
   const [err, setErr] = useState({});
   const [envio, setEnvio] = useState({ estado: 'editando', pedido: null, enlace: '', error: '' });
   const formulario = useRef(null);
+  const { usuario, perfil } = useCuenta();
+
+  // Con sesión, los datos guardados llenan los campos vacíos; lo que el cliente ya escribió se respeta.
+  useEffect(() => {
+    if (!usuario || !perfil) return;
+    setF((x) => ({
+      ...x,
+      nombre: x.nombre || perfil.nombre || '',
+      telefono: x.telefono || perfil.telefono || '',
+      correo: x.correo || usuario.email || '',
+      direccion: x.direccion || perfil.direcciones?.[0]?.detalle || '',
+    }));
+  }, [usuario, perfil]);
 
   const totales = useMemo(() => calcularTotales(lineas, f.entrega, f.pago, TARIFAS), [lineas, f.entrega, f.pago]);
   const pago = !totales.contraEntregaPermitida && f.pago === 'contra_entrega' ? 'linea' : f.pago;
@@ -83,9 +98,10 @@ export default function Checkout() {
     try {
       const datos = { ...f, pago };
       const pedido = await crearPedido({
+        uid: usuario?.uid,
         cliente: { nombre: f.nombre.trim(), telefono: f.telefono.trim(), correo: f.correo.trim(), direccion: f.entrega === 'domicilio' ? f.direccion.trim() : '' },
         entrega: f.entrega, pago,
-        items: lineas.map((l) => ({ productoId: l.productoId, nombre: l.nombre, precioCentavos: l.precio, cantidad: l.cantidad })),
+        items: lineas.map((l) => ({ productoId: l.productoId, variante: l.variante, varianteNombre: l.varianteNombre, nombre: l.nombre, precioCentavos: l.precio, cantidad: l.cantidad, foto: l.foto ?? null })),
         totales: t,
       });
       const enlace = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(mensajeWhatsApp(pedido, lineas, t, datos))}`;
@@ -109,8 +125,13 @@ export default function Checkout() {
         <p className="sub">Abrimos WhatsApp con tu pedido. Envía el mensaje y te confirmamos el total de {formatoPrecio(p.totales.total)} y el pago.</p>
         <div className={s.exitoAcciones}>
           <a className="btn btn-accion" href={envio.enlace} target="_blank" rel="noopener noreferrer">Abrir WhatsApp otra vez</a>
-          <Link href="/tecnologia" className="btn btn-fantasma">Seguir comprando</Link>
+          {usuario
+            ? <Link href="/cuenta/pedidos" className="btn btn-fantasma">Seguir mi pedido</Link>
+            : <Link href="/tecnologia" className="btn btn-fantasma">Seguir comprando</Link>}
         </div>
+        {conFirebase && usuario === null && (
+          <p className="suave chico"><Link href="/cuenta" className="enlace">Crea tu cuenta</Link> para seguir tus próximos pedidos y comprar más rápido.</p>
+        )}
       </div>
     );
   }
@@ -138,6 +159,11 @@ export default function Checkout() {
             ))}
           </ol>
 
+          {conFirebase && usuario === null && paso === 0 && (
+            <p className={s.cuentaAviso}>
+              ¿Tienes cuenta? <Link href="/cuenta" className="enlace" onClick={() => { try { sessionStorage.setItem('kirei:volver', '/checkout'); } catch { /* sin almacenamiento */ } }}>Entra</Link> y llenamos tus datos.
+            </p>
+          )}
           {envio.estado === 'error' && (
             <div className={s.alerta} role="alert">
               <p>{envio.error}</p>

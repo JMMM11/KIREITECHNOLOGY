@@ -5,3 +5,4 @@
 .vacio { display: grid; justify-items: center; gap: 12px; padding-block: 48px; text-align: center; }
 .vacioIcono { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: var(--superficie-2); color: var(--marca); }
 .vacioTitulo { font-size: 1.25rem; font-weight: 600; }
+.sugerencias { display: grid; gap: 56px; padding-bottom: 96px; }

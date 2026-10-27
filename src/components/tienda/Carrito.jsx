@@ -14,7 +14,7 @@ export function CarritoVacio({ onExplorar }) {
       <span className={s.vacioIcono}><Icono de={ICONOS.bolsa.de} mov="latido" tam={28} /></span>
       <p className={s.vacioTitulo}>Tu carrito está vacío.</p>
       <p className="suave">Mira los audífonos y relojes que tenemos.</p>
-      <Link href="/tecnologia" className="btn btn-marca" onClick={onExplorar}>Ver tecnología</Link>
+      <Link href="/tecnologia" className="btn btn-marca" onClick={onExplorar}>Explorar tecnología</Link>
     </div>
   );
 }

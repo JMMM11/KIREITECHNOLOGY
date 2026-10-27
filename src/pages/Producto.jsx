@@ -1,18 +1,21 @@
+import { useEffect } from 'react';
 import { Link } from 'wouter';
 import DetalleProducto from '../components/tienda/DetalleProducto.jsx';
 import TarjetaProducto from '../components/tienda/TarjetaProducto.jsx';
-import Cargando from '../components/ui/Cargando.jsx';
+import { EsqueletoProducto } from '../components/ui/Esqueleto.jsx';
 import PantallaEstado from '../components/ui/PantallaEstado.jsx';
 import { useDatos } from '../context/DatosContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
+import { registrarVisto } from '../lib/vistos.js';
 import s from './Producto.module.css';
 
 export default function Producto({ params }) {
   const { productos, cargando } = useDatos();
   const p = productos.find((x) => x.slug === params.slug);
   useTituloPagina(p?.nombre ?? 'Producto');
+  useEffect(() => { if (p) registrarVisto(p.id); }, [p]);
 
-  if (cargando) return <Cargando />;
+  if (cargando) return <EsqueletoProducto />;
   if (!p) {
     return (
       <PantallaEstado etiqueta="Producto no disponible" titulo="Este producto ya no está." texto="Puede que ya no esté a la venta. Mira lo que tenemos ahora.">

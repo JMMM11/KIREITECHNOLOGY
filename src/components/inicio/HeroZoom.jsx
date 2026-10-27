@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { motion, useMotionTemplate, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import Foto from '../ui/Foto.jsx';
 import Icono from '../ui/Icono.jsx';
+import Escritura from '../ui/Escritura.jsx';
 import { ICONOS } from '../iconos.js';
 import { HERO } from '../../data/textos.js';
 import s from './Inicio.module.css';
@@ -36,7 +37,7 @@ export default function HeroZoom() {
             animate={{ y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.6, ease: SUAVE }}
           >
-            {HERO.titulo}
+            {HERO.titulo} <Escritura frases={HERO.frases} />
           </motion.h1>
           <p className={s.heroBajada}>{HERO.texto}</p>
           <div className={s.heroAcciones}>

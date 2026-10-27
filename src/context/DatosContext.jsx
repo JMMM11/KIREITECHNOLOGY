@@ -5,8 +5,8 @@ const DatosContext = createContext(null);
 
 export function DatosProvider({ children }) {
   const [estado, setEstado] = useState(() => {
-    const iniciales = datosIniciales();
-    return iniciales ? { ...iniciales, cargando: false, error: null } : { productos: [], categorias: [], cargando: true, error: null };
+    const { productos, categorias } = datosIniciales();
+    return { productos: productos ?? [], categorias, cargando: productos == null, error: null };
   });
 
   const cargar = useCallback(async () => {

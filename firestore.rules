@@ -1,15 +1,44 @@
 rules_version = '2';
 
-// Cualquiera lee los productos publicados; solo el administrador lee borradores y escribe.
+// Productos: cualquiera lee los publicados; solo el administrador lee borradores y escribe.
+// Usuarios y pedidos: cada cliente solo ve y cambia lo suyo; el administrador ve todos los pedidos y cambia su estado.
 // UID del administrador: Firebase > Authentication > Users.
 service cloud.firestore {
   match /databases/{database}/documents {
     function esAdmin() {
       return request.auth != null && request.auth.uid == 'SiAnST1DF5RATL2pq75ehocMwD73';
     }
+    function esDueno(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
     match /productos/{id} {
       allow read: if resource.data.estado == 'publicado' || esAdmin();
       allow write: if esAdmin();
+    }
+
+    // Perfil del cliente: solo campos conocidos y listas con tope, para que nadie llene la base de datos.
+    match /usuarios/{uid} {
+      allow read, delete: if esDueno(uid);
+      allow create, update: if esDueno(uid)
+        && request.resource.data.keys().hasOnly(['nombre', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
+        && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 80
+        && (!('direcciones' in request.resource.data) || request.resource.data.direcciones.size() <= 10)
+        && (!('favoritos' in request.resource.data) || request.resource.data.favoritos.size() <= 200);
+    }
+
+    // Pedido: lo crea el cliente a su nombre y siempre empieza en "recibido". Solo el administrador lo avanza.
+    // Los totales vienen del navegador: la tienda los confirma por WhatsApp antes de cobrar.
+    match /pedidos/{id} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.estado == 'recibido'
+        && request.resource.data.keys().hasOnly(['uid', 'numero', 'estado', 'cliente', 'entrega', 'pago', 'items', 'subtotalCentavos', 'envioCentavos', 'totalCentavos', 'creadoEn'])
+        && request.resource.data.items.size() > 0 && request.resource.data.items.size() <= 50
+        && request.resource.data.creadoEn == request.time;
+      allow read: if request.auth != null && (resource.data.uid == request.auth.uid || esAdmin());
+      allow update: if esAdmin();
+      allow delete: if false;
     }
   }
 }

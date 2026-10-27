@@ -1,0 +1,1 @@
+import{H as e}from"./react-1ANRH0H5.js";import{C as t,S as n,h as r}from"./index.esm-dZf1nT9e.js";t(`firebase`,`13.1.0`,`app`);var i=e({app:()=>a,db:()=>o}),a=n({apiKey:`AIzaSyBbWsaGsFHi1DHxfBw0ZXoomafgeOJbZrs`,authDomain:`kirie-technology.firebaseapp.com`,projectId:`kirie-technology`,appId:`1:195645976234:web:0b73c8718bf7d771b6aad3`}),o=r(a);export{o as n,i as r,a as t};

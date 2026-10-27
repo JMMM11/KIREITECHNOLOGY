@@ -1,0 +1,32 @@
+.carrusel { --visibles: 2.15; --hueco: 12px; }
+@media (min-width: 640px) { .carrusel { --visibles: 3.2; } }
+@media (min-width: 900px) { .carrusel { --visibles: 4; --hueco: 20px; } }
+@media (min-width: 1200px) { .carrusel { --visibles: 5; } }
+
+.cabecera { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 20px; }
+.controles { display: flex; align-items: center; gap: 8px; }
+.controles > :first-child:not(.flecha) { margin-right: 8px; }
+.flecha {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid var(--borde-fuerte); background: var(--superficie); color: var(--texto);
+  transition: background-color var(--dur) var(--ease-salida), color var(--dur) var(--ease-salida), transform var(--dur-corta) var(--ease-salida);
+}
+.flecha:active:not(:disabled) { transform: scale(0.94); }
+.flecha:disabled { opacity: 0.35; cursor: default; }
+
+/* Desplazamiento nativo con imán: el dedo manda en el teléfono y no hay JS por cada píxel. */
+.pista {
+  list-style: none; display: grid; grid-auto-flow: column; gap: var(--hueco);
+  grid-auto-columns: calc((100% - var(--hueco) * (var(--visibles) - 1)) / var(--visibles));
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none; padding-block: 4px 8px;
+  /* El foco de las tarjetas no se recorta en los bordes. */
+  margin-inline: -4px; padding-inline: 4px; scroll-padding-inline: 4px;
+}
+.pista::-webkit-scrollbar { display: none; }
+.diapositiva { display: grid; scroll-snap-align: start; min-width: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+  .flecha:hover:not(:disabled) { background: var(--marca); border-color: var(--marca); color: var(--marca-texto); }
+}
+@media (prefers-reduced-motion: reduce) { .pista { scroll-behavior: auto; } }

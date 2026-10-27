@@ -1,0 +1,18 @@
+.favorito {
+  position: absolute; z-index: 2; top: 8px; right: 8px;
+  display: grid; place-items: center; width: 40px; height: 40px; padding: 0;
+  border: 1px solid var(--borde); border-radius: 50%; background: var(--superficie); color: var(--marca);
+  transition: transform var(--dur-corta) var(--ease-salida), border-color var(--dur) var(--ease-salida);
+}
+.conTexto {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 4px;
+  border: 0; background: none; color: var(--marca); font-weight: 600; font-size: var(--t-chico);
+}
+.favorito:active, .conTexto:active { transform: scale(0.92); }
+.favorito:disabled, .conTexto:disabled { opacity: 0.5; cursor: default; }
+.corazon { display: grid; }
+.corazon[data-activo="true"] { color: var(--favorito); }
+@media (hover: hover) and (pointer: fine) {
+  .favorito:hover { border-color: var(--marca); }
+  .conTexto:hover { text-decoration: underline; text-underline-offset: 4px; }
+}

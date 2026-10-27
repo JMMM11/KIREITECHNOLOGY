@@ -1,7 +1,21 @@
 .rejilla { list-style: none; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-.tarjeta { display: grid; gap: 10px; padding-bottom: 12px; }
-.foto, .linea { display: block; border-radius: var(--radio-detalle); background: var(--superficie-2); animation: pulso 1.4s ease-in-out infinite; }
+.tarjeta { display: grid; gap: 10px; padding-bottom: 12px; align-content: start; }
+/* Brillo que cruza de izquierda a derecha: indica carga sin parpadear. */
+.foto, .linea {
+  display: block; border-radius: var(--radio-detalle);
+  background: linear-gradient(100deg, var(--superficie-2) 40%, #F7F5F1 50%, var(--superficie-2) 60%) 0 0 / 300% 100%;
+  animation: brillo 1.6s linear infinite;
+}
 .foto { aspect-ratio: 1; border-radius: var(--radio-tarjeta); }
 .linea { height: 14px; }
 .corta { width: 50%; }
-@keyframes pulso { 50% { opacity: 0.55; } }
+
+.producto { display: grid; gap: 32px; padding-block: 24px 64px; }
+.productoInfo { display: grid; gap: 16px; align-content: start; }
+.titulo { height: 36px; width: 85%; }
+.precio { height: 28px; width: 30%; }
+.boton { height: 52px; border-radius: var(--radio-control); margin-top: 12px; }
+@media (min-width: 900px) { .producto { grid-template-columns: 1.1fr 1fr; gap: 56px; padding-top: 40px; } }
+
+@keyframes brillo { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+@media (prefers-reduced-motion: reduce) { .foto, .linea { animation: none; } }
