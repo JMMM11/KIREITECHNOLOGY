@@ -18,7 +18,7 @@ const TEXTO = [
   ['accion-texto', 'accion'], ['accion-texto', 'accion-hover'],
   ['marca-texto', 'marca'], ['marca-texto', 'marca-hover'],
   ['error', 'error-bg'], ['error', 'superficie'], ['efectivo-fg', 'efectivo-bg'],
-  ...['nuevo', 'oferta', 'ultimas', 'agotado', 'recibido', 'confirmado', 'enviado', 'entregado', 'ejemplo'].map((e) => [`e-${e}-fg`, `e-${e}-bg`]),
+  ...['nuevo', 'oferta', 'ultimas', 'agotado', 'recibido', 'confirmado', 'enviado', 'entregado', 'cancelado', 'ejemplo'].map((e) => [`e-${e}-fg`, `e-${e}-bg`]),
 ];
 const CONTROLES = [['borde-fuerte', 'bg'], ['borde-fuerte', 'superficie'], ['foco', 'bg'], ['foco', 'superficie']];
 

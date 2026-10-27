@@ -1,10 +1,12 @@
-// Solo lo usa el panel /admin: sesión, escritura de productos y subida de fotos.
+// Solo lo usa el panel /admin: sesión, productos, pedidos y subida de fotos.
 import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { app, db } from './firebase.js';
+import { connectAuthEmulator, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { app, conEmulador, db } from './firebase.js';
 import { PRODUCTOS } from '../data/productos.js';
+import { cambiarEstadoPedido, listarPedidos } from './pedidos.js';
 
 const auth = getAuth(app);
+if (conEmulador) connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
 export const vigilarSesion = (fn) => onAuthStateChanged(auth, fn);
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
 export const salir = () => signOut(auth);
@@ -41,3 +43,6 @@ export async function subirFoto(archivo) {
   // f_auto,q_auto: formato y peso livianos según el navegador; c_limit,w_1600: nunca más ancha que 1600px.
   return { src: j.secure_url.replace('/upload/', '/upload/f_auto,q_auto,c_limit,w_1600/'), ancho: j.width, alto: j.height };
 }
+
+export const pedidos = () => listarPedidos(db);
+export const cambiarEstado = (id, estado) => cambiarEstadoPedido(db, id, estado);

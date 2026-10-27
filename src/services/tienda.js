@@ -4,6 +4,7 @@ import { PRODUCTOS } from '../data/productos.js';
 import { CATEGORIAS } from '../data/catalogos.js';
 import { SITIO } from '../data/sitio.js';
 import { ESTADOS_EJEMPLO, PEDIDOS_EJEMPLO } from '../data/productosEjemplo.js';
+import { armarPedido, idPedido, siguienteNumero } from '../lib/pedidos.js';
 
 // El estado lo decide la capa de datos, no el componente.
 export function estadoProducto(p) {
@@ -60,21 +61,16 @@ export async function listarPedidosEjemplo() {
 
 let consecutivo = 1000;
 
-// Hoy el pedido vive solo en esta sesión. Con backend: guardar en Firestore "pedidos" y que el servidor
-// recalcule precios y totales; nunca confiar en los del navegador.
-export async function crearPedido({ cliente, entrega, pago, items, totales }) {
-  if (!items?.length) throw new Error('El pedido no tiene productos.');
-  consecutivo += 1;
-  return {
-    id: `KT-${consecutivo}`,
-    estado: 'recibido',
-    creadoEn: new Date().toISOString(),
-    cliente, entrega, pago, items,
-    subtotalCentavos: totales.subtotal,
-    envioCentavos: totales.envio ?? 0,
-    totalCentavos: totales.total,
-    local: true,
-  };
+// Con Firebase el pedido queda en la colección "pedidos" con un número que no se repite (services/pedidos.js).
+// Pendiente: que un servidor recalcule precios y totales; las reglas solo revisan que cuadren entre sí.
+export async function crearPedido(entrada) {
+  const datos = armarPedido(entrada);
+  if (!conFirebase) {
+    consecutivo = siguienteNumero(consecutivo);
+    return { ...datos, id: idPedido(consecutivo), numero: consecutivo, creadoEn: new Date().toISOString(), local: true };
+  }
+  const [{ db }, { guardarPedido }] = await Promise.all([import('./firebase.js'), import('./pedidos.js')]);
+  return guardarPedido(db, datos);
 }
 
 // Igual que los pedidos: hoy queda en la sesión; luego irá a la colección "citas".

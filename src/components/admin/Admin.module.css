@@ -45,3 +45,15 @@
   .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .variante { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; }
 }
+
+.pestanas { display: flex; gap: 4px; }
+.pestana { min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: none; font: inherit; font-size: var(--t-chico); font-weight: 600; color: var(--texto-suave); cursor: pointer; }
+.pestana[aria-current='page'] { background: var(--superficie-2); color: var(--texto); }
+
+.pedido + .pedido { border-top: 1px solid var(--borde); }
+.pedido summary { cursor: pointer; list-style: none; }
+.pedido summary::-webkit-details-marker { display: none; }
+.detallePedido { display: grid; gap: 8px; justify-items: start; padding: 4px 14px 16px; }
+.items { padding-left: 18px; font-size: var(--t-chico); }
+.cambioEstado { display: flex; align-items: center; gap: 8px; font-size: var(--t-chico); font-weight: 600; }
+.cambioEstado select { min-height: 40px; padding: 0 10px; border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-detalle); background: var(--superficie); font: inherit; color: var(--texto); }

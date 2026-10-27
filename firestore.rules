@@ -1,15 +1,79 @@
 rules_version = '2';
 
 // Cualquiera lee los productos publicados; solo el administrador lee borradores y escribe.
+// Los clientes crean pedidos pero no pueden leerlos ni cambiarlos; el administrador los lee y cambia su estado.
 // UID del administrador: Firebase > Authentication > Users.
+// Pruebas: npm run test:reglas (tests/reglas/).
 service cloud.firestore {
   match /databases/{database}/documents {
     function esAdmin() {
       return request.auth != null && request.auth.uid == 'SiAnST1DF5RATL2pq75ehocMwD73';
     }
+    function rutaContador() {
+      return /databases/$(database)/documents/contadores/pedidos;
+    }
+    function rutaPedido(numero) {
+      return /databases/$(database)/documents/pedidos/$('KT-' + string(numero));
+    }
+    function texto(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+    function centavos(v) {
+      return v is int && v >= 0;
+    }
+
     match /productos/{id} {
       allow read: if resource.data.estado == 'publicado' || esAdmin();
       allow write: if esAdmin();
+    }
+
+    // Número de pedido que no se reinicia. Solo sube de uno en uno y solo junto con el pedido que numera
+    // (misma transacción, ver crearPedido en src/services/tienda.js).
+    match /contadores/pedidos {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['ultimo'])
+        && request.resource.data.ultimo == 1001
+        && existsAfter(rutaPedido(1001));
+      allow update: if request.resource.data.keys().hasOnly(['ultimo'])
+        && request.resource.data.ultimo == resource.data.ultimo + 1
+        && existsAfter(rutaPedido(request.resource.data.ultimo));
+    }
+
+    // La forma debe coincidir con armarPedido (src/lib/pedidos.js).
+    function clienteValido(c) {
+      return c is map
+        && c.keys().hasAll(['nombre', 'telefono', 'correo', 'direccion'])
+        && c.keys().hasOnly(['nombre', 'telefono', 'correo', 'direccion'])
+        && texto(c.nombre, 2, 80) && texto(c.telefono, 7, 20) && texto(c.correo, 0, 120) && texto(c.direccion, 0, 300);
+    }
+    function pedidoValido(id, d) {
+      return d.keys().hasAll(['numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
+          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
+        && d.keys().hasOnly(['numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
+          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
+        && d.numero == getAfter(rutaContador()).data.ultimo
+        && id == 'KT-' + string(d.numero)
+        && d.estado == 'recibido'
+        && d.creadoEn == request.time
+        && clienteValido(d.cliente)
+        && d.entrega in ['retiro', 'punto_encuentro', 'domicilio']
+        && d.pago in ['linea', 'contra_entrega']
+        && (d.entrega == 'domicilio' ? d.cliente.direccion.size() >= 1 : d.cliente.direccion == '')
+        && texto(d.nota, 0, 500)
+        && d.items is list && d.items.size() >= 1 && d.items.size() <= 30
+        && centavos(d.subtotalCentavos) && d.subtotalCentavos > 0
+        && (d.envioCentavos == null || centavos(d.envioCentavos))
+        && centavos(d.cargoContraEntregaCentavos)
+        && d.totalCentavos == d.subtotalCentavos + (d.envioCentavos == null ? 0 : d.envioCentavos) + d.cargoContraEntregaCentavos;
+    }
+
+    match /pedidos/{id} {
+      allow read: if esAdmin();
+      allow create: if pedidoValido(id, request.resource.data);
+      allow update: if esAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado', 'actualizadoEn'])
+        && request.resource.data.estado in ['recibido', 'confirmado', 'enviado', 'entregado', 'cancelado']
+        && request.resource.data.actualizadoEn == request.time;
     }
   }
 }

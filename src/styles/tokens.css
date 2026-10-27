@@ -33,6 +33,7 @@
   --e-confirmado-fg: #0B4F8A; --e-confirmado-bg: #E3EEF8;
   --e-enviado-fg: #5B3591;   --e-enviado-bg: #EFE7F8;
   --e-entregado-fg: #FFFFFF; --e-entregado-bg: #1E6B3A;
+  --e-cancelado-fg: #8C1D18; --e-cancelado-bg: #FBE3E1;
   /* Pago en efectivo: verde billete */
   --efectivo-fg: #1E6B3A;    --efectivo-bg: #E6F2EA;
   /* Ejemplo */

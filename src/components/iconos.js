@@ -4,7 +4,7 @@ import {
   CheckCircleFill, Truck, InfoCircle, House, HouseFill, Grid, GridFill, Search, Bag, BagFill, ThreeDots,
   ShieldCheck, Shop, CashCoin, Whatsapp, Envelope,
   GeoAlt, Clock, ArrowRight, ArrowLeft, XLg, PlusLg, DashLg, Trash3, ChevronDown, Funnel, Lightning, Sliders,
-  QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2,
+  QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2, XCircle,
 } from 'react-bootstrap-icons';
 
 export const ICONOS_CATEGORIA = {
@@ -24,6 +24,7 @@ export const ICONOS_ESTADO = {
   confirmado: { de: CheckCircle, mov: 'giro', texto: 'Confirmado' },
   enviado: { de: Truck, mov: 'empujar', texto: 'Enviado' },
   entregado: { de: CheckCircleFill, mov: 'giro', texto: 'Entregado', lleno: true },
+  cancelado: { de: XCircle, mov: 'aparecer', texto: 'Cancelado' },
   ejemplo: { de: InfoCircle, mov: 'aparecer', texto: 'Ejemplo' },
 };
 

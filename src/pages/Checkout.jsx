@@ -84,8 +84,8 @@ export default function Checkout() {
       const datos = { ...f, pago };
       const pedido = await crearPedido({
         cliente: { nombre: f.nombre.trim(), telefono: f.telefono.trim(), correo: f.correo.trim(), direccion: f.entrega === 'domicilio' ? f.direccion.trim() : '' },
-        entrega: f.entrega, pago,
-        items: lineas.map((l) => ({ productoId: l.productoId, nombre: l.nombre, precioCentavos: l.precio, cantidad: l.cantidad })),
+        entrega: f.entrega, pago, nota: f.nota,
+        items: lineas.map((l) => ({ productoId: l.productoId, nombre: l.nombre, varianteNombre: l.varianteNombre, precioCentavos: l.precio, cantidad: l.cantidad })),
         totales: t,
       });
       const enlace = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(mensajeWhatsApp(pedido, lineas, t, datos))}`;

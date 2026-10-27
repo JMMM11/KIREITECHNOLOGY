@@ -1,14 +1,16 @@
 # Kirei Technology
 
 Tienda en línea de Kirei Technology (Panamá). React 19 + Vite, rutas con `#`, animaciones con Motion.
-Todavía no hay base de datos: todo sale de `src/data/` a través de `src/services/tienda.js`.
+Con Firebase configurado (`.env.local`, ver `.env.example`) los productos y pedidos viven en Firestore; sin él, todo sale de `src/data/`.
+La puerta a los datos es `src/services/tienda.js`.
 
 ## Uso diario
 
 ```
 npm install        # una sola vez
 npm run dev        # servidor de desarrollo con recarga
-npm test           # pruebas de precios, totales, validación, datos y contraste
+npm test           # pruebas de precios, totales, validación, datos, pedidos y contraste
+npm run test:reglas  # prueba firestore.rules en el emulador (necesita Java)
 npm run build      # compila la web en la raíz del repo
 ```
 
@@ -40,8 +42,15 @@ Si borras o renombras un archivo de `public/`, bórralo también de la raíz: el
 - `estado: 'borrador'` oculta el producto. La Zona Anime muestra "Próximamente" hasta que publiques uno.
 - `SITIO.vistaPrevia = true` muestra estados de ejemplo (marcados "Ejemplo"). Ponlo en `false` al lanzar.
 
-## Cómo funciona un pedido hoy
+## Cómo funciona un pedido
 
-El carrito se guarda en el navegador. En el checkout se arma el pedido y se abre WhatsApp con el mensaje.
-No se guardan datos personales ni de pago. Yappy se conecta cuando exista la cuenta de comercio.
-Cuando se conecte Firebase, `src/services/tienda.js` guardará pedidos y citas, y el servidor recalculará los totales.
+El carrito se guarda en el navegador. Al enviar el checkout, el pedido se guarda en Firestore (colección `pedidos`)
+con un número que no se repite (`KT-1001`, `KT-1002`...; el contador está en `contadores/pedidos`) y luego se abre
+WhatsApp con el mensaje. Sin Firebase, el número solo dura la sesión.
+
+- Los clientes pueden crear pedidos pero no leerlos ni cambiarlos. Solo el administrador los ve en `/admin > Pedidos`
+  y cambia su estado: recibido, confirmado, enviado, entregado o cancelado.
+- Al cambiar `firestore.rules`, publícalas: `npx firebase-tools deploy --only firestore:rules`.
+- No se guardan datos de pago. Yappy se conecta cuando exista la cuenta de comercio.
+- Pendiente: que un servidor recalcule precios y totales. Hoy las reglas revisan que los totales cuadren entre sí,
+  pero los precios vienen del navegador; confírmalos por WhatsApp antes de cobrar.
