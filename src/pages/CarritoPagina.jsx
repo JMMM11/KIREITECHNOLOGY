@@ -25,7 +25,7 @@ export default function CarritoPagina() {
           </>
         )}
       </div>
-      {lineas.length === 0 && <div className="contenedor"><SugerenciasCarrito /></div>}
+      <div className="contenedor"><SugerenciasCarrito /></div>
     </>
   );
 }
