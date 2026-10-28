@@ -22,6 +22,10 @@
 }
 .aviso { padding: 12px 14px; border-radius: var(--radio-detalle); background: var(--superficie-2); font-size: var(--t-chico); }
 .listo { display: flex; align-items: center; gap: 6px; font-size: var(--t-chico); font-weight: 600; color: var(--efectivo-fg); }
+.socialSep { display: flex; align-items: center; gap: 12px; color: var(--texto-suave); font-size: var(--t-chico); }
+.socialSep::before, .socialSep::after { content: ''; flex: 1; height: 1px; background: var(--borde); }
+.socialBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.socialBtn { display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; }
 @media (min-width: 900px) {
   .acceso { grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: center; padding-block: 64px 112px; }
   .accesoCaja { padding: 32px; }

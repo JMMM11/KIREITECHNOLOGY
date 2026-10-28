@@ -1,8 +1,9 @@
 // Cuentas de clientes: sesión, perfil, favoritos, direcciones y pedidos. Se carga solo cuando hace falta.
 // Cada cliente solo puede leer y escribir lo suyo: lo exigen las reglas de firestore.rules, no esta pantalla.
 import {
-  EmailAuthProvider, createUserWithEmailAndPassword, deleteUser, getAuth, onAuthStateChanged,
-  reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword, updateProfile,
+  EmailAuthProvider, GoogleAuthProvider, OAuthProvider, createUserWithEmailAndPassword, deleteUser,
+  getAuth, onAuthStateChanged, reauthenticateWithCredential, sendPasswordResetEmail,
+  signInWithEmailAndPassword, signInWithPopup, signOut, updatePassword, updateProfile,
 } from 'firebase/auth';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { app, db } from './firebase.js';
@@ -15,6 +16,25 @@ export const actual = () => auth.currentUser;
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
 export const salir = () => signOut(auth);
 export const recuperar = (correo) => sendPasswordResetEmail(auth, correo);
+
+// Crea el perfil si es la primera vez que entra con este proveedor.
+async function perfilSiNuevo(user) {
+  const ref = perfilRef(user.uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) await setDoc(ref, { nombre: user.displayName ?? '', telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+}
+
+export async function entrarGoogle() {
+  const { user } = await signInWithPopup(auth, new GoogleAuthProvider());
+  await perfilSiNuevo(user);
+}
+
+export async function entrarApple() {
+  const provider = new OAuthProvider('apple.com');
+  provider.addScope('name');
+  const { user } = await signInWithPopup(auth, provider);
+  await perfilSiNuevo(user);
+}
 
 export async function registrar({ nombre, correo, clave }) {
   const { user } = await createUserWithEmailAndPassword(auth, correo, clave);
