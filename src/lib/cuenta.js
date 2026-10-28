@@ -24,9 +24,6 @@ export function fechaCorta(ts) {
   return d ? new Intl.DateTimeFormat('es-PA', { day: 'numeric', month: 'short', year: 'numeric' }).format(d) : 'Hace un momento';
 }
 
-// Número legible para WhatsApp y para el cliente, sin datos personales.
-export const numeroPedido = (ahora = Date.now()) => `KT-${ahora.toString(36).slice(-6).toUpperCase()}`;
-
 // Recibido → confirmado → enviado → entregado. Cancelado corta la línea.
 export const PASOS_PEDIDO = ['recibido', 'confirmado', 'enviado', 'entregado'];
 export const pasoPedido = (estado) => PASOS_PEDIDO.indexOf(estado);

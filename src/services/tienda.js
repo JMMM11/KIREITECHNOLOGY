@@ -4,7 +4,7 @@ import { PRODUCTOS } from '../data/productos.js';
 import { CATEGORIAS } from '../data/catalogos.js';
 import { SITIO } from '../data/sitio.js';
 import { ESTADOS_EJEMPLO, PEDIDOS_EJEMPLO } from '../data/productosEjemplo.js';
-import { numeroPedido } from '../lib/cuenta.js';
+import { armarPedido, idPedido, siguienteNumero } from '../lib/pedidos.js';
 
 // El estado lo decide la capa de datos, no el componente.
 export function estadoProducto(p) {
@@ -58,24 +58,19 @@ export async function listarPedidosEjemplo() {
   return SITIO.vistaPrevia ? PEDIDOS_EJEMPLO : [];
 }
 
-// Con sesión, el pedido se guarda en Firestore "pedidos" y aparece en Mis pedidos. Sin sesión vive solo en esta visita.
-// Los totales vienen del navegador: la tienda los confirma por WhatsApp antes de cobrar.
-export async function crearPedido({ uid, cliente, entrega, pago, items, totales }) {
-  if (!items?.length) throw new Error('El pedido no tiene productos.');
-  const pedido = {
-    numero: numeroPedido(),
-    estado: 'recibido',
-    cliente, entrega, pago, items,
-    subtotalCentavos: totales.subtotal,
-    envioCentavos: totales.envio ?? 0,
-    totalCentavos: totales.total,
-  };
-  const creadoEn = new Date().toISOString();
-  if (uid && conFirebase) {
-    const docId = await (await import('./cuenta.js')).guardarPedido({ ...pedido, uid });
-    return { ...pedido, id: pedido.numero, docId, creadoEn };
+let consecutivo = 1000;
+
+// Con Firebase todo pedido queda en la colección "pedidos" con un número que no se repite (services/pedidos.js).
+// Con sesión lleva el uid del cliente y aparece en Mis pedidos.
+// Los totales vienen del navegador: las reglas solo revisan que cuadren y la tienda los confirma por WhatsApp.
+export async function crearPedido(entrada) {
+  const datos = armarPedido(entrada);
+  if (!conFirebase) {
+    consecutivo = siguienteNumero(consecutivo);
+    return { ...datos, id: idPedido(consecutivo), numero: consecutivo, creadoEn: new Date().toISOString(), local: true };
   }
-  return { ...pedido, id: pedido.numero, creadoEn, local: true };
+  const [{ db }, { guardarPedido }] = await Promise.all([import('./firebase.js'), import('./pedidos.js')]);
+  return guardarPedido(db, datos);
 }
 
 // Igual que los pedidos: hoy queda en la sesión; luego irá a la colección "citas".

@@ -6,6 +6,7 @@ import Icono from '../ui/Icono.jsx';
 import { ICONOS, ICONOS_ESTADO } from '../iconos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { PASOS_PEDIDO, fechaCorta, pasoPedido } from '../../lib/cuenta.js';
+import { etiquetaPedido } from '../../lib/pedidos.js';
 import { useCuenta } from '../../context/CuentaContext.jsx';
 import { useCarrito } from '../../context/CarritoContext.jsx';
 import { SITIO } from '../../data/sitio.js';
@@ -70,7 +71,7 @@ export default function Pedidos({ id }) {
         <li key={p.id} className={s.pedido}>
           <div className={s.pedidoCabeza}>
             <div>
-              <p className={s.pedidoNumero}>Pedido {p.numero}</p>
+              <p className={s.pedidoNumero}>Pedido {etiquetaPedido(p)}</p>
               <p className="suave chico">{fechaCorta(p.creadoEn)} · {formatoPrecio(p.totalCentavos)}</p>
             </div>
             <Badge estado={p.estado} />
@@ -109,7 +110,7 @@ function DetallePedido({ pedido: p }) {
       </Link>
       <div className={s.pedidoCabeza}>
         <div>
-          <h2 className={s.seccionTitulo}>Pedido {p.numero}</h2>
+          <h2 className={s.seccionTitulo}>Pedido {etiquetaPedido(p)}</h2>
           <p className="suave chico">Hecho el {fechaCorta(p.creadoEn)}</p>
         </div>
         <Badge estado={p.estado} />
@@ -141,14 +142,15 @@ function DetallePedido({ pedido: p }) {
 
       <dl className={s.totales}>
         <div><dt>Subtotal</dt><dd>{formatoPrecio(p.subtotalCentavos)}</dd></div>
-        <div><dt>Entrega: {ENTREGA[p.entrega] ?? p.entrega}</dt><dd>{formatoPrecio(p.envioCentavos)}</dd></div>
+        <div><dt>Entrega: {ENTREGA[p.entrega] ?? p.entrega}</dt><dd>{p.envioCentavos == null ? 'Por confirmar' : formatoPrecio(p.envioCentavos)}</dd></div>
+        {p.cargoContraEntregaCentavos > 0 && <div><dt>Cargo contra entrega</dt><dd>{formatoPrecio(p.cargoContraEntregaCentavos)}</dd></div>}
         <div><dt>Pago</dt><dd>{PAGO[p.pago] ?? p.pago}</dd></div>
         <div className={s.total}><dt>Total</dt><dd>{formatoPrecio(p.totalCentavos)}</dd></div>
       </dl>
 
       <div className={s.acciones}>
         <button type="button" className="btn btn-accion" onClick={comprarOtraVez}>Comprar otra vez</button>
-        <a className="btn btn-fantasma" href={`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, tengo una consulta sobre mi pedido ${p.numero}.`)}`} target="_blank" rel="noopener noreferrer">
+        <a className="btn btn-fantasma" href={`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, tengo una consulta sobre mi pedido ${etiquetaPedido(p)}.`)}`} target="_blank" rel="noopener noreferrer">
           Preguntar por WhatsApp
         </a>
       </div>

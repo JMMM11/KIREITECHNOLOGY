@@ -1,10 +1,11 @@
-// Solo lo usa el panel /admin: sesión, escritura de productos y subida de fotos.
-import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { app, db } from './firebase.js';
+// Solo lo usa el panel /admin: sesión, productos, pedidos y subida de fotos.
+import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { db } from './firebase.js';
+import { auth } from './auth.js';
 import { PRODUCTOS } from '../data/productos.js';
+import { actualizarPedido, listarPedidos } from './pedidos.js';
 
-const auth = getAuth(app);
 export const vigilarSesion = (fn) => onAuthStateChanged(auth, fn);
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
 export const salir = () => signOut(auth);
@@ -27,14 +28,6 @@ export async function importarLocales() {
   await lote.commit();
 }
 
-// Pedidos de clientes con cuenta. El administrador cambia el estado y deja una nota de seguimiento.
-export async function todosLosPedidos() {
-  const snap = await getDocs(collection(db, 'pedidos'));
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.creadoEn?.seconds ?? 0) - (a.creadoEn?.seconds ?? 0));
-}
-export const actualizarPedido = (id, { estado, seguimiento }) =>
-  updateDoc(doc(db, 'pedidos', id), { estado, seguimiento, actualizadoEn: serverTimestamp() });
-
 // Subida sin firma: el preset público de Cloudinary limita formato, tamaño y carpeta. La clave secreta nunca va aquí.
 export async function subirFoto(archivo) {
   const nube = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -49,3 +42,6 @@ export async function subirFoto(archivo) {
   // f_auto,q_auto: formato y peso livianos según el navegador; c_limit,w_1600: nunca más ancha que 1600px.
   return { src: j.secure_url.replace('/upload/', '/upload/f_auto,q_auto,c_limit,w_1600/'), ancho: j.width, alto: j.height };
 }
+
+export const pedidos = () => listarPedidos(db);
+export const actualizar = (id, cambios) => actualizarPedido(db, id, cambios);

@@ -2,13 +2,13 @@
 // Cada cliente solo puede leer y escribir lo suyo: lo exigen las reglas de firestore.rules, no esta pantalla.
 import {
   EmailAuthProvider, GoogleAuthProvider, OAuthProvider, createUserWithEmailAndPassword, deleteUser,
-  getAuth, onAuthStateChanged, reauthenticateWithCredential, sendPasswordResetEmail,
+  onAuthStateChanged, reauthenticateWithCredential, sendPasswordResetEmail,
   signInWithEmailAndPassword, signInWithPopup, signOut, updatePassword, updateProfile,
 } from 'firebase/auth';
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
-import { app, db } from './firebase.js';
+import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
+import { db } from './firebase.js';
+import { auth } from './auth.js';
 
-const auth = getAuth(app);
 const perfilRef = (uid) => doc(db, 'usuarios', uid);
 
 export const vigilar = (fn) => onAuthStateChanged(auth, fn);
@@ -66,11 +66,6 @@ export async function borrarCuenta(clave) {
   const u = await reautenticar(clave);
   await deleteDoc(perfilRef(u.uid));
   await deleteUser(u);
-}
-
-export async function guardarPedido(pedido) {
-  const ref = await addDoc(collection(db, 'pedidos'), { ...pedido, creadoEn: serverTimestamp() });
-  return ref.id;
 }
 
 // Sin orderBy en la consulta: así no hace falta un índice compuesto. Se ordena aquí.

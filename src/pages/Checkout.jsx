@@ -100,7 +100,7 @@ export default function Checkout() {
       const pedido = await crearPedido({
         uid: usuario?.uid,
         cliente: { nombre: f.nombre.trim(), telefono: f.telefono.trim(), correo: f.correo.trim(), direccion: f.entrega === 'domicilio' ? f.direccion.trim() : '' },
-        entrega: f.entrega, pago,
+        entrega: f.entrega, pago, nota: f.nota,
         items: lineas.map((l) => ({ productoId: l.productoId, variante: l.variante, varianteNombre: l.varianteNombre, nombre: l.nombre, precioCentavos: l.precio, cantidad: l.cantidad, foto: l.foto ?? null })),
         totales: t,
       });
