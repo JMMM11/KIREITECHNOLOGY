@@ -36,11 +36,10 @@ function publicadosNube() {
 const publicados = (vistaPrevia) => PRODUCTOS.filter((p) => p.estado === 'publicado').map((p) => preparar(p, vistaPrevia));
 const categoriasVisibles = () => CATEGORIAS.filter((c) => c.visible).sort((a, b) => a.orden - b.orden);
 
-// Datos disponibles al instante mientras son locales, para que la primera vista salga completa.
-// Con backend devolverá null y la interfaz mostrará esqueletos.
+// Lo que se puede mostrar al instante. Las categorías son locales; los productos de Firebase llegan después
+// (productos: null) y mientras tanto la interfaz muestra esqueletos.
 export function datosIniciales() {
-  if (conFirebase) return null;
-  return { productos: publicados(SITIO.vistaPrevia), categorias: categoriasVisibles() };
+  return { productos: conFirebase ? null : publicados(SITIO.vistaPrevia), categorias: categoriasVisibles() };
 }
 
 export async function listarProductos() {
@@ -61,8 +60,9 @@ export async function listarPedidosEjemplo() {
 
 let consecutivo = 1000;
 
-// Con Firebase el pedido queda en la colección "pedidos" con un número que no se repite (services/pedidos.js).
-// Pendiente: que un servidor recalcule precios y totales; las reglas solo revisan que cuadren entre sí.
+// Con Firebase todo pedido queda en la colección "pedidos" con un número que no se repite (services/pedidos.js).
+// Con sesión lleva el uid del cliente y aparece en Mis pedidos.
+// Los totales vienen del navegador: las reglas solo revisan que cuadren y la tienda los confirma por WhatsApp.
 export async function crearPedido(entrada) {
   const datos = armarPedido(entrada);
   if (!conFirebase) {

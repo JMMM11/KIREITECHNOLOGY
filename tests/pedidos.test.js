@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { ESTADOS_PEDIDO, armarPedido, fechaPedido, idPedido, siguienteNumero } from '../src/lib/pedidos.js';
+import { ESTADOS_PEDIDO, armarPedido, etiquetaPedido, idPedido, siguienteNumero } from '../src/lib/pedidos.js';
 import { crearPedido } from '../src/services/tienda.js';
 
 const ENTRADA = {
@@ -26,7 +26,8 @@ test('armarPedido deja la forma que exigen las reglas', () => {
   assert.equal(p.items[0].varianteNombre, '');
   assert.equal(p.totalCentavos, 4000);
   assert.ok(!JSON.stringify(p).includes('undefined'));
-  assert.deepEqual(Object.keys(p).sort(), ['cargoContraEntregaCentavos', 'cliente', 'entrega', 'envioCentavos', 'estado', 'items', 'nota', 'pago', 'subtotalCentavos', 'totalCentavos']);
+  assert.deepEqual(Object.keys(p).sort(), ['cargoContraEntregaCentavos', 'cliente', 'entrega', 'envioCentavos', 'estado', 'items', 'nota', 'pago', 'subtotalCentavos', 'totalCentavos', 'uid']);
+  assert.equal(p.uid, null);
 });
 
 test('armarPedido: envío por confirmar queda en null y el total lo calcula él', () => {
@@ -49,10 +50,9 @@ test('sin Firebase el pedido queda en la sesión con número creciente', async (
   assert.equal(a.local, true);
 });
 
-test('fecha del pedido desde Timestamp o texto', () => {
-  assert.equal(fechaPedido({ toDate: () => new Date(0) }).getTime(), 0);
-  assert.equal(fechaPedido('2026-10-27T00:00:00.000Z').getUTCDate(), 27);
-  assert.equal(fechaPedido(null), null);
+test('etiqueta de pedidos nuevos y de los guardados antes del contador', () => {
+  assert.equal(etiquetaPedido({ id: 'KT-1001', numero: 1001 }), 'KT-1001');
+  assert.equal(etiquetaPedido({ id: 'aZ9xq', numero: 'KT-MFX2K1' }), 'KT-MFX2K1');
 });
 
 test('reglas y panel usan los mismos estados de pedido', () => {

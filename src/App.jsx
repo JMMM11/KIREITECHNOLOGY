@@ -15,6 +15,7 @@ const Ayuda = lazy(() => import('./pages/Ayuda.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
 const NoEncontrada = lazy(() => import('./pages/NoEncontrada.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
+const Cuenta = lazy(() => import('./pages/Cuenta.jsx'));
 
 export default function App() {
   const [ubicacion] = useLocation();
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/reparaciones" component={Reparaciones} />
             <Route path="/ayuda/:seccion?" component={Ayuda} />
             <Route path="/legal/:doc?" component={Legal} />
+            <Route path="/cuenta/:seccion?/:id?" component={Cuenta} />
             <Route component={NoEncontrada} />
           </Switch>
         </Suspense>

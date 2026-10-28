@@ -31,5 +31,6 @@ export async function listarPedidos(db, maximo = 200) {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
-export const cambiarEstadoPedido = (db, id, estado) =>
-  updateDoc(doc(db, 'pedidos', id), { estado, actualizadoEn: serverTimestamp() });
+// El cliente ve el estado y la nota de seguimiento en Mis pedidos.
+export const actualizarPedido = (db, id, { estado, seguimiento = '' }) =>
+  updateDoc(doc(db, 'pedidos', id), { estado, seguimiento: seguimiento.trim(), actualizadoEn: serverTimestamp() });

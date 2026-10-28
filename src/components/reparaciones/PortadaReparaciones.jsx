@@ -25,7 +25,7 @@ export default function PortadaReparaciones({ onAgendar }) {
           </motion.h1>
           <p className={s.portadaBajada}>Laptops y PCs con Windows. Pantalla, batería, teclado, sistema y limpieza.</p>
           <div className={s.portadaAcciones}>
-            <button type="button" className="btn btn-accion" onClick={onAgendar}>Agendar cita</button>
+            <button type="button" className="btn btn-accion" onClick={onAgendar}>Agenda tu diagnóstico</button>
             <a className={`btn btn-fantasma ${s.fantasmaClaro}`} href={consulta} target="_blank" rel="noopener noreferrer">
               <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={18} /> Preguntar por WhatsApp
             </a>

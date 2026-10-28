@@ -13,7 +13,8 @@ export const idPedido = (numero) => `KT-${numero}`;
 const texto = (v, max) => String(v ?? '').trim().slice(0, max);
 
 // Deja el pedido con la forma exacta que aceptan las reglas: sin undefined, textos recortados, totales coherentes.
-export function armarPedido({ cliente, entrega, pago, items, totales, nota }) {
+// uid: el del cliente con sesión (aparece en Mis pedidos) o null si compra sin cuenta.
+export function armarPedido({ uid, cliente, entrega, pago, items, totales, nota }) {
   if (!items?.length) throw new Error('El pedido no tiene productos.');
   if (items.length > MAX_ITEMS) throw new Error(`Máximo ${MAX_ITEMS} productos distintos por pedido.`);
   if (!ENTREGAS_PEDIDO.includes(entrega)) throw new Error(`Entrega desconocida: ${entrega}`);
@@ -22,6 +23,7 @@ export function armarPedido({ cliente, entrega, pago, items, totales, nota }) {
   const envioCentavos = totales.envio ?? null;
   const cargoContraEntregaCentavos = totales.cargoContraEntrega ?? 0;
   return {
+    uid: uid ?? null,
     estado: 'recibido',
     cliente: {
       nombre: texto(cliente.nombre, 80),
@@ -34,10 +36,12 @@ export function armarPedido({ cliente, entrega, pago, items, totales, nota }) {
     nota: texto(nota, 500),
     items: items.map((i) => ({
       productoId: String(i.productoId),
+      variante: texto(i.variante, 60),
       nombre: texto(i.nombre, 120),
       varianteNombre: texto(i.varianteNombre, 60),
       precioCentavos: i.precioCentavos,
       cantidad: i.cantidad,
+      foto: i.foto ?? null,
     })),
     subtotalCentavos,
     envioCentavos,
@@ -46,5 +50,5 @@ export function armarPedido({ cliente, entrega, pago, items, totales, nota }) {
   };
 }
 
-// Firestore devuelve Timestamp; el pedido local, texto ISO.
-export const fechaPedido = (creadoEn) => (creadoEn?.toDate ? creadoEn.toDate() : creadoEn ? new Date(creadoEn) : null);
+// Pedidos guardados antes del contador traían el número en el campo "numero" como texto (KT-XXXXXX).
+export const etiquetaPedido = (p) => (typeof p.numero === 'string' ? p.numero : p.id);

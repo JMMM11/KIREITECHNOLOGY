@@ -9,6 +9,7 @@ import { SITIO } from '../../data/sitio.js';
 import s from './NavMovil.module.css';
 
 const MAS = [
+  { href: '/cuenta', texto: 'Mi cuenta: pedidos y favoritos', icono: ICONOS.cuenta },
   { href: '/reparaciones', texto: 'Reparaciones', icono: ICONOS.laptop },
   { href: '/ayuda', texto: 'Ayuda: garantía, entregas y pagos', icono: ICONOS.ayuda },
   { href: '/buscar', texto: 'Buscar productos', icono: ICONOS.buscar },

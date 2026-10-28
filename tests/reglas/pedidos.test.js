@@ -2,9 +2,9 @@
 import { after, beforeEach, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { deleteApp, initializeApp } from 'firebase/app';
-import { connectFirestoreEmulator, doc, getDoc, getFirestore, serverTimestamp, setDoc, terminate, updateDoc, writeBatch } from 'firebase/firestore';
+import { collection, connectFirestoreEmulator, doc, getDoc, getDocs, getFirestore, query, serverTimestamp, setDoc, terminate, updateDoc, where, writeBatch } from 'firebase/firestore';
 import { armarPedido } from '../../src/lib/pedidos.js';
-import { cambiarEstadoPedido, guardarPedido, listarPedidos } from '../../src/services/pedidos.js';
+import { actualizarPedido, guardarPedido, listarPedidos } from '../../src/services/pedidos.js';
 
 const PROYECTO = 'demo-kirei';
 const [HOST, PUERTO] = (process.env.FIRESTORE_EMULATOR_HOST ?? '127.0.0.1:8080').split(':');
@@ -61,7 +61,7 @@ test('el cliente no puede leer, cambiar ni borrar pedidos', async () => {
   await guardarPedido(cliente, datos());
   await rechaza(getDoc(doc(cliente, 'pedidos', 'KT-1001')));
   await rechaza(listarPedidos(cliente));
-  await rechaza(cambiarEstadoPedido(cliente, 'KT-1001', 'entregado'));
+  await rechaza(actualizarPedido(cliente, 'KT-1001', { estado: 'entregado' }));
   await rechaza(setDoc(doc(cliente, 'pedidos', 'KT-1001'), { ...datos(), numero: 1001, creadoEn: serverTimestamp() }));
 });
 
@@ -89,13 +89,15 @@ test('se rechazan pedidos con datos inválidos', async () => {
   assert.equal((await getDoc(doc(cliente, 'contadores', 'pedidos'))).exists(), false);
 });
 
-test('el administrador lista pedidos y cambia solo el estado', async () => {
+test('el administrador lista pedidos y cambia solo estado y seguimiento', async () => {
   await guardarPedido(cliente, datos());
   await guardarPedido(cliente, datos());
   assert.deepEqual((await listarPedidos(admin)).map((p) => p.id), ['KT-1002', 'KT-1001']);
-  await cambiarEstadoPedido(admin, 'KT-1001', 'confirmado');
-  assert.equal((await getDoc(doc(admin, 'pedidos', 'KT-1001'))).data().estado, 'confirmado');
-  await rechaza(cambiarEstadoPedido(admin, 'KT-1001', 'perdido'));
+  await actualizarPedido(admin, 'KT-1001', { estado: 'confirmado', seguimiento: ' Sale hoy ' });
+  const guardado = (await getDoc(doc(admin, 'pedidos', 'KT-1001'))).data();
+  assert.equal(guardado.estado, 'confirmado');
+  assert.equal(guardado.seguimiento, 'Sale hoy');
+  await rechaza(actualizarPedido(admin, 'KT-1001', { estado: 'perdido' }));
   await rechaza(updateDoc(doc(admin, 'pedidos', 'KT-1001'), { totalCentavos: 0 }));
 });
 
@@ -103,4 +105,18 @@ test('cinco compras a la vez reciben cinco números distintos', async () => {
   const clientes = [cliente, ...Array.from({ length: 4 }, () => base(null))];
   const ids = (await Promise.all(clientes.map((c) => guardarPedido(c, datos())))).map((p) => p.id).sort();
   assert.deepEqual(ids, ['KT-1001', 'KT-1002', 'KT-1003', 'KT-1004', 'KT-1005']);
+});
+
+test('el cliente con cuenta ve solo sus pedidos; nadie firma pedidos a nombre de otro', async () => {
+  const ana = base('ana');
+  const beto = base('beto');
+  await guardarPedido(ana, datos({ uid: 'ana' }));
+  await guardarPedido(cliente, datos());
+  const mios = (u, uid) => getDocs(query(collection(u, 'pedidos'), where('uid', '==', uid)));
+  assert.deepEqual((await mios(ana, 'ana')).docs.map((d) => d.id), ['KT-1001']);
+  await rechaza(getDoc(doc(beto, 'pedidos', 'KT-1001')));
+  await rechaza(mios(beto, 'ana'));
+  await rechaza(guardarPedido(beto, datos({ uid: 'ana' }), 1));
+  await rechaza(guardarPedido(cliente, datos({ uid: 'ana' }), 1));
+  await rechaza(actualizarPedido(ana, 'KT-1001', { estado: 'entregado' }));
 });

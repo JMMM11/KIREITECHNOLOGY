@@ -41,19 +41,24 @@
 .acciones { display: flex; flex-wrap: wrap; gap: 12px; }
 .peligro { color: var(--error); }
 
+.vistas { display: flex; gap: 4px; }
+.vista {
+  min-height: 44px; padding: 0 14px; border: 0; border-bottom: 2px solid transparent; background: none;
+  font-weight: 600; color: var(--texto-suave);
+}
+.vista[aria-pressed="true"] { color: var(--texto); border-bottom-color: var(--accion); }
+
+.pedidos { list-style: none; display: grid; gap: 12px; }
+.pedido { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); }
+.pedidoCabeza { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.pedidoForm { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.pedidoCampo { display: grid; gap: 6px; flex: 1 1 200px; font-size: var(--t-chico); font-weight: 600; }
+
 @media (min-width: 900px) {
   .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .variante { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; }
 }
 
-.pestanas { display: flex; gap: 4px; }
-.pestana { min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: none; font: inherit; font-size: var(--t-chico); font-weight: 600; color: var(--texto-suave); cursor: pointer; }
-.pestana[aria-current='page'] { background: var(--superficie-2); color: var(--texto); }
-
-.pedido + .pedido { border-top: 1px solid var(--borde); }
-.pedido summary { cursor: pointer; list-style: none; }
-.pedido summary::-webkit-details-marker { display: none; }
-.detallePedido { display: grid; gap: 8px; justify-items: start; padding: 4px 14px 16px; }
+.filtro { display: flex; align-items: center; gap: 8px; font-size: var(--t-chico); font-weight: 600; }
+.filtro select { min-height: 40px; }
 .items { padding-left: 18px; font-size: var(--t-chico); }
-.cambioEstado { display: flex; align-items: center; gap: 8px; font-size: var(--t-chico); font-weight: 600; }
-.cambioEstado select { min-height: 40px; padding: 0 10px; border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-detalle); background: var(--superficie); font: inherit; color: var(--texto); }

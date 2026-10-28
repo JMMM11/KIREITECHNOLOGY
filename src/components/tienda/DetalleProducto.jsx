@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Link } from 'wouter';
 import { AnimatePresence, motion } from 'motion/react';
+import BotonFavorito from './BotonFavorito.jsx';
 import Foto from '../ui/Foto.jsx';
 import Badge from '../ui/Badge.jsx';
 import Icono from '../ui/Icono.jsx';
@@ -65,6 +66,7 @@ export default function DetalleProducto({ producto: p }) {
           </div>
         )}
         <Precio producto={p} grande />
+        <BotonFavorito producto={p} conTexto />
         <p className="suave">{p.descripcion}</p>
 
         {vs.length > 1 && (

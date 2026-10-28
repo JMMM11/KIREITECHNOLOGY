@@ -5,7 +5,7 @@ import Campo from '../ui/Campo.jsx';
 import Foto from '../ui/Foto.jsx';
 import Cargando from '../ui/Cargando.jsx';
 import EditorProducto, { NUEVO } from './EditorProducto.jsx';
-import Pedidos from './Pedidos.jsx';
+import PedidosAdmin from './PedidosAdmin.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { entrar, importarLocales, salir, todosLosProductos, vigilarSesion } from '../../services/admin.js';
@@ -111,7 +111,7 @@ function Productos() {
 // Panel de la tienda: sesión con Firebase Auth. La seguridad real está en firestore.rules, no en esta pantalla.
 export default function PanelAdmin() {
   const [usuario, setUsuario] = useState(undefined);
-  const [vista, setVista] = useState('pedidos');
+  const [vista, setVista] = useState('productos');
   useEffect(() => vigilarSesion(setUsuario), []);
   if (usuario === undefined) return <Cargando />;
   return (
@@ -120,18 +120,17 @@ export default function PanelAdmin() {
         <div className={`contenedor ${s.barraInterior}`}>
           <Logo variante="claro" alto={32} />
           <span className={s.etiqueta}>Administración</span>
-          {usuario && (
-            <nav className={s.pestanas} aria-label="Secciones del panel">
-              {[['pedidos', 'Pedidos'], ['productos', 'Productos']].map(([id, nombre]) => (
-                <button key={id} type="button" className={s.pestana} aria-current={vista === id ? 'page' : undefined} onClick={() => setVista(id)}>{nombre}</button>
-              ))}
-            </nav>
-          )}
           <Link href="/" className={s.verTienda}>Ver tienda</Link>
           {usuario && <button type="button" className="btn btn-fantasma" onClick={salir}>Salir</button>}
         </div>
+        {usuario && (
+          <div className={`contenedor ${s.vistas}`} role="group" aria-label="Sección del panel">
+            <button type="button" className={s.vista} aria-pressed={vista === 'productos'} onClick={() => setVista('productos')}>Productos</button>
+            <button type="button" className={s.vista} aria-pressed={vista === 'pedidos'} onClick={() => setVista('pedidos')}>Pedidos</button>
+          </div>
+        )}
       </header>
-      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <Pedidos /> : <Productos />}</main>
+      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : <Productos />}</main>
     </div>
   );
 }

@@ -1,13 +1,18 @@
 rules_version = '2';
 
-// Cualquiera lee los productos publicados; solo el administrador lee borradores y escribe.
-// Los clientes crean pedidos pero no pueden leerlos ni cambiarlos; el administrador los lee y cambia su estado.
+// Productos: cualquiera lee los publicados; solo el administrador lee borradores y escribe.
+// Usuarios: cada cliente solo ve y cambia su perfil.
+// Pedidos: cualquiera los crea (con o sin cuenta); el cliente con cuenta ve los suyos; el administrador ve todos
+// y cambia el estado y la nota de seguimiento.
 // UID del administrador: Firebase > Authentication > Users.
 // Pruebas: npm run test:reglas (tests/reglas/).
 service cloud.firestore {
   match /databases/{database}/documents {
     function esAdmin() {
       return request.auth != null && request.auth.uid == 'SiAnST1DF5RATL2pq75ehocMwD73';
+    }
+    function esDueno(uid) {
+      return request.auth != null && request.auth.uid == uid;
     }
     function rutaContador() {
       return /databases/$(database)/documents/contadores/pedidos;
@@ -27,8 +32,18 @@ service cloud.firestore {
       allow write: if esAdmin();
     }
 
+    // Perfil del cliente: solo campos conocidos y listas con tope, para que nadie llene la base de datos.
+    match /usuarios/{uid} {
+      allow read, delete: if esDueno(uid);
+      allow create, update: if esDueno(uid)
+        && request.resource.data.keys().hasOnly(['nombre', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
+        && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 80
+        && (!('direcciones' in request.resource.data) || request.resource.data.direcciones.size() <= 10)
+        && (!('favoritos' in request.resource.data) || request.resource.data.favoritos.size() <= 200);
+    }
+
     // Número de pedido que no se reinicia. Solo sube de uno en uno y solo junto con el pedido que numera
-    // (misma transacción, ver crearPedido en src/services/tienda.js).
+    // (misma transacción, ver guardarPedido en src/services/pedidos.js).
     match /contadores/pedidos {
       allow read: if true;
       allow create: if request.resource.data.keys().hasOnly(['ultimo'])
@@ -47,10 +62,11 @@ service cloud.firestore {
         && texto(c.nombre, 2, 80) && texto(c.telefono, 7, 20) && texto(c.correo, 0, 120) && texto(c.direccion, 0, 300);
     }
     function pedidoValido(id, d) {
-      return d.keys().hasAll(['numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
+      return d.keys().hasAll(['uid', 'numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
           'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
-        && d.keys().hasOnly(['numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
+        && d.keys().hasOnly(['uid', 'numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
           'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
+        && (d.uid == null || esDueno(d.uid))
         && d.numero == getAfter(rutaContador()).data.ultimo
         && id == 'KT-' + string(d.numero)
         && d.estado == 'recibido'
@@ -68,12 +84,14 @@ service cloud.firestore {
     }
 
     match /pedidos/{id} {
-      allow read: if esAdmin();
+      allow read: if esAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
       allow create: if pedidoValido(id, request.resource.data);
       allow update: if esAdmin()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado', 'actualizadoEn'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado', 'seguimiento', 'actualizadoEn'])
         && request.resource.data.estado in ['recibido', 'confirmado', 'enviado', 'entregado', 'cancelado']
+        && texto(request.resource.data.get('seguimiento', ''), 0, 300)
         && request.resource.data.actualizadoEn == request.time;
+      allow delete: if false;
     }
   }
 }

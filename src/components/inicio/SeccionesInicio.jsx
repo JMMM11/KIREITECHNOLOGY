@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import Foto from '../ui/Foto.jsx';
+import Parallax from '../ui/Parallax.jsx';
 import MiniaturaCategoria from '../ui/MiniaturaCategoria.jsx';
 import Icono from '../ui/Icono.jsx';
 import { ICONOS } from '../iconos.js';
@@ -11,7 +12,7 @@ import s from './Inicio.module.css';
 
 // Las dos secciones de la tienda, una al lado de la otra.
 export default function SeccionesInicio() {
-  const { productos, categorias, productoPorId } = useDatos();
+  const { productos, categorias, productoPorId, cargando } = useDatos();
   const [tecno, anime] = SECCIONES;
   const subcategorias = categorias.filter((c) => c.seccion === 'tecnologia');
   const cuantos = (seccion) => productos.filter((p) => categorias.find((c) => c.id === p.categoriaId)?.seccion === seccion).length;
@@ -27,7 +28,7 @@ export default function SeccionesInicio() {
           <article className={s.seccionTecno} aria-labelledby="sec-tecno">
             <div className={s.seccionTexto}>
               <h3 id="sec-tecno" className={s.seccionNombre}>{tecno.nombre}</h3>
-              <p className="suave">{tecno.frase}. {cuantos('tecnologia')} productos.</p>
+              <p className="suave">{tecno.frase}.{!cargando && ` ${cuantos('tecnologia')} productos.`}</p>
               <ul className={s.categorias}>
                 {subcategorias.map((c) => (
                   <li key={c.id}>
@@ -40,9 +41,9 @@ export default function SeccionesInicio() {
               </ul>
               <Link href={tecno.ruta} className="btn btn-marca">Ver tecnología</Link>
             </div>
-            <div className={s.seccionEscena}>
+            <Parallax className={s.seccionEscena}>
               {escena && <Foto foto={escena} alt="" sizes="(min-width: 900px) 30vw, 90vw" />}
-            </div>
+            </Parallax>
           </article>
 
           <article className={s.seccionAnime} aria-labelledby="sec-anime">

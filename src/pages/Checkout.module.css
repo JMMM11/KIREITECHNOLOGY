@@ -41,3 +41,5 @@
   .lado { position: sticky; top: 24px; }
   .siguiente { flex: none; }
 }
+
+.cuentaAviso { padding: 12px 14px; border-radius: var(--radio-detalle); background: var(--superficie-2); font-size: var(--t-chico); }

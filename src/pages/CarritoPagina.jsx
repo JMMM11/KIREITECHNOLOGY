@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import CabeceraPagina from '../components/ui/CabeceraPagina.jsx';
 import ResumenPedido from '../components/tienda/ResumenPedido.jsx';
 import { CarritoVacio } from '../components/tienda/Carrito.jsx';
+import SugerenciasCarrito from '../components/tienda/SugerenciasCarrito.jsx';
 import { formatoPrecio } from '../lib/formatoPrecio.js';
 import { useCarrito } from '../context/CarritoContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
@@ -24,6 +25,7 @@ export default function CarritoPagina() {
           </>
         )}
       </div>
+      {lineas.length === 0 && <div className="contenedor"><SugerenciasCarrito /></div>}
     </>
   );
 }

@@ -5,9 +5,11 @@ import { SITIO, TARIFAS } from './sitio.js';
 // Portada: la foto se recoge en una tarjeta al bajar. Los botones se ven desde el primer momento.
 export const HERO = {
   foto: { src: 'Productos/principal.png', ancho: 2560, alto: 1440 },
-  titulo: 'Tecnología que te acompaña todo el día.',
+  titulo: 'Tecnología que te acompaña',
+  // Se escriben una tras otra en la portada; la primera es la que leen los lectores de pantalla.
+  frases: ['todo el día.', 'en cada llamada.', 'en tus partidas.', 'a donde vayas.'],
   texto: `Audífonos, relojes y accesorios con garantía. Retira gratis o recibe en casa por ${formatoPrecio(TARIFAS.envioDomicilio)}.`,
-  principal: { texto: 'Ver tecnología', a: '/tecnologia' },
+  principal: { texto: 'Explorar tecnología', a: '/tecnologia' },
   secundario: { texto: 'Reparaciones', a: '/reparaciones' },
 };
 
@@ -23,7 +25,7 @@ export const INICIO = {
   reparaciones: {
     titulo: '¿Tu computadora falla?',
     texto: 'Diagnóstico, cambio de pantalla, batería o teclado e instalación de Windows.',
-    accion: 'Agendar reparación',
+    accion: 'Agenda tu diagnóstico',
   },
 };
 

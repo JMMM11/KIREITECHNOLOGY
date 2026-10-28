@@ -15,7 +15,7 @@
     linear-gradient(to right, rgba(11, 31, 51, 0.6), transparent 65%);
 }
 .heroTexto { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: 16px; padding-bottom: calc(var(--alto-nav-movil) + 28px); }
-.heroTitulo { font-size: var(--t-hero); line-height: 1.02; letter-spacing: -0.035em; max-width: 13ch; }
+.heroTitulo { font-size: var(--t-hero); font-weight: 600; line-height: 1.04; letter-spacing: -0.04em; max-width: 14ch; }
 .heroBajada { font-size: var(--t-sub); color: #E9ECEF; max-width: 44ch; }
 .heroAcciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
 .heroFantasma { color: #FFFFFF; }
@@ -42,8 +42,7 @@
 .categoriaFoto { transition: transform var(--dur-larga) var(--ease-salida), box-shadow var(--dur-larga) var(--ease-salida); }
 .categoria:active .categoriaFoto { transform: scale(0.96); }
 
-.seccionEscena { position: relative; min-height: 260px; background: var(--superficie-2); }
-.seccionEscena img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.seccionEscena { min-height: 260px; background: var(--superficie-2); }
 .seccionAnime {
   display: grid; gap: 14px; align-content: center; justify-items: start; padding: 28px;
   border-radius: var(--radio-tarjeta); background: var(--marca); color: #FFFFFF; --foco: #FFFFFF;
@@ -61,11 +60,6 @@
   .seccionAnime :global(.btn-fantasma):hover { background: #FFFFFF; border-color: #FFFFFF; color: var(--marca); }
 }
 
-/* Lo más pedido */
-.productos { list-style: none; display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.celda { display: grid; }
-@media (min-width: 900px) { .productos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; } }
-
 /* Garantías */
 .garantias { border-block: 1px solid var(--borde); }
 .garantiasLista { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -80,8 +74,7 @@
   display: grid; gap: 0; overflow: hidden;
   border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie);
 }
-.reparacionesFoto { display: block; aspect-ratio: 16 / 10; }
-.reparacionesFoto img { width: 100%; height: 100%; object-fit: cover; }
+.reparacionesFoto { aspect-ratio: 16 / 10; }
 .reparacionesTexto { display: grid; gap: 14px; justify-items: start; align-content: center; padding: 24px; }
 @media (min-width: 900px) {
   .reparaciones { grid-template-columns: 0.9fr 1.1fr; }

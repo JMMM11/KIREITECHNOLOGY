@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- La tienda usa rutas con # : los buscadores solo indexan la portada. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://kirie-technology-93481.web.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+</urlset>

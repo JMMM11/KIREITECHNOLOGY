@@ -1,12 +1,11 @@
 // Solo lo usa el panel /admin: sesión, productos, pedidos y subida de fotos.
 import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
-import { connectAuthEmulator, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { app, conEmulador, db } from './firebase.js';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { db } from './firebase.js';
+import { auth } from './auth.js';
 import { PRODUCTOS } from '../data/productos.js';
-import { cambiarEstadoPedido, listarPedidos } from './pedidos.js';
+import { actualizarPedido, listarPedidos } from './pedidos.js';
 
-const auth = getAuth(app);
-if (conEmulador) connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
 export const vigilarSesion = (fn) => onAuthStateChanged(auth, fn);
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
 export const salir = () => signOut(auth);
@@ -45,4 +44,4 @@ export async function subirFoto(archivo) {
 }
 
 export const pedidos = () => listarPedidos(db);
-export const cambiarEstado = (id, estado) => cambiarEstadoPedido(db, id, estado);
+export const actualizar = (id, cambios) => actualizarPedido(db, id, cambios);

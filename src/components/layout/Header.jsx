@@ -7,6 +7,8 @@ import { ICONOS } from '../iconos.js';
 import { SITIO, TARIFAS } from '../../data/sitio.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { useCarrito } from '../../context/CarritoContext.jsx';
+import { useCuenta } from '../../context/CuentaContext.jsx';
+import { conFirebase } from '../../services/tienda.js';
 import s from './Header.module.css';
 
 function Buscador() {
@@ -28,6 +30,22 @@ function Buscador() {
   );
 }
 
+// Acceso a la cuenta en dos líneas, como el WhatsApp: saludo arriba, destino abajo.
+function AccesoCuenta() {
+  const { usuario, perfil } = useCuenta();
+  if (!conFirebase) return null;
+  const nombre = perfil?.nombre?.split(' ')[0];
+  return (
+    <Link href="/cuenta" className={`${s.acceso} ${s.cuentaAcceso}`} aria-label={usuario ? `Mi cuenta, ${nombre ?? ''}` : 'Entrar o crear cuenta'}>
+      <Icono de={ICONOS.cuenta.de} mov={ICONOS.cuenta.mov} entrada={false} tam={22} />
+      <span className={s.accesoTexto}>
+        <span className={s.accesoMini}>{usuario ? `Hola, ${nombre || 'cliente'}` : 'Hola, inicia sesión'}</span>
+        <span className={s.accesoFuerte}>Mi cuenta</span>
+      </span>
+    </Link>
+  );
+}
+
 // Dos filas, como las tiendas grandes: arriba logo, buscador y accesos; abajo las secciones.
 // En celular el buscador baja a su propia fila y las secciones viven en la barra inferior.
 export default function Header() {
@@ -44,6 +62,7 @@ export default function Header() {
             <span className={s.accesoFuerte}>{SITIO.telefono}</span>
           </span>
         </a>
+        <AccesoCuenta />
         <button type="button" className={`btn btn-marca ${s.carrito}`} onClick={abrir} aria-haspopup="dialog">
           <Icono de={ICONOS.bolsa.de} mov={ICONOS.bolsa.mov} entrada={false} tam={18} />
           Carrito

@@ -1,0 +1,10 @@
+.pila { display: inline-grid; }
+.reserva, .texto { grid-area: 1 / 1; }
+.reserva { visibility: hidden; }
+.texto { color: var(--accion); }
+.cursor {
+  display: inline-block; width: 0.08em; height: 0.9em; margin-left: 0.06em; vertical-align: -0.08em;
+  background: currentColor; animation: parpadeo 1s steps(1) infinite;
+}
+@keyframes parpadeo { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cursor { display: none; } }

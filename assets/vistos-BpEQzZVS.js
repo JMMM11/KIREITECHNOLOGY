@@ -1,0 +1,1 @@
+var e=`kirei:vistos`;function t(){try{return JSON.parse(localStorage.getItem(e))??[]}catch{return[]}}function n(n){try{localStorage.setItem(e,JSON.stringify([n,...t().filter(e=>e!==n)].slice(0,12)))}catch{}}export{n,t};
