@@ -5,6 +5,7 @@ import { CATEGORIAS } from '../data/catalogos.js';
 import { SITIO } from '../data/sitio.js';
 import { ESTADOS_EJEMPLO, PEDIDOS_EJEMPLO } from '../data/productosEjemplo.js';
 import { armarPedido, idPedido, siguienteNumero } from '../lib/pedidos.js';
+import { datosCita } from '../lib/cita.js';
 
 // El estado lo decide la capa de datos, no el componente.
 export function estadoProducto(p) {
@@ -73,7 +74,11 @@ export async function crearPedido(entrada) {
   return guardarPedido(db, datos);
 }
 
-// Igual que los pedidos: hoy queda en la sesión; luego irá a la colección "citas".
-export async function crearCita(cita) {
-  return { ...cita, id: `CT-${Date.now().toString(36).toUpperCase()}`, estado: 'nueva', creadoEn: new Date().toISOString(), local: true };
+// Con Firebase se guarda en "citas" (las reglas validan los campos y solo el administrador las lee).
+// Sin Firebase queda en la sesión.
+export async function crearCita(f) {
+  const datos = datosCita(f);
+  if (!conFirebase) return { ...datos, id: `CT-${Date.now().toString(36).toUpperCase()}`, creadoEn: new Date().toISOString(), local: true };
+  const [{ db }, { guardarCita }] = await Promise.all([import('./firebase.js'), import('./citas.js')]);
+  return guardarCita(db, datos);
 }

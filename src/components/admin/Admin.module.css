@@ -62,3 +62,4 @@
 .filtro { display: flex; align-items: center; gap: 8px; font-size: var(--t-chico); font-weight: 600; }
 .filtro select { min-height: 40px; }
 .items { padding-left: 18px; font-size: var(--t-chico); }
+.detalle { white-space: pre-line; overflow-wrap: anywhere; }

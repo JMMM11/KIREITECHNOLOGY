@@ -6,6 +6,7 @@ import Foto from '../ui/Foto.jsx';
 import Cargando from '../ui/Cargando.jsx';
 import EditorProducto, { NUEVO } from './EditorProducto.jsx';
 import PedidosAdmin from './PedidosAdmin.jsx';
+import CitasAdmin from './CitasAdmin.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { entrar, importarLocales, salir, todosLosProductos, vigilarSesion } from '../../services/admin.js';
@@ -127,10 +128,11 @@ export default function PanelAdmin() {
           <div className={`contenedor ${s.vistas}`} role="group" aria-label="Sección del panel">
             <button type="button" className={s.vista} aria-pressed={vista === 'productos'} onClick={() => setVista('productos')}>Productos</button>
             <button type="button" className={s.vista} aria-pressed={vista === 'pedidos'} onClick={() => setVista('pedidos')}>Pedidos</button>
+            <button type="button" className={s.vista} aria-pressed={vista === 'citas'} onClick={() => setVista('citas')}>Citas</button>
           </div>
         )}
       </header>
-      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : <Productos />}</main>
+      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : <Productos />}</main>
     </div>
   );
 }

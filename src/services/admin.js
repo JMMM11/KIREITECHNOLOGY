@@ -1,10 +1,11 @@
-// Solo lo usa el panel /admin: sesión, productos, pedidos y subida de fotos.
+// Solo lo usa el panel /admin: sesión, productos, pedidos, citas y subida de fotos.
 import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { db } from './firebase.js';
 import { auth } from './auth.js';
 import { PRODUCTOS } from '../data/productos.js';
 import { actualizarPedido, listarPedidos } from './pedidos.js';
+import { cambiarEstadoCita, listarCitas } from './citas.js';
 
 export const vigilarSesion = (fn) => onAuthStateChanged(auth, fn);
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
@@ -45,3 +46,5 @@ export async function subirFoto(archivo) {
 
 export const pedidos = () => listarPedidos(db);
 export const actualizar = (id, cambios) => actualizarPedido(db, id, cambios);
+export const citas = () => listarCitas(db);
+export const estadoCita = (id, estado) => cambiarEstadoCita(db, id, estado);
