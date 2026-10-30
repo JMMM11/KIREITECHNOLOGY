@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- La tienda usa rutas con # : los buscadores solo indexan la portada. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://kirie-technology-93481.web.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://kirie-technology-93481.web.app/tecnologia</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kirie-technology-93481.web.app/reparaciones</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kirie-technology-93481.web.app/anime</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kirie-technology-93481.web.app/ayuda</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
