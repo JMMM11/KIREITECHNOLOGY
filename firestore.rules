@@ -4,6 +4,7 @@ rules_version = '2';
 // Usuarios: cada cliente solo ve y cambia su perfil.
 // Pedidos: cualquiera los crea (con o sin cuenta); el cliente con cuenta ve los suyos; el administrador ve todos
 // y cambia el estado y la nota de seguimiento.
+// Citas: cualquiera las crea con campos validados; solo el administrador las lee y cambia su estado.
 // UID del administrador: Firebase > Authentication > Users.
 // Pruebas: npm run test:reglas (tests/reglas/).
 service cloud.firestore {
@@ -92,6 +93,26 @@ service cloud.firestore {
         && texto(request.resource.data.get('seguimiento', ''), 0, 300)
         && request.resource.data.actualizadoEn == request.time;
       allow delete: if false;
+    }
+
+    // La forma debe coincidir con datosCita (src/lib/cita.js).
+    function citaValida(c) {
+      return c.keys().hasAll(['nombre', 'telefono', 'dispositivo', 'servicio', 'fechaPreferida', 'detalle', 'estado', 'creadoEn'])
+        && c.keys().hasOnly(['nombre', 'telefono', 'dispositivo', 'servicio', 'fechaPreferida', 'detalle', 'estado', 'creadoEn'])
+        && texto(c.nombre, 2, 80) && texto(c.telefono, 7, 20)
+        && texto(c.dispositivo, 1, 40) && texto(c.servicio, 1, 80)
+        && (c.fechaPreferida == '' || (c.fechaPreferida is string && c.fechaPreferida.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')))
+        && texto(c.detalle, 0, 1000)
+        && c.estado == 'nueva'
+        && c.creadoEn == request.time;
+    }
+
+    match /citas/{id} {
+      allow read, delete: if esAdmin();
+      allow create: if citaValida(request.resource.data);
+      allow update: if esAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado'])
+        && request.resource.data.estado in ['nueva', 'confirmada', 'completada', 'cancelada'];
     }
   }
 }

@@ -68,10 +68,13 @@ export default function Reparaciones() {
 
   const enviar = async (canal) => {
     if (!validar()) return;
-    const cita = await crearCita(f);
+    // Se guarda en paralelo: WhatsApp se abre en el mismo clic (si espera a la red, el navegador lo bloquea)
+    // y, si guardar falla, el mensaje igual llega a la tienda.
+    const guardada = crearCita(f).catch(() => null);
     const texto = textoCita(f);
     if (canal === 'correo') location.href = `mailto:${SITIO.correo}?subject=${encodeURIComponent('Cita de reparación')}&body=${encodeURIComponent(texto)}`;
     else window.open(`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+    const cita = await guardada;
     setEnviada({ ...cita, canal });
   };
 
