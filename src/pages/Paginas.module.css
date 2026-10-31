@@ -80,6 +80,8 @@
 .legalDoc { display: grid; gap: 14px; max-width: 760px; padding-block: 56px 112px; }
 .legalDoc p { color: var(--texto-suave); }
 .legalTitulo { font-size: var(--t-display); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 12px; }
+.legalSeccion { font-size: 1.0625rem; font-weight: 600; margin-top: 10px; }
+.legalLista { list-style: disc; padding-left: 22px; display: grid; gap: 5px; color: var(--texto-suave); font-size: var(--t-chico); }
 @media (min-width: 900px) { .legalDoc { padding-top: 88px; } }
 
 @media (hover: hover) and (pointer: fine) { .temaFila:hover .temaSigno { border-color: var(--marca); } .legalPestana:not([aria-current="page"]):hover { color: var(--marca); } }

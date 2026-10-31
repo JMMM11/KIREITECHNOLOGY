@@ -33,7 +33,13 @@ export default function Legal({ params = {} }) {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
         <h1 className={s.legalTitulo}>{doc.tituloLargo}</h1>
-        {doc.parrafos.map((p) => <p key={p}>{p}</p>)}
+        {doc.parrafos.map((item, i) =>
+          Array.isArray(item)
+            ? <ul key={i} className={s.legalLista}>{item.map((li, j) => <li key={j}>{li}</li>)}</ul>
+            : item.startsWith('## ')
+            ? <h2 key={i} className={s.legalSeccion}>{item.slice(3)}</h2>
+            : <p key={i}>{item}</p>
+        )}
       </motion.article>
     </>
   );
