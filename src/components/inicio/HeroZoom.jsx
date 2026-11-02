@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'wouter';
 import { motion, useMotionTemplate, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import Foto from '../ui/Foto.jsx';
@@ -21,14 +21,37 @@ export default function HeroZoom() {
   const borde = useMotionTemplate`${radio}px`;
   const imagen = useTransform(p, [0, 1], [1.12, 1]);
   const textoY = useTransform(p, [0, 0.6], [0, -40]);
+  const [actual, setActual] = useState(0);
+  const [fija, setFija] = useState(false);
+
+  // Elegir una foto detiene el cambio automático: es la forma de pausarlo.
+  useEffect(() => {
+    if (reducir || fija) return undefined;
+    const t = setInterval(() => setActual((a) => (a + 1) % HERO.fotos.length), 6000);
+    return () => clearInterval(t);
+  }, [reducir, fija]);
 
   return (
     <section ref={ref} className={s.hero} aria-labelledby="hero-titulo">
       <motion.div className={s.heroMarco} style={reducir ? undefined : { scale, borderRadius: borde }}>
         <motion.div className={s.heroImagen} style={reducir ? undefined : { scale: imagen }}>
-          <Foto foto={HERO.foto} alt="" prioridad sizes="100vw" />
+          {HERO.fotos.map((foto, i) => (
+            <Foto key={foto.src} foto={foto} alt="" prioridad={i === 0} sizes="100vw" className={i === actual ? s.heroActiva : undefined} />
+          ))}
         </motion.div>
         <div className={s.heroVelo} aria-hidden="true" />
+        <div className={s.heroPuntos} role="group" aria-label="Fotos de portada">
+          {HERO.fotos.map((foto, i) => (
+            <button
+              key={foto.src}
+              type="button"
+              className={s.heroPunto}
+              aria-label={`Foto ${i + 1} de ${HERO.fotos.length}`}
+              aria-current={i === actual ? 'true' : undefined}
+              onClick={() => { setActual(i); setFija(true); }}
+            />
+          ))}
+        </div>
         <motion.div className={`contenedor ${s.heroTexto}`} style={reducir ? undefined : { y: textoY }}>
           <motion.h1
             id="hero-titulo"

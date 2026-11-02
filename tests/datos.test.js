@@ -43,6 +43,6 @@ test('cada foto de producto y de portada existe', async () => {
   const { existsSync } = await import('node:fs');
   const { HERO } = await import('../src/data/textos.js');
   const { FOTOS_REPARACION, SERVICIOS, GRUPOS_SERVICIO } = await import('../src/data/servicios.js');
-  const fotos = [HERO.foto, ...PRODUCTOS.flatMap((p) => p.fotos ?? []), ...Object.values(FOTOS_REPARACION), ...[...GRUPOS_SERVICIO, ...SERVICIOS].map((x) => x.foto).filter(Boolean)];
+  const fotos = [...HERO.fotos, ...PRODUCTOS.flatMap((p) => p.fotos ?? []), ...Object.values(FOTOS_REPARACION), ...[...GRUPOS_SERVICIO, ...SERVICIOS].map((x) => x.foto).filter(Boolean)];
   for (const f of fotos) assert.ok(existsSync(new URL(`../${f.src}`, import.meta.url)), `${f.src} no existe`);
 });

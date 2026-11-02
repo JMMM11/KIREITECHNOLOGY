@@ -7,7 +7,13 @@
   transform-origin: 50% 0;
 }
 .heroImagen { position: absolute; inset: 0; z-index: -2; }
-.heroImagen img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+.heroImagen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; opacity: 0; }
+.heroImagen img.heroActiva { opacity: 1; }
+.heroPuntos { position: absolute; top: 12px; right: 12px; display: flex; }
+.heroPunto { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; }
+.heroPunto::before { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #FFFFFF; background: rgba(11, 31, 51, 0.4); }
+.heroPunto[aria-current]::before { background: #FFFFFF; }
+@media (prefers-reduced-motion: no-preference) { .heroImagen img { transition: opacity 0.8s ease; } }
 .heroVelo {
   position: absolute; inset: 0; z-index: -1;
   background:

@@ -4,7 +4,10 @@ import { SITIO, TARIFAS } from './sitio.js';
 
 // Portada: la foto se recoge en una tarjeta al bajar. Los botones se ven desde el primer momento.
 export const HERO = {
-  foto: { src: 'Productos/principal.png', ancho: 2560, alto: 1440 },
+  fotos: [
+    { src: 'Productos/principal.png', ancho: 2560, alto: 1440 },
+    { src: 'Productos/principal2.png', ancho: 1672, alto: 941 },
+  ],
   titulo: 'Tecnología que te acompaña',
   // Se escriben una tras otra en la portada; la primera es la que leen los lectores de pantalla.
   frases: ['todo el día.', 'en cada llamada.', 'en tus partidas.', 'a donde vayas.'],
