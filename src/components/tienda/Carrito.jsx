@@ -6,9 +6,22 @@ import LineaCarrito from './LineaCarrito.jsx';
 import { ICONOS } from '../iconos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { useCarrito } from '../../context/CarritoContext.jsx';
+import { useDatos } from '../../context/DatosContext.jsx';
 import s from './Carrito.module.css';
 
 export function CarritoVacio({ onExplorar }) {
+  const { guardadas } = useCarrito();
+  const { error, cargando, reintentar } = useDatos();
+  if (error && guardadas > 0) {
+    return (
+      <div className={s.vacio} role="status">
+        <span className={s.vacioIcono}><Icono de={ICONOS.bolsa.de} mov="latido" tam={28} /></span>
+        <p className={s.vacioTitulo}>Tus productos siguen guardados.</p>
+        <p className="suave">No pudimos cargar sus precios. Aparecerán cuando vuelva la conexión.</p>
+        <button type="button" className="btn btn-marca" onClick={reintentar} disabled={cargando}>{cargando ? 'Reintentando...' : 'Reintentar'}</button>
+      </div>
+    );
+  }
   return (
     <div className={s.vacio}>
       <span className={s.vacioIcono}><Icono de={ICONOS.bolsa.de} mov="latido" tam={28} /></span>

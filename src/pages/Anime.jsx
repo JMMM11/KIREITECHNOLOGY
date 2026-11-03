@@ -2,6 +2,8 @@ import { Link } from 'wouter';
 import CabeceraPagina from '../components/ui/CabeceraPagina.jsx';
 import TarjetaProducto from '../components/tienda/TarjetaProducto.jsx';
 import Icono from '../components/ui/Icono.jsx';
+import ErrorDatos from '../components/ui/ErrorDatos.jsx';
+import { EsqueletoTarjetas } from '../components/ui/Esqueleto.jsx';
 import { ICONOS } from '../components/iconos.js';
 import { SITIO } from '../data/sitio.js';
 import { useDatos } from '../context/DatosContext.jsx';
@@ -11,9 +13,11 @@ import s from './Paginas.module.css';
 // Muestra "Próximamente" mientras no haya productos anime publicados.
 export default function Anime() {
   useTituloPagina('Anime');
-  const { productos } = useDatos();
+  const { productos, cargando, error } = useDatos();
   const lista = productos.filter((p) => p.categoriaId === 'anime');
 
+  if (cargando) return <div className="contenedor"><EsqueletoTarjetas cantidad={4} /></div>;
+  if (error && productos.length === 0) return <ErrorDatos />;
   if (lista.length === 0) {
     return (
       <div className={`contenedor ${s.proximamente}`}>

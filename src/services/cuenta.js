@@ -5,7 +5,7 @@ import {
   onAuthStateChanged, reauthenticateWithCredential, sendPasswordResetEmail,
   signInWithEmailAndPassword, signInWithPopup, signOut, updatePassword, updateProfile,
 } from 'firebase/auth';
-import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocsFromServer, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { db } from './firebase.js';
 import { auth } from './auth.js';
 import { borrarComentariosDe } from './comentarios.js';
@@ -72,6 +72,6 @@ export async function borrarCuenta(clave) {
 
 // Sin orderBy en la consulta: así no hace falta un índice compuesto. Se ordena aquí.
 export async function misPedidos(uid) {
-  const snap = await getDocs(query(collection(db, 'pedidos'), where('uid', '==', uid)));
+  const snap = await getDocsFromServer(query(collection(db, 'pedidos'), where('uid', '==', uid)));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.creadoEn?.seconds ?? 0) - (a.creadoEn?.seconds ?? 0));
 }

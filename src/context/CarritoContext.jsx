@@ -58,11 +58,13 @@ export function CarritoProvider({ children }) {
 
   const valor = useMemo(() => ({
     lineas: detalle,
+    // Sin productos cargados, detalle queda vacío aunque haya líneas guardadas: así no decimos "vacío".
+    guardadas: lineas.length,
     articulos: contarArticulos(detalle),
     subtotal: detalle.reduce((s, l) => s + l.precio * l.cantidad, 0),
     agregar, cambiarCantidad, quitar, vaciar,
     abierto, abrir: () => setAbierto(true), cerrar: () => setAbierto(false),
-  }), [detalle, agregar, cambiarCantidad, quitar, vaciar, abierto]);
+  }), [detalle, lineas.length, agregar, cambiarCantidad, quitar, vaciar, abierto]);
 
   return <CarritoContext.Provider value={valor}>{children}</CarritoContext.Provider>;
 }

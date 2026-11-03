@@ -4,6 +4,7 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import NavMovil from './NavMovil.jsx';
 import Carrito from '../tienda/Carrito.jsx';
+import AvisoDatos from './AvisoDatos.jsx';
 import s from './Layout.module.css';
 
 export default function Layout({ children }) {
@@ -22,6 +23,7 @@ export default function Layout({ children }) {
         Saltar al contenido
       </a>
       <Header />
+      {!/^\/(tecnologia|buscar|producto|anime)/.test(ubicacion) && <AvisoDatos />}
       <main id="contenido" ref={main} tabIndex={-1} className={s.main}>
         {children}
       </main>

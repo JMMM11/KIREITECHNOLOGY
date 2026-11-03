@@ -1,10 +1,76 @@
 # Kirei Technology
 
-Tienda en línea de Kirei Technology (Panamá). React 19 + Vite, rutas con `#`, animaciones con Motion.
-Con Firebase configurado (`.env.local`, ver `.env.example`) productos, cuentas y pedidos viven en Firestore; sin él, todo sale de `src/data/`.
+Tienda en línea de Kirei Technology, en Panamá Oeste. Vende audífonos, relojes inteligentes y accesorios, tiene una zona Anime y agenda reparaciones de computadoras. La compra se confirma por WhatsApp y se paga con Yappy o contra entrega.
 
-## Pedidos
+![Portada de la tienda](docs/capturas/inicio.jpg)
 
-Cada pedido se guarda en `pedidos` con un número que no se repite (`KT-1001`, `KT-1002`...; contador en `contadores/pedidos`)
-y luego se abre WhatsApp. Se ven y se gestionan en `/admin > Pedidos`; el cliente con cuenta los sigue en Mis pedidos.
-Al cambiar `firestore.rules`, publícalas con `npx firebase-tools deploy --only firestore:rules` y pruébalas con `npm run test:reglas` (necesita Java).
+| Catálogo | Móvil | Panel admin |
+| --- | --- | --- |
+| ![Catálogo](docs/capturas/catalogo.jpg) | ![Vista en celular](docs/capturas/movil.jpg) | ![Panel de administración](docs/capturas/admin.jpg) |
+
+## Qué hace
+
+- **Tienda:** catálogo con buscador, filtros y orden; detalle de producto con variantes de color y comentarios; carrito guardado en el navegador.
+- **Checkout:** retiro gratis, punto de encuentro o envío a domicilio. Cada pedido recibe un número único (`KT-1001`, `KT-1002`...) y se abre WhatsApp con el resumen.
+- **Cuentas de clientes:** correo y contraseña, Google o Apple. Mis pedidos con su estado y recibo, favoritos, direcciones, descargar mis datos y eliminar la cuenta.
+- **Reparaciones:** lista de servicios y formulario de cita que se envía por WhatsApp y queda registrado.
+- **Panel `/admin`:** productos (con subida de fotos), pedidos, citas, clientes y moderación de comentarios.
+- **Legal:** política de privacidad y términos según la ley de Panamá (Ley 81 de 2019 y Ley 45 de 2007).
+
+## Tecnología
+
+| Parte | Herramienta |
+| --- | --- |
+| Interfaz | React 19, Vite 8, wouter (rutas), CSS Modules, Motion |
+| Datos y cuentas | Firebase: Firestore, Authentication, Hosting |
+| Fotos subidas desde el panel | Cloudinary (subida sin firma) |
+| Pruebas | `node --test` y el emulador de Firestore |
+
+Sin Firebase configurado, la tienda funciona igual con los datos de `src/data/`. Sirve para trabajar sin conexión a la base real.
+
+## Empezar
+
+Requisitos: Node.js (probado con la versión 24) y, para las pruebas de reglas, Java.
+
+```bash
+npm install
+cp .env.example .env.local   # llena los valores de Firebase y Cloudinary
+npm run dev                  # http://localhost:5173
+```
+
+`.env.local` no se sube al repositorio. Solo lleva datos públicos de la web; la seguridad real está en `firestore.rules`. La clave secreta de Cloudinary nunca va en este proyecto.
+
+## Comandos
+
+| Comando | Para qué |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo con recarga automática |
+| `npm run build` | Compila la tienda en la raíz del repositorio (`index.html` y `assets/`) |
+| `npm run preview` | Sirve la versión compilada para revisarla |
+| `npm test` | Pruebas de lógica: precios, pedidos, validaciones, datos y contraste |
+| `npm run test:reglas` | Pruebas de `firestore.rules` contra el emulador (necesita Java) |
+
+## Publicar
+
+```bash
+npm run build
+npx firebase-tools deploy --only firestore:rules,hosting
+```
+
+Los pasos completos, cómo volver a una versión anterior y qué hacer si algo falla están en [docs/OPERACION.md](docs/OPERACION.md).
+
+## Documentación
+
+| Documento | Contenido |
+| --- | --- |
+| [Arquitectura](docs/ARQUITECTURA.md) | Diagramas del sistema, carpetas, base de datos y flujos de compra y comentarios |
+| [Estados de cada pantalla](docs/ESTADOS.md) | Qué ve el cliente mientras carga, si no hay datos y si algo falla |
+| [Seguridad y privacidad](docs/SEGURIDAD.md) | Reglas de acceso, encabezados, secretos y controles pendientes |
+| [Operación](docs/OPERACION.md) | Publicar, revertir, respaldos y guía de incidentes |
+| [Reportar una vulnerabilidad](SECURITY.md) | A quién avisar si encuentras un problema de seguridad |
+
+Diagrama automático del repositorio: [gitdiagram.com/JMMM11/KIREITECHNOLOGY](https://gitdiagram.com/JMMM11/KIREITECHNOLOGY).
+
+## Contacto
+
+WhatsApp +507 6156 0839 · Instagram [@kireitechnology](https://www.instagram.com/kireitechnology/)

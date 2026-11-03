@@ -25,10 +25,11 @@ function preparar(p, vistaPrevia) {
 export const conFirebase = Boolean(import.meta.env?.VITE_FIREBASE_PROJECT_ID);
 
 // Firebase se descarga solo si está configurado. Una consulta por visita; si falla, se puede reintentar.
+// FromServer: sin conexión, getDocs devuelve la caché vacía sin error y la tienda diría "no hay productos".
 let enNube = null;
 function publicadosNube() {
   enNube ??= Promise.all([import('./firebase.js'), import('firebase/firestore')])
-    .then(([{ db }, { collection, getDocs, query, where }]) => getDocs(query(collection(db, 'productos'), where('estado', '==', 'publicado'))))
+    .then(([{ db }, { collection, getDocsFromServer, query, where }]) => getDocsFromServer(query(collection(db, 'productos'), where('estado', '==', 'publicado'))))
     .then((snap) => snap.docs.map((d) => preparar({ id: d.id, ...d.data() }, false)))
     .catch((e) => { enNube = null; throw e; });
   return enNube;

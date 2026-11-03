@@ -18,13 +18,16 @@ const nombrePublico = (nombre) => {
 export default function Comentarios({ productoId }) {
   const { usuario, perfil } = useCuenta();
   const idTexto = useId();
-  const [lista, setLista] = useState([]);
+  const [lista, setLista] = useState(null);
+  const [errorLista, setErrorLista] = useState(false);
   const [texto, setTexto] = useState('');
   const [estado, setEstado] = useState('');
 
   useEffect(() => {
     if (!conFirebase) return;
-    servicio().then(({ db, c }) => c.comentariosPublicados(db, productoId)).then(setLista).catch(() => {});
+    servicio().then(({ db, c }) => c.comentariosPublicados(db, productoId))
+      .then((l) => { setLista(l); setErrorLista(false); })
+      .catch(() => { setLista([]); setErrorLista(true); });
   }, [productoId]);
 
   if (!conFirebase) return null;
@@ -46,8 +49,10 @@ export default function Comentarios({ productoId }) {
   return (
     <section className={s.seccion} aria-labelledby="comentarios-titulo">
       <h2 id="comentarios-titulo" className="titulo">Comentarios</h2>
-      {lista.length === 0 && <p className="suave">Todavía no hay comentarios sobre este producto.</p>}
-      {lista.length > 0 && (
+      {lista === null && <p className="suave">Cargando comentarios...</p>}
+      {errorLista && <p className="error-campo" role="alert">No pudimos cargar los comentarios. Recarga la página para intentarlo de nuevo.</p>}
+      {lista?.length === 0 && !errorLista && <p className="suave">Todavía no hay comentarios sobre este producto.</p>}
+      {lista?.length > 0 && (
         <ul className={s.lista}>
           {lista.map((c) => (
             <li key={c.id} className={s.item}>

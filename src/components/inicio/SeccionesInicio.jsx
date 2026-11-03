@@ -12,7 +12,8 @@ import s from './Inicio.module.css';
 
 // Las dos secciones de la tienda, una al lado de la otra.
 export default function SeccionesInicio() {
-  const { productos, categorias, productoPorId, cargando } = useDatos();
+  const { productos, categorias, productoPorId, cargando: sinDatos, error } = useDatos();
+  const cargando = sinDatos || (error && productos.length === 0);
   const [tecno, anime] = SECCIONES;
   const subcategorias = categorias.filter((c) => c.seccion === 'tecnologia');
   const cuantos = (seccion) => productos.filter((p) => categorias.find((c) => c.id === p.categoriaId)?.seccion === seccion).length;

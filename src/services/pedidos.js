@@ -1,5 +1,5 @@
 // Pedidos en Firestore. Recibe la base de datos como parámetro para que tests/reglas/ la pruebe contra el emulador.
-import { collection, doc, getDocs, limit, orderBy, query, runTransaction, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocsFromServer, limit, orderBy, query, runTransaction, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { idPedido, siguienteNumero } from '../lib/pedidos.js';
 
 // Una transacción sube el contador (contadores/pedidos) y crea pedidos/KT-<número>: el número nunca se repite
@@ -27,7 +27,7 @@ export async function guardarPedido(db, datos, intentos = 8) {
 
 // Solo el administrador: las reglas rechazan la lectura a cualquier otro.
 export async function listarPedidos(db, maximo = 200) {
-  const snap = await getDocs(query(collection(db, 'pedidos'), orderBy('numero', 'desc'), limit(maximo)));
+  const snap = await getDocsFromServer(query(collection(db, 'pedidos'), orderBy('numero', 'desc'), limit(maximo)));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 

@@ -1,5 +1,5 @@
 // Solo lo usa el panel /admin: sesión, productos, pedidos, citas y subida de fotos.
-import { collection, deleteDoc, doc, getDocs, setDoc, writeBatch } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocsFromServer, setDoc, writeBatch } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { db } from './firebase.js';
 import { auth } from './auth.js';
@@ -14,7 +14,7 @@ export const salir = () => signOut(auth);
 
 // Incluye borradores: las reglas solo se los dejan leer al administrador.
 export async function todosLosProductos() {
-  const snap = await getDocs(collection(db, 'productos'));
+  const snap = await getDocsFromServer(collection(db, 'productos'));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
 }
 
@@ -52,7 +52,7 @@ export const estadoCita = (id, estado) => cambiarEstadoCita(db, id, estado);
 
 // Solo datos de contacto y fecha: la dirección queda en la cuenta y el admin no la necesita para atender.
 export async function clientes() {
-  const snap = await getDocs(collection(db, 'usuarios'));
+  const snap = await getDocsFromServer(collection(db, 'usuarios'));
   return snap.docs.map((d) => ({ uid: d.id, nombre: d.data().nombre, telefono: d.data().telefono, creadoEn: d.data().creadoEn }))
     .sort((a, b) => (b.creadoEn?.seconds ?? 0) - (a.creadoEn?.seconds ?? 0));
 }
