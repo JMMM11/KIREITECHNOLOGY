@@ -1,6 +1,6 @@
 import s from './Foto.module.css';
 
-const RUTA = './';
+const RUTA = '/';
 
 // Foto con ancho y alto definidos para que no salte el diseño.
 // foto.src: archivo original tal cual (carpeta Productos/) o URL completa de Cloudinary. foto.base: versión en dos tamaños (-m y -l).
@@ -8,7 +8,7 @@ export default function Foto({ foto, alt = '', sizes = '(min-width: 900px) 40vw,
   if (!foto) {
     return (
       <span className={`${s.vacia} ${className}`}>
-        <img className={s.icono} src="./marca/kirei-icono.svg" alt="" width="20" height="38" />
+        <img className={s.icono} src="/marca/kirei-icono.svg" alt="" width="20" height="38" />
         <span>Foto pendiente</span>
       </span>
     );

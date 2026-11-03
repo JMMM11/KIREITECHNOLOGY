@@ -5,6 +5,7 @@ rules_version = '2';
 // Pedidos: cualquiera los crea (con o sin cuenta); el cliente con cuenta ve los suyos; el administrador ve todos
 // y cambia el estado y la nota de seguimiento.
 // Citas: cualquiera las crea con campos validados; solo el administrador las lee y cambia su estado.
+// Comentarios: solo clientes con cuenta los escriben, nacen pendientes; el administrador los publica u oculta.
 // UID del administrador: Firebase > Authentication > Users.
 // Pruebas: npm run test:reglas (tests/reglas/).
 service cloud.firestore {
@@ -35,7 +36,8 @@ service cloud.firestore {
 
     // Perfil del cliente: solo campos conocidos y listas con tope, para que nadie llene la base de datos.
     match /usuarios/{uid} {
-      allow read, delete: if esDueno(uid);
+      allow read: if esDueno(uid) || esAdmin();
+      allow delete: if esDueno(uid);
       allow create, update: if esDueno(uid)
         && request.resource.data.keys().hasOnly(['nombre', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
         && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 80
@@ -113,6 +115,24 @@ service cloud.firestore {
       allow update: if esAdmin()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado'])
         && request.resource.data.estado in ['nueva', 'confirmada', 'completada', 'cancelada'];
+    }
+
+    // La forma debe coincidir con enviarComentario (src/services/comentarios.js).
+    function comentarioValido(c) {
+      return c.keys().hasAll(['productoId', 'uid', 'nombre', 'texto', 'estado', 'creadoEn'])
+        && c.keys().hasOnly(['productoId', 'uid', 'nombre', 'texto', 'estado', 'creadoEn'])
+        && texto(c.productoId, 1, 80) && c.uid == request.auth.uid
+        && texto(c.nombre, 1, 40) && texto(c.texto, 1, 500)
+        && c.estado == 'pendiente' && c.creadoEn == request.time;
+    }
+
+    match /comentarios/{id} {
+      allow read: if resource.data.estado == 'publicado' || esAdmin() || esDueno(resource.data.uid);
+      allow create: if request.auth != null && comentarioValido(request.resource.data);
+      allow update: if esAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado'])
+        && request.resource.data.estado in ['publicado', 'oculto'];
+      allow delete: if esAdmin() || esDueno(resource.data.uid);
     }
   }
 }

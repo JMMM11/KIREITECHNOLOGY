@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'wouter';
 import DetalleProducto from '../components/tienda/DetalleProducto.jsx';
+import Comentarios from '../components/tienda/Comentarios.jsx';
 import TarjetaProducto from '../components/tienda/TarjetaProducto.jsx';
 import { EsqueletoProducto } from '../components/ui/Esqueleto.jsx';
 import PantallaEstado from '../components/ui/PantallaEstado.jsx';
@@ -29,6 +30,7 @@ export default function Producto({ params }) {
   return (
     <div className="contenedor">
       <DetalleProducto key={p.id} producto={p} />
+      <Comentarios productoId={p.id} />
       {relacionados.length > 0 && (
         <section className={s.relacionados} aria-labelledby="relacionados-titulo">
           <h2 id="relacionados-titulo" className="titulo">También te puede gustar</h2>

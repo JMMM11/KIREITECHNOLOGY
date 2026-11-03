@@ -1,0 +1,13 @@
+{
+  "name": "Kirei Technology",
+  "short_name": "Kirei",
+  "description": "Audífonos, relojes inteligentes y accesorios con garantía en Panamá.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F5F1",
+  "theme_color": "#F7931E",
+  "lang": "es-PA",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

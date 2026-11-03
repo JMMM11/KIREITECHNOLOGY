@@ -1,0 +1,4 @@
+.seccion { display: grid; gap: 16px; margin-top: 48px; padding-block: 32px 48px; border-top: 1px solid var(--borde); }
+.lista { list-style: none; display: grid; gap: 12px; }
+.item { display: grid; gap: 6px; padding: 14px 16px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); }
+.formulario { display: grid; gap: 10px; max-width: 560px; }

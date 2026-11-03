@@ -82,7 +82,7 @@ export const LEGAL = [
 
       '## 2. Datos que recopilamos',
       'Recopilamos únicamente los datos necesarios para gestionar tu pedido o cita:',
-      ['Nombre completo.', 'Número de teléfono (WhatsApp).', 'Correo electrónico (opcional al hacer pedido).', 'Dirección de entrega, cuando solicitas envío a domicilio.', 'Historial de pedidos dentro de la tienda.'],
+      ['Nombre completo.', 'Número de teléfono (WhatsApp).', 'Correo electrónico (opcional al hacer pedido).', 'Dirección de entrega, cuando solicitas envío a domicilio.', 'Historial de pedidos dentro de la tienda.', 'Comentarios que publiques en un producto, que se muestran con tu nombre y la inicial de tu apellido.'],
       'No recopilamos datos sensibles como cédula, datos bancarios completos ni información de salud.',
 
       '## 3. Finalidad del tratamiento',
@@ -95,21 +95,21 @@ export const LEGAL = [
       ['Ejecución de un contrato de compraventa: para procesar tu pedido.', 'Consentimiento del titular: cuando nos proporcionas datos de forma voluntaria, como tu correo.', 'Interés legítimo: para comunicarte el estado de tu pedido y atender tus reclamos.', 'Cumplimiento de obligación legal: para efectos fiscales y comerciales.'],
 
       '## 5. Tiempo de conservación',
-      'Conservamos tus datos mientras sea necesario para los fines indicados. El historial de pedidos se conserva por un máximo de 5 años, en cumplimiento de las obligaciones fiscales y comerciales de la República de Panamá. Después de ese plazo, los datos se eliminan o anonimizamos.',
+      'Conservamos tus datos mientras sea necesario para los fines indicados. El historial de pedidos se conserva por un máximo de 5 años, en cumplimiento de las obligaciones fiscales y comerciales de la República de Panamá. Los comentarios publicados se conservan hasta que los borres o los ocultemos. Tu cuenta se conserva mientras no la elimines. Después de esos plazos, los datos se eliminan o anonimizamos.',
 
       '## 6. Tus derechos (ARCO + portabilidad)',
       'De acuerdo con la Ley 81 de 2019, tienes los siguientes derechos sobre tus datos:',
       ['Acceso: conocer qué datos personales tuyos tenemos y cómo los usamos.', 'Rectificación: solicitar la corrección de datos inexactos o incompletos.', 'Cancelación o supresión: pedir que eliminemos tus datos cuando ya no sean necesarios.', 'Oposición: oponerte al tratamiento en determinadas circunstancias.', 'Portabilidad: recibir tus datos en un formato estructurado y de uso común.', 'Revocación del consentimiento: retirar en cualquier momento el consentimiento dado, sin que ello afecte la licitud del tratamiento anterior.'],
-      'Para ejercer cualquiera de estos derechos, escríbenos por WhatsApp al +507 6156 0839 o al correo [pendiente], indicando tu nombre y el derecho que deseas ejercer. Respondemos en un plazo máximo de 30 días hábiles.',
+      'Desde Mi cuenta, en Seguridad y privacidad, puedes descargar una copia de tus datos y eliminar tu cuenta. Para cualquier otro derecho, escríbenos por WhatsApp al +507 6156 0839 o al correo [pendiente], indicando tu nombre y el derecho que deseas ejercer. Respondemos en un plazo máximo de 30 días hábiles.',
 
       '## 7. Transferencia de datos',
-      'Kirei Technology no vende, alquila ni cede tus datos a terceros con fines comerciales. Para operar la tienda utilizamos servicios de Firebase (Google LLC), que actúan como encargados del tratamiento bajo condiciones contractuales adecuadas y políticas de privacidad propias. Google LLC está adherido al Privacy Shield y cuenta con cláusulas contractuales tipo para transferencias internacionales.',
+      'Kirei Technology no vende, alquila ni cede tus datos a terceros con fines comerciales. Para operar la tienda utilizamos servicios de Firebase y Google Cloud (Google LLC), que actúan como encargados del tratamiento bajo sus condiciones contractuales y medidas de seguridad. Por esta razón, tus datos pueden almacenarse en servidores ubicados fuera de Panamá. Para subir fotos de productos usamos Cloudinary, que solo recibe las imágenes que publica el administrador.',
 
       '## 8. Seguridad',
-      'Aplicamos medidas técnicas y organizativas razonables para proteger tus datos contra acceso no autorizado, pérdida o destrucción: cifrado en tránsito (HTTPS/TLS), controles de acceso por roles en la base de datos y copias de seguridad periódicas. En caso de incidente de seguridad que afecte tus datos, te notificaremos en el plazo legalmente exigido.',
+      'Aplicamos medidas técnicas y organizativas razonables para proteger tus datos contra acceso no autorizado, pérdida o destrucción: cifrado en tránsito (HTTPS/TLS), controles de acceso por roles en la base de datos y copias de seguridad periódicas. Solo el administrador de la tienda puede ver la lista de clientes, y el acceso al panel exige una cuenta protegida por contraseña. En caso de incidente de seguridad que afecte tus datos, te notificaremos en el plazo legalmente exigido.',
 
-      '## 9. Cookies y analítica',
-      'La tienda puede utilizar cookies técnicas necesarias para el funcionamiento de la sesión y el carrito. [Pendiente: especificar si se usa Google Analytics u otra herramienta y añadir aviso de cookies en pantalla.] Puedes configurar tu navegador para rechazar cookies, aunque algunas funciones pueden verse afectadas.',
+      '## 9. Cookies y almacenamiento local',
+      'La tienda no usa herramientas de analítica ni publicidad de terceros. Solo guarda en tu navegador lo necesario para tu sesión, tu carrito y la lista de productos que viste. Puedes borrarlo desde la configuración de tu navegador; si lo haces, tu carrito se vaciará y tendrás que volver a entrar a tu cuenta.',
 
       '## 10. Menores de edad',
       'Esta tienda no está dirigida a menores de 18 años. Si eres menor, necesitas la autorización de tu padre, madre o tutor legal para realizar un pedido. No recopilamos datos de menores de forma consciente.',
@@ -120,7 +120,7 @@ export const LEGAL = [
       '## 12. Contacto y autoridad de control',
       'Para cualquier consulta sobre esta política o el tratamiento de tus datos, contáctanos por WhatsApp al +507 6156 0839. Si consideras que tus derechos no han sido atendidos, puedes presentar una reclamación ante la Autoridad Nacional de Transparencia y Acceso a la Información (ANTAI), que es la autoridad de control en materia de protección de datos en Panamá. Más información en www.antai.gob.pa.',
 
-      'Última actualización: octubre 2026. [Pendiente: revisión por asesor legal antes de publicar.]',
+      'Última actualización: noviembre 2026. [Pendiente: revisión por asesor legal antes de publicar.]',
     ],
   },
   {

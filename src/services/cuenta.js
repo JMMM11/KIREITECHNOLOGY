@@ -8,6 +8,7 @@ import {
 import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { db } from './firebase.js';
 import { auth } from './auth.js';
+import { borrarComentariosDe } from './comentarios.js';
 
 const perfilRef = (uid) => doc(db, 'usuarios', uid);
 
@@ -61,9 +62,10 @@ export async function cambiarClave(actual, nueva) {
   await updatePassword(await reautenticar(actual), nueva);
 }
 
-// Los pedidos se conservan: la tienda los necesita para la garantía.
+// Los pedidos se conservan: la tienda los necesita para la garantía. Perfil y comentarios se borran.
 export async function borrarCuenta(clave) {
   const u = await reautenticar(clave);
+  await borrarComentariosDe(db, u.uid);
   await deleteDoc(perfilRef(u.uid));
   await deleteUser(u);
 }

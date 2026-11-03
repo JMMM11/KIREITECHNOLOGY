@@ -15,7 +15,7 @@ export default function BotonFavorito({ producto, conTexto = false, className = 
 
   async function clic() {
     if (await alternarFavorito(producto.id)) return;
-    try { sessionStorage.setItem('kirei:volver', window.location.hash.slice(1) || '/'); } catch { /* sin almacenamiento: vuelve al inicio */ }
+    try { sessionStorage.setItem('kirei:volver', window.location.pathname); } catch { /* sin almacenamiento: vuelve al inicio */ }
     navegar('/cuenta');
   }
 

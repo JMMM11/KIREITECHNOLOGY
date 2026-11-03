@@ -17,11 +17,12 @@ const fotosProductos = {
   },
 };
 
-// El build queda en la raíz del repo para abrirlo con Go Live o publicarlo en GitHub Pages desde main.
+// El build queda en la raíz del repo, que es lo que publica Firebase Hosting.
+// base '/': con rutas sin # una ruta relativa se rompe al recargar /producto/x (buscaría /producto/assets/...).
 export default defineConfig({
   plugins: [react(), fotosProductos],
   root: 'src',
-  base: './',
+  base: '/',
   publicDir: '../public',
   envDir: '..',
   build: { outDir: '..', emptyOutDir: false },

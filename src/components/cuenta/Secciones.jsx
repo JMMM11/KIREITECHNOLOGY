@@ -143,6 +143,7 @@ export function Seguridad() {
   const [resClave, setResClave] = useState({});
   const [borrar, setBorrar] = useState({ clave: '', seguro: false });
   const [resBorrar, setResBorrar] = useState({});
+  const [resDatos, setResDatos] = useState({});
   const [ocupado, setOcupado] = useState('');
 
   async function cambiar(e) {
@@ -158,6 +159,18 @@ export function Seguridad() {
       setResClave({ ok: 'Contraseña cambiada.' });
     } catch (error) { setResClave({ error: mensajeAuth(error) }); }
     setOcupado('');
+  }
+
+  async function descargar() {
+    setResDatos({});
+    try {
+      const m = await cuenta();
+      const uid = m.actual().uid;
+      const datos = { perfil: await m.leerPerfil(uid), pedidos: await m.misPedidos(uid), exportadoEn: new Date().toISOString() };
+      const url = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' }));
+      Object.assign(document.createElement('a'), { href: url, download: 'mis-datos-kirei.json' }).click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) { setResDatos({ error: mensajeAuth(error) }); }
   }
 
   async function eliminar(e) {
@@ -181,12 +194,14 @@ export function Seguridad() {
       <div className={s.bloque}>
         <h3 className={s.bloqueTitulo}>Tus datos</h3>
         <p className="suave">Usamos tu nombre, teléfono y dirección solo para tus pedidos. <Link href="/legal/privacidad" className="enlace">Política de privacidad</Link></p>
+        <Resultado {...resDatos} />
+        <button type="button" className="btn btn-fantasma" onClick={descargar}>Descargar mis datos</button>
       </div>
 
       <details className={s.peligro}>
         <summary>Eliminar mi cuenta</summary>
         <form className={s.formulario} onSubmit={eliminar} noValidate>
-          <p className="suave">Se borran tu perfil, direcciones y favoritos. Tus pedidos se conservan para la garantía. No se puede deshacer.</p>
+          <p className="suave">Se borran tu perfil, direcciones, favoritos y comentarios. Tus pedidos se conservan para la garantía. No se puede deshacer.</p>
           <Campo etiqueta="Contraseña" type="password" autoComplete="current-password" value={borrar.clave} onChange={(e) => setBorrar({ ...borrar, clave: e.target.value })} />
           <label className={s.casilla}><input type="checkbox" checked={borrar.seguro} onChange={(e) => setBorrar({ ...borrar, seguro: e.target.checked })} /> Entiendo que mi cuenta se borra para siempre.</label>
           <Resultado {...resBorrar} />

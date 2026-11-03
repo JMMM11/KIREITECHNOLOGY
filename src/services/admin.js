@@ -6,6 +6,7 @@ import { auth } from './auth.js';
 import { PRODUCTOS } from '../data/productos.js';
 import { actualizarPedido, listarPedidos } from './pedidos.js';
 import { cambiarEstadoCita, listarCitas } from './citas.js';
+import { borrarComentario, cambiarEstadoComentario, listarComentarios } from './comentarios.js';
 
 export const vigilarSesion = (fn) => onAuthStateChanged(auth, fn);
 export const entrar = (correo, clave) => signInWithEmailAndPassword(auth, correo, clave);
@@ -48,3 +49,13 @@ export const pedidos = () => listarPedidos(db);
 export const actualizar = (id, cambios) => actualizarPedido(db, id, cambios);
 export const citas = () => listarCitas(db);
 export const estadoCita = (id, estado) => cambiarEstadoCita(db, id, estado);
+
+// Solo datos de contacto y fecha: la dirección queda en la cuenta y el admin no la necesita para atender.
+export async function clientes() {
+  const snap = await getDocs(collection(db, 'usuarios'));
+  return snap.docs.map((d) => ({ uid: d.id, nombre: d.data().nombre, telefono: d.data().telefono, creadoEn: d.data().creadoEn }))
+    .sort((a, b) => (b.creadoEn?.seconds ?? 0) - (a.creadoEn?.seconds ?? 0));
+}
+export const comentarios = () => listarComentarios(db);
+export const estadoComentario = (id, estado) => cambiarEstadoComentario(db, id, estado);
+export const eliminarComentario = (id) => borrarComentario(db, id);

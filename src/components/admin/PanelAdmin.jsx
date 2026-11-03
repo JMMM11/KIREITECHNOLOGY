@@ -7,6 +7,8 @@ import Cargando from '../ui/Cargando.jsx';
 import EditorProducto, { NUEVO } from './EditorProducto.jsx';
 import PedidosAdmin from './PedidosAdmin.jsx';
 import CitasAdmin from './CitasAdmin.jsx';
+import ClientesAdmin from './ClientesAdmin.jsx';
+import ComentariosAdmin from './ComentariosAdmin.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { entrar, importarLocales, salir, todosLosProductos, vigilarSesion } from '../../services/admin.js';
@@ -129,10 +131,12 @@ export default function PanelAdmin() {
             <button type="button" className={s.vista} aria-pressed={vista === 'productos'} onClick={() => setVista('productos')}>Productos</button>
             <button type="button" className={s.vista} aria-pressed={vista === 'pedidos'} onClick={() => setVista('pedidos')}>Pedidos</button>
             <button type="button" className={s.vista} aria-pressed={vista === 'citas'} onClick={() => setVista('citas')}>Citas</button>
+            <button type="button" className={s.vista} aria-pressed={vista === 'clientes'} onClick={() => setVista('clientes')}>Clientes</button>
+            <button type="button" className={s.vista} aria-pressed={vista === 'comentarios'} onClick={() => setVista('comentarios')}>Comentarios</button>
           </div>
         )}
       </header>
-      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : <Productos />}</main>
+      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : vista === 'clientes' ? <ClientesAdmin /> : vista === 'comentarios' ? <ComentariosAdmin /> : <Productos />}</main>
     </div>
   );
 }
