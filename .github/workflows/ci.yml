@@ -1,0 +1,47 @@
+# CI: en cada PR y en cada cambio a main, prueba que la tienda sigue funcionando.
+# Si un paso falla, el PR queda en rojo y los siguientes pasos no corren.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Un PR que recibe otro push cancela la corrida anterior: solo importa la última.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # El emulador de Firestore (npm run test:reglas) necesita Java.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas (precios, totales, pedidos, cuentas, contraste)
+        run: npm test
+
+      - name: Reglas de Firestore en el emulador
+        run: npm run test:reglas
+
+      # Sin .env.local compila en modo local (sin Firebase): basta para saber que el código compila.
+      - name: Compilar la web
+        run: npm run build
