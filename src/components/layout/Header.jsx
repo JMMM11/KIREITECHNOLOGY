@@ -81,6 +81,7 @@ export default function Header() {
               <li><EnlaceNav href="/anime">Anime</EnlaceNav></li>
               <li><EnlaceNav href="/reparaciones">Reparaciones</EnlaceNav></li>
               <li><EnlaceNav href="/ayuda">Ayuda</EnlaceNav></li>
+              {conFirebase && <li><EnlaceNav href="/cuenta">Mi cuenta</EnlaceNav></li>}
             </ul>
           </nav>
           <p className={s.aviso}>Retiro gratis · Envío a domicilio {formatoPrecio(TARIFAS.envioDomicilio)}</p>

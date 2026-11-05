@@ -8,6 +8,7 @@ import BotonFavorito from './BotonFavorito.jsx';
 import { ICONOS } from '../iconos.js';
 import { useCarrito, variantesDe } from '../../context/CarritoContext.jsx';
 import { useDatos } from '../../context/DatosContext.jsx';
+import { variosPrecios } from '../../lib/catalogo.js';
 import s from './TarjetaProducto.module.css';
 
 // El enlace cubre la tarjeta; el botón rápido queda encima, así no hay controles anidados.
@@ -33,7 +34,7 @@ export default function TarjetaProducto({ producto: p, prioridad = false }) {
           <Link href={`/producto/${p.slug}`} className={s.enlace}>{p.nombre}</Link>
         </h3>
         <div className={s.pie}>
-          <Precio producto={p} />
+          <Precio producto={p} desde={variosPrecios(p)} />
           {agregable && (
             <button
               type="button"

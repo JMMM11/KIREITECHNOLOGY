@@ -21,6 +21,7 @@ Regla de la tienda: el cliente nunca debe quedarse frente a una pantalla en blan
 | --- | --- | --- | --- | --- |
 | Inicio | Tarjetas esqueleto en "Lo más pedido"; los conteos se ocultan | Carrusel sin tarjetas | Aviso general con Reintentar | Productos y secciones |
 | Catálogo y búsqueda | Tarjetas esqueleto y "Cargando productos" | "No encontramos productos con esos filtros." con Limpiar filtros | Mensaje con Reintentar | Rejilla de productos con conteo |
+| Producto (pocas unidades) | | | | Con 1 o 2 unidades: insignia "Últimas unidades" y "Solo quedan N unidades." Con 3 o más no se muestra el número |
 | Producto | Esqueleto de la ficha | "Este producto ya no está." con enlaces a la tienda | Pantalla de error con Reintentar (no dice que el producto no existe) | Ficha completa |
 | Comentarios del producto | "Cargando comentarios..." | "Todavía no hay comentarios..." | "No pudimos cargar los comentarios..." | Lista de comentarios publicados |
 | Enviar comentario | Botón "Enviando..." desactivado | Sin cuenta: enlace para entrar | "No pudimos enviarlo. Revisa tu conexión." | "Gracias. Lo publicaremos después de revisarlo." |

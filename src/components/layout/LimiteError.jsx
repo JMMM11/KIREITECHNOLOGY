@@ -3,6 +3,7 @@ import PantallaEstado from '../ui/PantallaEstado.jsx';
 import Icono from '../ui/Icono.jsx';
 import { ICONOS } from '../iconos.js';
 import { SITIO } from '../../data/sitio.js';
+import { reportarError } from '../../lib/monitoreo.js';
 
 // Si una página falla al mostrarse, enseña una pantalla de marca en vez de dejarla en blanco.
 // Al cambiar de ruta se limpia el error para que el resto de la tienda siga funcionando.
@@ -11,7 +12,10 @@ export default class LimiteError extends Component {
 
   static getDerivedStateFromError(error) { return { error }; }
 
-  componentDidCatch(error, info) { console.error(error, info.componentStack); }
+  componentDidCatch(error, info) {
+    console.error(error, info.componentStack);
+    reportarError(error, info.componentStack?.slice(0, 2000));
+  }
 
   componentDidUpdate(prev) {
     if (this.state.error && prev.ubicacion !== this.props.ubicacion) this.setState({ error: null });

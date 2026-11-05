@@ -11,7 +11,9 @@ import ClientesAdmin from './ClientesAdmin.jsx';
 import ComentariosAdmin from './ComentariosAdmin.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
-import { entrar, importarLocales, salir, todosLosProductos, vigilarSesion } from '../../services/admin.js';
+import { entrar, esAdmin, importarLocales, salir, sobrantes, todosLosProductos, vigilarSesion } from '../../services/admin.js';
+import { SITIO } from '../../data/sitio.js';
+import { PRODUCTOS } from '../../data/productos.js';
 import s from './Admin.module.css';
 
 const NOMBRE_CATEGORIA = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c.nombre]));
@@ -58,8 +60,11 @@ function Productos() {
   useEffect(() => { cargar(); }, []);
 
   async function importar() {
+    const ids = (lista ?? []).map((p) => p.id);
+    const borrar = (lista ?? []).filter((p) => sobrantes(ids).includes(p.id)).map((p) => p.nombre);
+    if (ids.length && !window.confirm(`La tienda quedará con los ${PRODUCTOS.length} productos del archivo del proyecto. Se perderán los cambios hechos aquí en esos productos${borrar.length ? ` y se borrarán: ${borrar.join(', ')}` : ''}. ¿Continuar?`)) return;
     setImportando(true);
-    try { await importarLocales(); await cargar(); } catch { setError('No se pudieron importar los productos.'); }
+    try { await importarLocales(ids); await cargar(); } catch { setError('No se pudieron publicar los productos.'); }
     setImportando(false);
   }
 
@@ -77,7 +82,14 @@ function Productos() {
     <section className={s.seccion}>
       <div className={s.cabecera}>
         <h1 className="titulo">Productos</h1>
-        <button type="button" className="btn btn-marca" onClick={() => setEditando(NUEVO)} disabled={!lista}>Nuevo producto</button>
+        <div className={s.acciones}>
+          {lista?.length > 0 && (
+            <button type="button" className="btn btn-fantasma" onClick={importar} disabled={importando}>
+              {importando ? 'Publicando...' : 'Publicar catálogo del proyecto'}
+            </button>
+          )}
+          <button type="button" className="btn btn-marca" onClick={() => setEditando(NUEVO)} disabled={!lista}>Nuevo producto</button>
+        </div>
       </div>
       {error && <p className="error-campo" role="alert">{error}</p>}
       {lista === null && !error && <p className="suave">Cargando productos...</p>}
@@ -98,7 +110,7 @@ function Productos() {
                 <strong>{p.nombre}</strong>
                 <span className="suave chico">
                   {NOMBRE_CATEGORIA[p.categoriaId] ?? p.categoriaId} · {formatoPrecio(p.precioCentavos)}
-                  {p.stock === 0 && ' · Agotado'}
+                  {p.stock === 0 ? ' · Agotado' : p.stock != null && ` · ${p.stock} ${p.stock === 1 ? 'unidad' : 'unidades'}`}
                 </span>
               </span>
               {p.estado !== 'publicado' && <span className={s.borrador}>Borrador</span>}
@@ -114,9 +126,27 @@ function Productos() {
 // Panel de la tienda: sesión con Firebase Auth. La seguridad real está en firestore.rules, no en esta pantalla.
 export default function PanelAdmin() {
   const [usuario, setUsuario] = useState(undefined);
+  const [admin, setAdmin] = useState(undefined);
   const [vista, setVista] = useState('productos');
-  useEffect(() => vigilarSesion(setUsuario), []);
+  useEffect(() => vigilarSesion(async (u) => {
+    setAdmin(u ? await esAdmin(u.uid) : false);
+    setUsuario(u);
+  }), []);
   if (usuario === undefined) return <Cargando />;
+  // Una cuenta de cliente que llega aquí no ve el panel. Aunque lo forzara, las reglas le negarían los datos.
+  if (usuario && !admin) {
+    return (
+      <div className={s.admin}>
+        <div className={`contenedor ${s.entrar}`}>
+          <h1 className="titulo">Sin acceso al panel</h1>
+          <p className="suave">La cuenta {usuario.email ?? ''} no es administradora. Si trabajas en la tienda, pide al dueño que te dé acceso.</p>
+          <Link href="/" className="btn btn-marca">Ir a la tienda</Link>
+          <button type="button" className="btn btn-fantasma" onClick={salir}>Salir de esta cuenta</button>
+        </div>
+      </div>
+    );
+  }
+  const esDuenoTienda = usuario?.uid === SITIO.duenoUid;
   return (
     <div className={s.admin}>
       <header className={s.barra}>
@@ -136,7 +166,7 @@ export default function PanelAdmin() {
           </div>
         )}
       </header>
-      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : vista === 'clientes' ? <ClientesAdmin /> : vista === 'comentarios' ? <ComentariosAdmin /> : <Productos />}</main>
+      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : vista === 'clientes' ? <ClientesAdmin esDuenoTienda={esDuenoTienda} /> : vista === 'comentarios' ? <ComentariosAdmin /> : <Productos />}</main>
     </div>
   );
 }

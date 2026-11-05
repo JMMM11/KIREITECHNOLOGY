@@ -5,3 +5,9 @@ node_modules/
 .playwright-mcp/
 /cost
 *-debug.log
+_pages/
+_e2e/
+_e2e_emulador/
+test-results/
+playwright-report/
+_sentry/

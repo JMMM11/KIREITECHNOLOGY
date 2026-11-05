@@ -6,12 +6,13 @@ import { SITIO } from '../data/sitio.js';
 import { ESTADOS_EJEMPLO, PEDIDOS_EJEMPLO } from '../data/productosEjemplo.js';
 import { armarPedido, idPedido, siguienteNumero } from '../lib/pedidos.js';
 import { datosCita } from '../lib/cita.js';
+import { quedanPocas } from '../lib/catalogo.js';
 
 // El estado lo decide la capa de datos, no el componente.
 export function estadoProducto(p) {
   if (p.stock === 0) return 'agotado';
   if (p.precioAntesCentavos != null && p.precioCentavos != null && p.precioAntesCentavos > p.precioCentavos) return 'oferta';
-  if (p.stock != null && p.stock <= 3) return 'ultimas';
+  if (quedanPocas(p.stock)) return 'ultimas';
   if (p.nuevo) return 'nuevo';
   return null;
 }

@@ -23,6 +23,35 @@ npx firebase-tools deploy --only firestore:rules,hosting
 
 Después de publicar, abre la tienda en una ventana privada, abre la consola del navegador (F12) y revisa que no haya errores rojos, sobre todo de `Content Security Policy`.
 
+## Productos
+
+`src/data/productos.js` es el catálogo del proyecto, pero la tienda con Firebase lee Firestore. Después de cambiar el archivo, entra a `/admin > Productos` y pulsa **Publicar catálogo del proyecto**: escribe esos productos y borra de Firestore los que no estén en el archivo. Los cambios hechos en el panel a esos productos se pierden, por eso pide confirmación.
+
+## Administradores
+
+El dueño (UID fijo en `firestore.rules` y `src/data/sitio.js`) suma gente al equipo así: la persona crea su cuenta en la tienda, el dueño entra a `/admin > Clientes` y pulsa **Dar acceso al panel** en su fila. Para quitarlo, **Quitar acceso al panel**. Los demás admins trabajan igual que el dueño, pero no pueden dar ni quitar accesos.
+
+## Fotos
+
+La tienda sirve copias livianas en JPG (`Productos/web/`, `reparaciones/web/`); los originales no se publican. Al agregar fotos, corre `powershell -File scripts/fotos-web.ps1`: `npm test` falla si falta alguna copia.
+
+## Pruebas de carga
+
+Nunca contra producción.
+
+- Pedidos simultáneos contra el emulador: `npx -y firebase-tools@15 emulators:exec --only firestore --project demo-kirei "node tests/carga/pedidos-concurrentes.mjs"`.
+- Página y archivos contra un servidor local: `node tests/carga/estaticos.mjs http://localhost:5190 50 20` (con `npx vite preview` corriendo).
+
+## GitHub Pages
+
+La tienda también vive en https://jmmm11.github.io/KIREITECHNOLOGY/. GitHub Pages sirve la página desde la carpeta `/KIREITECHNOLOGY/` y no reescribe rutas como Firebase, por eso tiene su propio build (`npm run build:pages`, carpeta `_pages/`, con `404.html` para abrir rutas como `/producto/x`).
+
+- Se publica solo en cada push a `main` (`.github/workflows/pages.yml`).
+- Configuración, una vez: Settings > Pages > Build and deployment > Source: **GitHub Actions**.
+- Para que lea Firestore: Settings > Secrets and variables > Actions > Variables, con los mismos nombres de `.env.example`. Sin ellas, usa los productos de `src/data/`.
+- Para iniciar sesión desde ahí: agrega `jmmm11.github.io` en Firebase Console > Authentication > Dominios autorizados.
+- GitHub Pages no permite encabezados propios: la CSP y demás encabezados de seguridad solo aplican en Firebase.
+
 ## Volver a una versión anterior
 
 - **Web:** Firebase Console > Hosting > historial de versiones > elegir la anterior > Revertir. Es inmediato y no toca la base de datos.
@@ -35,7 +64,8 @@ Después de publicar, abre la tienda en una ventana privada, abre la consola del
 | --- | --- | --- |
 | La tienda muestra "No pudimos cargar los productos" | Sin internet, Firestore caído o reglas mal publicadas | Revisa status.firebase.google.com y la consola del navegador. Si fue una publicación de reglas, revierte las reglas |
 | Una sección del admin dice "revisa que las reglas estén publicadas" | Se publicó la web sin las reglas nuevas | `npx firebase-tools deploy --only firestore:rules` |
-| Página en blanco al recargar una ruta como `/producto/x` | Rutas relativas en el build | Confirma `base: '/'` en `vite.config.js` y vuelve a compilar |
+| Página en blanco al recargar una ruta como `/producto/x` | Rutas relativas en el build | Confirma la `base` absoluta en `vite.config.js` y vuelve a compilar |
+| GitHub Pages en blanco | Pages sirve el build de Firebase (`/assets/...`) en vez del suyo | Settings > Pages > Source: GitHub Actions, y revisa la pestaña Actions |
 | La consola dice `Refused to load ... Content Security Policy` | Un dominio nuevo no está en la CSP | Agrégalo a `Content-Security-Policy` en `firebase.json` y publica |
 | El inicio con Google o Apple falla en un dominio nuevo | Dominio no autorizado | Firebase Console > Authentication > Configuración > Dominios autorizados |
 | No se pueden subir fotos | Falta configuración de Cloudinary o el preset cambió | Revisa `VITE_CLOUDINARY_*` en `.env.local` y el preset en Cloudinary |

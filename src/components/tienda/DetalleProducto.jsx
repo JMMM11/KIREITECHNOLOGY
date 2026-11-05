@@ -9,6 +9,7 @@ import Profundidad from '../ui/Profundidad.jsx';
 import Precio from './Precio.jsx';
 import { ICONOS } from '../iconos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
+import { precioDe, quedanPocas } from '../../lib/catalogo.js';
 import { useCarrito, variantesDe, topeCantidad } from '../../context/CarritoContext.jsx';
 import { useDatos } from '../../context/DatosContext.jsx';
 import { SITIO, TARIFAS } from '../../data/sitio.js';
@@ -23,7 +24,9 @@ export default function DetalleProducto({ producto: p }) {
   const [cantidad, setCantidad] = useState(1);
   const idOpciones = useId();
   const v = vs.find((x) => x.id === varianteId);
-  const tope = topeCantidad(v.stock ?? p.stock);
+  const stock = v.stock ?? p.stock;
+  const tope = topeCantidad(stock);
+  const precio = precioDe(p, v);
   const agotado = p.estadoVenta === 'agotado';
   const categoria = categoriaPorId(p.categoriaId);
   const consulta = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, quiero saber el precio de ${p.nombre}${v.nombre ? ` (${v.nombre})` : ''}.`)}`;
@@ -65,7 +68,11 @@ export default function DetalleProducto({ producto: p }) {
             {p.ejemplo && <Badge estado="ejemplo" />}
           </div>
         )}
-        <Precio producto={p} grande />
+        <Precio producto={{ ...p, precioCentavos: precio }} grande />
+        {precio > SITIO.porPedidoDesde && (
+          <p className={s.porPedido}>{SITIO.porPedido} <Link href="/ayuda/por-pedido" className="enlace">Cómo hacer un pedido</Link></p>
+        )}
+        {quedanPocas(stock) && <p className={s.quedan} role="status">{stock === 1 ? 'Solo queda 1 unidad.' : `Solo quedan ${stock} unidades.`}</p>}
         <BotonFavorito producto={p} conTexto />
         <p className="suave">{p.descripcion}</p>
 
@@ -74,9 +81,9 @@ export default function DetalleProducto({ producto: p }) {
             <legend id={idOpciones} className="leyenda">{p.opcion ?? 'Opción'}: <span className={s.opcionElegida}>{v.nombre}</span></legend>
             <div className={s.muestras}>
               {vs.map((x) => (
-                <label key={x.id} className={s.muestra} title={x.nombre}>
+                <label key={x.id} className={x.muestra ? s.muestra : s.opcionTexto} title={x.nombre}>
                   <input type="radio" name={idOpciones} value={x.id} checked={x.id === varianteId} onChange={() => elegirVariante(x)} disabled={x.stock === 0} />
-                  <span className={s.color} style={{ background: x.muestra }} />
+                  {x.muestra ? <span className={s.color} style={{ background: x.muestra }} /> : <span aria-hidden="true">{x.nombre}</span>}
                   <span className="sr-only">{x.nombre}</span>
                 </label>
               ))}
@@ -84,7 +91,7 @@ export default function DetalleProducto({ producto: p }) {
           </fieldset>
         )}
 
-        {p.precioCentavos != null && !agotado && (
+        {precio != null && !agotado && (
           <div className={s.cantidad}>
             <span className="leyenda" id={`${idOpciones}-cant`}>Cantidad</span>
             <div className={s.stepper} role="group" aria-labelledby={`${idOpciones}-cant`}>
@@ -99,7 +106,7 @@ export default function DetalleProducto({ producto: p }) {
           </div>
         )}
 
-        {p.precioCentavos == null ? (
+        {precio == null ? (
           <a className="btn btn-accion btn-bloque" href={consulta} target="_blank" rel="noopener noreferrer">
             <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={18} /> Consultar precio por WhatsApp
           </a>
@@ -114,7 +121,7 @@ export default function DetalleProducto({ producto: p }) {
         <ul className={s.datos}>
           <li><Icono de={ICONOS.garantia.de} mov={ICONOS.garantia.mov} tam={20} /><span>{SITIO.garantia}</span></li>
           <li><Icono de={ICONOS.envio.de} mov={ICONOS.envio.mov} tam={20} /><span>Retiro gratis o envío a domicilio en Panamá por {formatoPrecio(TARIFAS.envioDomicilio)}.</span></li>
-          <li><Icono de={ICONOS.pago.de} mov={ICONOS.pago.mov} tam={20} /><span>Pago en línea con {SITIO.pagoEnLinea} [pendiente] o contra entrega desde {formatoPrecio(TARIFAS.contraEntregaMinimo)} (cargo de {formatoPrecio(TARIFAS.contraEntregaCargo)}).</span></li>
+          <li><Icono de={ICONOS.pago.de} mov={ICONOS.pago.mov} tam={20} /><span>Pago con {SITIO.pagoEnLinea} ({SITIO.yappy}) o contra entrega desde{formatoPrecio(TARIFAS.contraEntregaMinimo)} (cargo de {formatoPrecio(TARIFAS.contraEntregaCargo)}).</span></li>
         </ul>
       </div>
     </div>

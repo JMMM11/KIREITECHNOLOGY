@@ -1,6 +1,13 @@
 // Búsqueda y orden del catálogo. Sin tildes ni mayúsculas para que "audifonos" encuentre "Audífonos".
 export const normalizar = (t) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 
+// Cada opción (color, presentación) puede tener su propio precio; si no, vale el del producto.
+export const precioDe = (p, v) => v?.precioCentavos ?? p.precioCentavos;
+export const variosPrecios = (p) => new Set((p.variantes ?? []).map((v) => precioDe(p, v))).size > 1;
+
+// El cliente solo ve las unidades cuando quedan menos de 3; el número exacto es para el admin.
+export const quedanPocas = (stock) => stock != null && stock > 0 && stock < 3;
+
 const porPrecio = (dir) => (a, b) => {
   if (a.precioCentavos == null) return 1;
   if (b.precioCentavos == null) return -1;

@@ -9,6 +9,7 @@ import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocsFro
 import { db } from './firebase.js';
 import { auth } from './auth.js';
 import { borrarComentariosDe } from './comentarios.js';
+import { SITIO } from '../data/sitio.js';
 
 const perfilRef = (uid) => doc(db, 'usuarios', uid);
 
@@ -22,7 +23,21 @@ export const recuperar = (correo) => sendPasswordResetEmail(auth, correo);
 async function perfilSiNuevo(user) {
   const ref = perfilRef(user.uid);
   const snap = await getDoc(ref);
-  if (!snap.exists()) await setDoc(ref, { nombre: user.displayName ?? '', telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+  if (!snap.exists()) await setDoc(ref, { nombre: user.displayName ?? '', ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+}
+
+// Las reglas solo aceptan el correo de la propia sesión; sin correo (algunas cuentas de Apple), no se guarda.
+const correoDe = (user) => (user.email ? { correo: user.email } : {});
+
+// Perfiles creados antes de guardar el correo: se completa al entrar para que el admin sepa quién es.
+export async function completarCorreo(user, perfil) {
+  if (perfil && !perfil.correo && user.email) await setDoc(perfilRef(user.uid), { correo: user.email }, { merge: true });
+}
+
+// La pantalla solo usa esto para mostrar u ocultar el panel; quién es admin lo deciden las reglas.
+export async function esAdmin(uid) {
+  if (uid === SITIO.duenoUid) return true;
+  try { return (await getDoc(doc(db, 'admins', uid))).exists(); } catch { return false; }
 }
 
 export async function entrarGoogle() {
@@ -40,7 +55,7 @@ export async function entrarApple() {
 export async function registrar({ nombre, correo, clave }) {
   const { user } = await createUserWithEmailAndPassword(auth, correo, clave);
   await updateProfile(user, { displayName: nombre });
-  await setDoc(perfilRef(user.uid), { nombre, telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+  await setDoc(perfilRef(user.uid), { nombre, ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
 }
 
 export async function leerPerfil(uid) {

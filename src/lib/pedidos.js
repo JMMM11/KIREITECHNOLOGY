@@ -52,3 +52,18 @@ export function armarPedido({ uid, cliente, entrega, pago, items, totales, nota 
 
 // Pedidos guardados antes del contador traían el número en el campo "numero" como texto (KT-XXXXXX).
 export const etiquetaPedido = (p) => (typeof p.numero === 'string' ? p.numero : p.id);
+
+// Estados en los que las unidades del pedido ya salieron del stock.
+const DESCUENTAN = ['confirmado', 'enviado', 'entregado'];
+// -1 descuenta, 1 devuelve, 0 no toca el stock.
+export const cambioStock = (antes, despues) => Number(DESCUENTAN.includes(antes)) - Number(DESCUENTAN.includes(despues));
+
+// El navegador arma el pedido y las reglas no pueden revisar el precio de cada línea: el admin ve el aviso.
+export function lineasConPrecioDistinto(pedido, productos, precioDe) {
+  return (pedido.items ?? []).filter((i) => {
+    const p = productos.find((x) => x.id === i.productoId);
+    if (!p) return true;
+    const v = (p.variantes ?? []).find((x) => x.id === i.variante);
+    return precioDe(p, v) !== i.precioCentavos;
+  });
+}

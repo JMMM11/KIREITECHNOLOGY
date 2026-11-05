@@ -19,7 +19,7 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
     nombre: producto.nombre, categoriaId: producto.categoriaId, marca: producto.marca ?? '',
     precio: aTexto(producto.precioCentavos), antes: aTexto(producto.precioAntesCentavos), stock: producto.stock == null ? '' : String(producto.stock),
     estado: producto.estado, destacado: Boolean(producto.destacado), nuevo: Boolean(producto.nuevo), descripcion: producto.descripcion ?? '',
-    fotos: producto.fotos ?? [], variantes: producto.variantes ?? [],
+    fotos: producto.fotos ?? [], variantes: (producto.variantes ?? []).map((v) => ({ ...v, precioTexto: aTexto(v.precioCentavos) })),
   }));
   const [err, setErr] = useState({});
   const [subiendo, setSubiendo] = useState('');
@@ -59,10 +59,15 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
     if (Number.isNaN(precio)) nuevoErr.precio = 'Escribe un monto como 20.00.';
     if (Number.isNaN(antes)) nuevoErr.antes = 'Escribe un monto como 25.00.';
     if (stock !== null && !(Number.isInteger(stock) && stock >= 0)) nuevoErr.stock = 'Escribe un número entero, 0 o más.';
+    const conNombre = f.variantes.filter((v) => v.nombre.trim());
+    const preciosVariante = conNombre.map((v) => aCentavos(v.precioTexto ?? ''));
+    if (preciosVariante.some(Number.isNaN)) nuevoErr.variantes = 'Revisa el precio de cada opción: escribe un monto como 25.00 o déjalo vacío.';
     setErr(nuevoErr);
     if (Object.keys(nuevoErr).length) return;
 
-    const variantes = f.variantes.filter((v) => v.nombre.trim()).map((v) => ({ ...v, id: idDesdeNombre(v.nombre), nombre: v.nombre.trim(), stock: v.stock ?? null }));
+    const variantes = conNombre.map(({ precioTexto, ...v }, i) => ({
+      ...v, id: idDesdeNombre(v.nombre), nombre: v.nombre.trim(), stock: v.stock ?? null, precioCentavos: preciosVariante[i] ?? undefined,
+    }));
     setGuardando(true);
     try {
       // ...producto conserva los campos que el panel no edita (licencia, tono, proveedorUrl).
@@ -137,8 +142,8 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
       </fieldset>
 
       <fieldset className={s.grupo}>
-        <legend className="leyenda">Colores</legend>
-        <p className="ayuda">Opcional. Cada color puede abrir con una de las fotos.</p>
+        <legend className="leyenda">Colores u opciones</legend>
+        <p className="ayuda">Opcional. Cada opción puede abrir con una de las fotos y tener su propio precio. En la tienda, el producto sale con el precio más bajo.</p>
         {f.variantes.map((v, i) => (
           <div key={i} className={s.variante}>
             <Campo etiqueta="Color" value={v.nombre} onChange={(e) => cambiarVariante(i, 'nombre', e.target.value)} />
@@ -150,12 +155,14 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
               <option value="">Sin foto</option>
               {indices.map((j) => <option key={j} value={j}>Foto {j + 1}</option>)}
             </Campo>
+            <Campo etiqueta="Precio (US$)" opcional inputMode="decimal" value={v.precioTexto ?? ''} onChange={(e) => cambiarVariante(i, 'precioTexto', e.target.value)} ayuda="Vacío: usa el del producto." />
             <button type="button" className={s.enlaceBoton} onClick={() => setF((x) => ({ ...x, variantes: x.variantes.filter((_, j) => j !== i) }))}>Quitar</button>
           </div>
         ))}
         <button type="button" className="btn btn-fantasma" onClick={() => setF((x) => ({ ...x, variantes: [...x.variantes, { nombre: '', muestra: '#1E1E1E', foto: null }] }))}>
           Agregar color
         </button>
+        {err.variantes && <p className="error-campo" role="alert">{err.variantes}</p>}
       </fieldset>
 
       {err.general && <p className="error-campo" role="alert">{err.general}</p>}

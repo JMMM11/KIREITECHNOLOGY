@@ -1,0 +1,11 @@
+{
+  "version": "0.2",
+  "language": "es,en",
+  "ignorePaths": ["node_modules/**", "assets/**", "_pages/**", "package-lock.json", "*.min.js", "index.html"],
+  "words": [
+    "Kirei", "kireitechnology", "KIREITECHNOLOGY", "kirie", "Yappy", "Montelimar", "Petukita", "Mugiwara",
+    "Firestore", "firestore", "firebaseapp", "firebaseio", "Cloudinary", "wouter", "jmmm", "JMMM", "gitdiagram",
+    "thinkplus", "Redmi", "LIGE", "FitPro", "FitCloudPro", "SHEIN", "AMOLED", "Hogwarts", "Razer",
+    "ANTAI", "ACODECO", "nosniff", "upgrade-insecure-requests", "vistaPrevia", "precioCentavos"
+  ]
+}

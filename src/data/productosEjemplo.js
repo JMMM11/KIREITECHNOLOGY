@@ -3,8 +3,8 @@
 // "En oferta" necesita un precio anterior real; no hay ejemplo hasta que el dueño defina una oferta.
 export const ESTADOS_EJEMPLO = {
   'lenovo-gm2-pro': { nuevo: true },
-  'reloj-dorado': { stock: 2 },
-  'lampara-led-anime': { stock: 0 },
+  'lige-active-2': { stock: 2 },
+  'soporte-smartphone': { stock: 0 },
 };
 
 const item = (productoId, nombre, precioCentavos, cantidad) => ({ productoId, nombre, precioCentavos, cantidad });

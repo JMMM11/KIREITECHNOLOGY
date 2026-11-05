@@ -10,10 +10,13 @@ import { DatosProvider } from './context/DatosContext.jsx';
 import { CarritoProvider } from './context/CarritoContext.jsx';
 import { CuentaProvider } from './context/CuentaContext.jsx';
 import App from './App.jsx';
+import { iniciarMonitoreo } from './lib/monitoreo.js';
+
+iniciarMonitoreo();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Router>
+    <Router base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <MotionConfig reducedMotion="user">
         <DatosProvider>
           <CuentaProvider>

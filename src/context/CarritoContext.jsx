@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useDatos } from './DatosContext.jsx';
 import { contarArticulos } from '../lib/totales.js';
+import { precioDe } from '../lib/catalogo.js';
 
 const CarritoContext = createContext(null);
 const CLAVE = 'kirei-carrito';
@@ -10,8 +11,8 @@ const leer = () => {
 };
 
 export const variantesDe = (p) => p.variantes ?? [{ id: 'unica', nombre: '', stock: p.stock ?? null }];
-// shortcut: tope de 10 por línea mientras no haya stock real; cambiar cuando el panel cargue existencias
-export const topeCantidad = (stock) => (stock == null ? 10 : stock);
+// Máximo 10 por línea: así el selector de cantidad no revela cuántas unidades hay.
+export const topeCantidad = (stock) => (stock == null ? 10 : Math.min(stock, 10));
 
 export function CarritoProvider({ children }) {
   const { productos } = useDatos();
@@ -25,13 +26,14 @@ export function CarritoProvider({ children }) {
   // Detalle con precio actual del catálogo; se ignoran productos que ya no se venden o sin precio.
   const detalle = useMemo(() => lineas.flatMap((l) => {
     const p = productos.find((x) => x.id === l.productoId);
-    if (!p || p.precioCentavos == null) return [];
+    if (!p) return [];
     const v = variantesDe(p).find((x) => x.id === l.variante);
-    if (!v) return [];
+    const precio = v && precioDe(p, v);
+    if (precio == null) return [];
     const foto = p.fotos[v.foto ?? 0] ?? null;
     return [{
       clave: `${p.id}:${v.id}`, productoId: p.id, variante: v.id, varianteNombre: v.nombre,
-      nombre: p.nombre, precio: p.precioCentavos, cantidad: l.cantidad, foto, tono: p.tono,
+      nombre: p.nombre, precio, cantidad: l.cantidad, foto, tono: p.tono,
       tope: topeCantidad(v.stock ?? p.stock), ejemplo: !!p.ejemplo,
     }];
   }), [lineas, productos]);

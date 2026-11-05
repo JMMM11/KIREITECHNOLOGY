@@ -6,12 +6,19 @@ rules_version = '2';
 // y cambia el estado y la nota de seguimiento.
 // Citas: cualquiera las crea con campos validados; solo el administrador las lee y cambia su estado.
 // Comentarios: solo clientes con cuenta los escriben, nacen pendientes; el administrador los publica u oculta.
-// UID del administrador: Firebase > Authentication > Users.
+// Admins: el dueño (UID fijo abajo) y los que él agrega desde /admin > Clientes (colección "admins").
+// UID del dueño: Firebase > Authentication > Users.
 // Pruebas: npm run test:reglas (tests/reglas/).
 service cloud.firestore {
   match /databases/{database}/documents {
-    function esAdmin() {
+    // Dueño de la tienda: el único que da o quita acceso al panel. Debe coincidir con SITIO.duenoUid (src/data/sitio.js).
+    function esDuenoTienda() {
       return request.auth != null && request.auth.uid == 'SiAnST1DF5RATL2pq75ehocMwD73';
+    }
+    // Administradores: el dueño y quien esté en la colección "admins".
+    function esAdmin() {
+      return esDuenoTienda()
+        || (request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
     }
     function esDueno(uid) {
       return request.auth != null && request.auth.uid == uid;
@@ -39,8 +46,10 @@ service cloud.firestore {
       allow read: if esDueno(uid) || esAdmin();
       allow delete: if esDueno(uid);
       allow create, update: if esDueno(uid)
-        && request.resource.data.keys().hasOnly(['nombre', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
+        && request.resource.data.keys().hasOnly(['nombre', 'correo', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
         && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 80
+        // El correo solo puede ser el de la propia cuenta: el dueño lo usa para saber a quién da acceso al panel.
+        && (!('correo' in request.resource.data) || request.resource.data.correo == request.auth.token.email)
         && (!('direcciones' in request.resource.data) || request.resource.data.direcciones.size() <= 10)
         && (!('favoritos' in request.resource.data) || request.resource.data.favoritos.size() <= 200);
     }
@@ -115,6 +124,17 @@ service cloud.firestore {
       allow update: if esAdmin()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado'])
         && request.resource.data.estado in ['nueva', 'confirmada', 'completada', 'cancelada'];
+    }
+
+    // Acceso al panel. Cada quien puede ver si es admin; solo el dueño agrega o quita.
+    match /admins/{uid} {
+      allow read: if esAdmin() || esDueno(uid);
+      allow create: if esDuenoTienda()
+        && request.resource.data.keys().hasOnly(['nombre', 'correo', 'agregadoEn'])
+        && texto(request.resource.data.nombre, 0, 80) && texto(request.resource.data.correo, 0, 120)
+        && request.resource.data.agregadoEn == request.time;
+      allow update: if false;
+      allow delete: if esDuenoTienda();
     }
 
     // La forma debe coincidir con enviarComentario (src/services/comentarios.js).

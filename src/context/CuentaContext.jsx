@@ -10,6 +10,7 @@ const armar = (u, datos) => ({ nombre: u.displayName ?? '', telefono: '', direcc
 export function CuentaProvider({ children }) {
   const [usuario, setUsuario] = useState(conFirebase ? undefined : null);
   const [perfil, setPerfil] = useState(null);
+  const [esAdmin, setEsAdmin] = useState(false);
 
   useEffect(() => {
     if (!conFirebase) return undefined;
@@ -18,8 +19,11 @@ export function CuentaProvider({ children }) {
     cuenta().then((m) => {
       if (!vivo) return;
       soltar = m.vigilar(async (u) => {
-        setPerfil(u ? armar(u, await m.leerPerfil(u.uid).catch(() => null)) : null);
+        const guardado = u ? await m.leerPerfil(u.uid).catch(() => null) : null;
+        setPerfil(u ? armar(u, guardado) : null);
         setUsuario(u);
+        setEsAdmin(u ? await m.esAdmin(u.uid) : false);
+        if (u) m.completarCorreo(u, guardado).catch(() => {});
       });
     });
     return () => { vivo = false; soltar(); };
@@ -48,9 +52,9 @@ export function CuentaProvider({ children }) {
   }, [usuario, perfil]);
 
   const valor = useMemo(() => ({
-    usuario, perfil, actualizarPerfil, recargarPerfil, alternarFavorito, cuenta,
+    usuario, perfil, esAdmin, actualizarPerfil, recargarPerfil, alternarFavorito, cuenta,
     esFavorito: (id) => Boolean(perfil?.favoritos.includes(id)),
-  }), [usuario, perfil, actualizarPerfil, recargarPerfil, alternarFavorito]);
+  }), [usuario, perfil, esAdmin, actualizarPerfil, recargarPerfil, alternarFavorito]);
 
   return <CuentaContext.Provider value={valor}>{children}</CuentaContext.Provider>;
 }

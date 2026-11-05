@@ -2,30 +2,37 @@ import { useEffect, useState } from 'react';
 import Badge from '../ui/Badge.jsx';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { fechaCorta } from '../../lib/cuenta.js';
-import { ESTADOS_PEDIDO, etiquetaPedido } from '../../lib/pedidos.js';
+import { ESTADOS_PEDIDO, cambioStock, etiquetaPedido, lineasConPrecioDistinto } from '../../lib/pedidos.js';
+import { precioDe } from '../../lib/catalogo.js';
 import { normalizarTelefono } from '../../lib/validacion.js';
 import { ICONOS_ESTADO } from '../iconos.js';
-import { actualizar, pedidos } from '../../services/admin.js';
+import { actualizar, ajustarStock, pedidos, todosLosProductos } from '../../services/admin.js';
 import s from './Admin.module.css';
 
 const ENTREGA = { retiro: 'Retiro', punto_encuentro: 'Punto de encuentro', domicilio: 'Envío a domicilio' };
 const PAGO = { linea: 'En línea', contra_entrega: 'Contra entrega' };
 const ACTIVOS = (p) => !['entregado', 'cancelado'].includes(p.estado);
 
-function FilaPedido({ pedido: p, alGuardar }) {
+function FilaPedido({ pedido: p, catalogo, alGuardar }) {
   const [f, setF] = useState({ estado: p.estado, seguimiento: p.seguimiento ?? '' });
   const [msg, setMsg] = useState('');
   const cambiado = f.estado !== p.estado || f.seguimiento !== (p.seguimiento ?? '');
   const c = p.cliente ?? {};
+  const distintos = catalogo && ACTIVOS(p) ? lineasConPrecioDistinto(p, catalogo, precioDe) : [];
 
   async function guardar(e) {
     e.preventDefault();
     setMsg('Guardando...');
     try {
       await actualizar(p.id, f);
-      setMsg('Guardado.');
       alGuardar(p.id, { ...f, seguimiento: f.seguimiento.trim() });
-    } catch { setMsg('No se pudo guardar. Revisa tu conexión.'); }
+    } catch { setMsg('No se pudo guardar. Revisa tu conexión.'); return; }
+    const signo = cambioStock(p.estado, f.estado);
+    if (!signo) { setMsg('Guardado.'); return; }
+    try {
+      await ajustarStock(p.items, signo);
+      setMsg(signo < 0 ? 'Guardado. Se descontaron las unidades.' : 'Guardado. Se devolvieron las unidades.');
+    } catch { setMsg('Estado guardado, pero no se pudieron ajustar las unidades. Revísalas en Productos.'); }
   }
 
   return (
@@ -46,6 +53,11 @@ function FilaPedido({ pedido: p, alGuardar }) {
           <li key={n}>{i.cantidad} x {i.nombre}{i.varianteNombre ? ` (${i.varianteNombre})` : ''}: {formatoPrecio(i.precioCentavos * i.cantidad)}</li>
         ))}
       </ul>
+      {distintos.length > 0 && (
+        <p className="error-campo" role="alert">
+          Precio distinto al del catálogo en: {distintos.map((i) => i.nombre).join(', ')}. Revísalo antes de confirmar.
+        </p>
+      )}
       <p className="chico">
         {ENTREGA[p.entrega] ?? p.entrega} {p.envioCentavos == null ? '(costo por confirmar)' : `(${formatoPrecio(p.envioCentavos)})`}
         {' · '}{PAGO[p.pago] ?? p.pago}
@@ -75,11 +87,12 @@ function FilaPedido({ pedido: p, alGuardar }) {
 // Todos los pedidos, con o sin cuenta. El estado y la nota que se guardan aquí son los que el cliente ve en Mis pedidos.
 export default function PedidosAdmin() {
   const [lista, setLista] = useState(null);
+  const [catalogo, setCatalogo] = useState(null);
   const [filtro, setFiltro] = useState('activos');
   const [error, setError] = useState('');
 
-  const cargar = () => pedidos()
-    .then((l) => { setLista(l); setError(''); })
+  const cargar = () => Promise.all([pedidos(), todosLosProductos()])
+    .then(([l, productos]) => { setLista(l); setCatalogo(productos); setError(''); })
     .catch(() => setError('No pudimos leer los pedidos. Revisa que las reglas nuevas estén publicadas.'));
   useEffect(() => { cargar(); }, []);
 
@@ -105,7 +118,7 @@ export default function PedidosAdmin() {
       {error && <p className="error-campo" role="alert">{error}</p>}
       {lista === null && !error && <p className="suave">Cargando pedidos...</p>}
       {lista && visibles.length === 0 && <p className={s.vacio}>{lista.length ? 'No hay pedidos con este estado.' : 'Todavía no hay pedidos.'}</p>}
-      {visibles.length > 0 && <ul className={s.pedidos}>{visibles.map((p) => <FilaPedido key={p.id} pedido={p} alGuardar={alGuardar} />)}</ul>}
+      {visibles.length > 0 && <ul className={s.pedidos}>{visibles.map((p) => <FilaPedido key={p.id} pedido={p} catalogo={catalogo} alGuardar={alGuardar} />)}</ul>}
     </section>
   );
 }

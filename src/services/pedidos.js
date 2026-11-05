@@ -6,7 +6,9 @@ import { idPedido, siguienteNumero } from '../lib/pedidos.js';
 // aunque dos clientes compren a la vez. firestore.rules exige los dos pasos juntos.
 // Si otro cliente tomó el mismo número, Firestore responde permission-denied (las reglas ven el contador ya subido)
 // en vez de reintentar solo; por eso se reintenta aquí con el número siguiente.
-export async function guardarPedido(db, datos, intentos = 8) {
+// Espera creciente y al azar entre intentos: si muchos compran a la vez, no chocan otra vez al mismo tiempo.
+// Medido en tests/carga/pedidos-concurrentes.mjs.
+export async function guardarPedido(db, datos, intentos = 14) {
   const contador = doc(db, 'contadores', 'pedidos');
   for (let i = 1; ; i += 1) {
     try {
@@ -20,7 +22,7 @@ export async function guardarPedido(db, datos, intentos = 8) {
       });
     } catch (e) {
       if (e.code !== 'permission-denied' || i >= intentos) throw e;
-      await new Promise((listo) => setTimeout(listo, 50 * i + Math.random() * 100));
+      await new Promise((listo) => setTimeout(listo, Math.random() * Math.min(2000, 100 * 2 ** i)));
     }
   }
 }

@@ -19,6 +19,20 @@ export const HERO = {
 export const INICIO = {
   secciones: { titulo: 'Elige una sección.' },
   pedidos: { titulo: 'Lo más pedido.', enlace: 'Ver toda la tecnología' },
+  // Logos recortados de la imagen de marcas del dueño (public/marcas/).
+  marcas: {
+    titulo: 'Marcas con las que trabajamos.',
+    lista: [
+      { nombre: 'Lenovo', logo: 'marcas/lenovo.png', ancho: 107, alto: 42 },
+      { nombre: 'Xiaomi', logo: 'marcas/xiaomi.png', ancho: 90, alto: 85 },
+      { nombre: 'LIGE', logo: 'marcas/lige.png', ancho: 130, alto: 66 },
+      { nombre: 'Razer', logo: 'marcas/razer.png', ancho: 112, alto: 108 },
+      { nombre: 'Samsung', logo: 'marcas/samsung.png', ancho: 98, alto: 40 },
+      { nombre: 'Huawei', logo: 'marcas/huawei.png', ancho: 100, alto: 90 },
+      { nombre: 'SHEIN', logo: 'marcas/shein.png', ancho: 100, alto: 34 },
+      { nombre: 'Pokémon', logo: 'marcas/pokemon.png', ancho: 200, alto: 85 },
+    ],
+  },
   garantias: [
     { id: 'garantia', valor: 1, sufijo: ' semana', texto: 'de garantía en electrónica' },
     { id: 'retiro', valor: 0, prefijo: '$', texto: 'por retiro, lo coordinamos por WhatsApp' },
@@ -50,9 +64,18 @@ export const AYUDA = [
   {
     id: 'pagos', titulo: 'Pagos', resumen: `${SITIO.pagoEnLinea} o efectivo`,
     parrafos: [
-      `Pago en línea con ${SITIO.pagoEnLinea}: [pendiente]. Mientras tanto, te enviamos los datos de pago por WhatsApp.`,
+      `Pago con ${SITIO.pagoEnLinea}: búscanos como ${SITIO.yappy} y envíanos el comprobante por WhatsApp.`,
       `Contra entrega: en pedidos desde ${formatoPrecio(TARIFAS.contraEntregaMinimo)}, con un cargo de ${formatoPrecio(TARIFAS.contraEntregaCargo)}.`,
       'No guardamos datos de pago.',
+    ],
+  },
+  {
+    id: 'por-pedido', titulo: 'Cómo hacer un pedido', resumen: 'Abono del 50% por Yappy, llega en 15 días',
+    parrafos: [
+      'Para realizar pedidos en la tienda puedes escribir a nuestro WhatsApp y seguir estos pasos:',
+      ...SITIO.pasosPedido.map((p, i) => `${i + 1}. ${p}`),
+      SITIO.tiempoPorPedido,
+      `Los productos de más de ${formatoPrecio(SITIO.porPedidoDesde)} se traen por pedido.`,
     ],
   },
   {
@@ -103,7 +126,7 @@ export const LEGAL = [
       'Desde Mi cuenta, en Seguridad y privacidad, puedes descargar una copia de tus datos y eliminar tu cuenta. Para cualquier otro derecho, escríbenos por WhatsApp al +507 6156 0839 o al correo [pendiente], indicando tu nombre y el derecho que deseas ejercer. Respondemos en un plazo máximo de 30 días hábiles.',
 
       '## 7. Transferencia de datos',
-      'Kirei Technology no vende, alquila ni cede tus datos a terceros con fines comerciales. Para operar la tienda utilizamos servicios de Firebase y Google Cloud (Google LLC), que actúan como encargados del tratamiento bajo sus condiciones contractuales y medidas de seguridad. Por esta razón, tus datos pueden almacenarse en servidores ubicados fuera de Panamá. Para subir fotos de productos usamos Cloudinary, que solo recibe las imágenes que publica el administrador.',
+      'Kirei Technology no vende, alquila ni cede tus datos a terceros con fines comerciales. Para operar la tienda utilizamos servicios de Firebase y Google Cloud (Google LLC), que actúan como encargados del tratamiento bajo sus condiciones contractuales y medidas de seguridad. Por esta razón, tus datos pueden almacenarse en servidores ubicados fuera de Panamá. Para subir fotos de productos usamos Cloudinary, que solo recibe las imágenes que publica el administrador. Si activamos el monitoreo de errores con Sentry (Functional Software, Inc., Estados Unidos), este recibe informes técnicos de fallos de la página (qué falló, en qué archivo y en qué navegador), sin tu nombre, correo, teléfono, dirección ni dirección IP. [Pendiente: confirmar si se activa Sentry y si se graban repeticiones de sesión.]',
 
       '## 8. Seguridad',
       'Aplicamos medidas técnicas y organizativas razonables para proteger tus datos contra acceso no autorizado, pérdida o destrucción: cifrado en tránsito (HTTPS/TLS), controles de acceso por roles en la base de datos y copias de seguridad periódicas. Solo el administrador de la tienda puede ver la lista de clientes, y el acceso al panel exige una cuenta protegida por contraseña. En caso de incidente de seguridad que afecte tus datos, te notificaremos en el plazo legalmente exigido.',
@@ -147,7 +170,7 @@ export const LEGAL = [
 
       '## 5. Métodos de pago',
       'Aceptamos los siguientes métodos de pago:',
-      ['Yappy (pago móvil): los datos se envían por WhatsApp al confirmar el pedido.', 'Contra entrega: disponible en pedidos desde $30.00, con un cargo adicional de $5.00. Solo para entregas dentro de Panamá.'],
+      ['Yappy (pago móvil): al usuario @kireitechnology. Envía el comprobante por WhatsApp.', 'Productos por pedido (los de más de $60.00): se reservan con un abono del 50% y llegan en 15 días, sin contar fines de semana. El saldo se paga al entregar el producto.', 'Contra entrega: disponible en pedidos desde $30.00, con un cargo adicional de $5.00. Solo para entregas dentro de Panamá.'],
       'No almacenamos datos de tarjetas de crédito ni débito. Las transacciones se procesan a través de plataformas de pago seguras.',
 
       '## 6. Entregas y envíos',

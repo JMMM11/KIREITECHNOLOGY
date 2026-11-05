@@ -30,6 +30,9 @@
 .tituloSeccion { margin-bottom: 24px; }
 .cabecera { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
 .bandaBlanca { background: var(--superficie); }
+/* Fondo blanco fijo: los logos vienen recortados sobre blanco. */
+.marca { display: grid; place-items: center; height: 120px; padding: 18px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: #FFFFFF; }
+.marca img { width: auto; height: auto; max-width: 100%; max-height: 72px; object-fit: contain; }
 
 /* Dos secciones: Tecnología y Anime */
 .secciones { display: grid; gap: 16px; }

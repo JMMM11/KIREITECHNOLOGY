@@ -8,14 +8,14 @@ import s from './BotonFavorito.module.css';
 // Corazón para guardar productos. Sin sesión lleva a la cuenta y luego devuelve al cliente donde estaba.
 export default function BotonFavorito({ producto, conTexto = false, className = '' }) {
   const { usuario, esFavorito, alternarFavorito } = useCuenta();
-  const [, navegar] = useLocation();
+  const [ubicacion, navegar] = useLocation();
   if (!conFirebase) return null;
   const activo = esFavorito(producto.id);
   const I = activo ? ICONOS.favorito.lleno : ICONOS.favorito.de;
 
   async function clic() {
     if (await alternarFavorito(producto.id)) return;
-    try { sessionStorage.setItem('kirei:volver', window.location.pathname); } catch { /* sin almacenamiento: vuelve al inicio */ }
+    try { sessionStorage.setItem('kirei:volver', ubicacion); } catch { /* sin almacenamiento: vuelve al inicio */ }
     navegar('/cuenta');
   }
 

@@ -78,6 +78,7 @@ erDiagram
   USUARIOS ||--o{ COMENTARIOS : escribe
   PRODUCTOS ||--o{ COMENTARIOS : recibe
   CONTADORES ||--|| PEDIDOS : numera
+  USUARIOS ||--o| ADMINS : "puede tener acceso"
 
   PRODUCTOS {
     string id
@@ -109,6 +110,12 @@ erDiagram
   }
   CONTADORES {
     int ultimo
+  }
+  ADMINS {
+    string uid "id del documento"
+    string nombre
+    string correo
+    timestamp agregadoEn
   }
   CITAS {
     string nombre

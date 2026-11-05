@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { ESTADOS_PEDIDO, armarPedido, etiquetaPedido, idPedido, siguienteNumero } from '../src/lib/pedidos.js';
+import { ESTADOS_PEDIDO, armarPedido, cambioStock, etiquetaPedido, idPedido, lineasConPrecioDistinto, siguienteNumero } from '../src/lib/pedidos.js';
+import { precioDe } from '../src/lib/catalogo.js';
 import { crearPedido } from '../src/services/tienda.js';
 
 const ENTRADA = {
@@ -60,4 +61,22 @@ test('reglas y panel usan los mismos estados de pedido', () => {
   assert.ok(reglas.includes(`[${ESTADOS_PEDIDO.map((e) => `'${e}'`).join(', ')}]`));
   const tokens = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
   for (const e of ESTADOS_PEDIDO) assert.ok(tokens.includes(`--e-${e}-fg`), `falta el color de "${e}" en tokens.css`);
+});
+
+test('el stock se descuenta al confirmar y vuelve al cancelar', () => {
+  assert.equal(cambioStock('recibido', 'confirmado'), -1);
+  assert.equal(cambioStock('confirmado', 'enviado'), 0);
+  assert.equal(cambioStock('enviado', 'cancelado'), 1);
+  assert.equal(cambioStock('recibido', 'cancelado'), 0);
+  assert.equal(cambioStock('cancelado', 'entregado'), -1);
+});
+
+test('el panel detecta líneas con precio distinto al del catálogo', () => {
+  const productos = [{ id: 'gm2', precioCentavos: 2500, variantes: [{ id: 'negro', precioCentavos: 3000 }, { id: 'blanco' }] }];
+  const pedido = { items: [
+    { productoId: 'gm2', variante: 'negro', precioCentavos: 3000 },
+    { productoId: 'gm2', variante: 'blanco', precioCentavos: 100 },
+    { productoId: 'no-existe', variante: 'unica', precioCentavos: 500 },
+  ] };
+  assert.deepEqual(lineasConPrecioDistinto(pedido, productos, precioDe).map((i) => i.precioCentavos), [100, 500]);
 });

@@ -25,6 +25,13 @@
 .muestra:has(input:checked) { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--marca); }
 .muestra:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 4px; }
 .muestra:has(input:disabled) { opacity: 0.35; cursor: not-allowed; }
+.opcionTexto { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--borde-fuerte); border-radius: 999px; font-weight: 600; cursor: pointer; }
+.opcionTexto input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.opcionTexto:has(input:checked) { border-color: var(--marca); box-shadow: 0 0 0 1px var(--marca); }
+.opcionTexto:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 3px; }
+.opcionTexto:has(input:disabled) { opacity: 0.35; cursor: not-allowed; }
+.porPedido { padding: 12px 14px; border-radius: var(--radio-detalle); background: var(--e-oferta-bg); color: var(--e-oferta-fg); font-size: var(--t-chico); }
+.quedan { font-weight: 600; color: var(--e-ultimas-fg); }
 .cantidad { display: grid; gap: 8px; }
 .stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-control); }
 .stepper button { display: grid; place-items: center; width: 48px; height: 46px; padding: 0; border: 0; background: none; border-radius: var(--radio-control); }

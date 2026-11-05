@@ -18,11 +18,12 @@ const fotosProductos = {
 };
 
 // El build queda en la raíz del repo, que es lo que publica Firebase Hosting.
-// base '/': con rutas sin # una ruta relativa se rompe al recargar /producto/x (buscaría /producto/assets/...).
+// base absoluta: con rutas sin # una ruta relativa se rompe al recargar /producto/x (buscaría /producto/assets/...).
+// GitHub Pages vive en /KIREITECHNOLOGY/: su build (npm run build:pages) pasa BASE_PATH con esa carpeta.
 export default defineConfig({
   plugins: [react(), fotosProductos],
   root: 'src',
-  base: '/',
+  base: process.env.BASE_PATH ?? '/',
   publicDir: '../public',
   envDir: '..',
   build: { outDir: '..', emptyOutDir: false },

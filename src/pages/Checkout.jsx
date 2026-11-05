@@ -202,8 +202,8 @@ export default function Checkout() {
                   <div className={s.opciones} role="radiogroup" aria-label="Forma de pago">
                     <label className={s.opcion}>
                       <input type="radio" name="pago" value="linea" checked={pago === 'linea'} onChange={cambiar('pago')} />
-                      <span className={s.opcionNombre}>Pago en línea con {SITIO.pagoEnLinea}</span>
-                      <span className={s.opcionDetalle}>[pendiente] Mientras se conecta, te enviamos los datos de pago por WhatsApp.</span>
+                      <span className={s.opcionNombre}>Pago con {SITIO.pagoEnLinea}</span>
+                      <span className={s.opcionDetalle}>Búscanos como {SITIO.yappy} y envíanos el comprobante por WhatsApp.</span>
                     </label>
                     <label className={s.opcion}>
                       <input type="radio" name="pago" value="contra_entrega" checked={pago === 'contra_entrega'} onChange={cambiar('pago')} disabled={!totales.contraEntregaPermitida} />
@@ -215,6 +215,7 @@ export default function Checkout() {
                       </span>
                     </label>
                   </div>
+                  {lineas.some((l) => l.precio > SITIO.porPedidoDesde) && <p className={s.cuentaAviso} role="note">{SITIO.porPedido}</p>}
                   <Campo como="textarea" etiqueta="Nota" opcional placeholder="Algo que debamos saber" value={f.nota} onChange={cambiar('nota')} />
                   <div className="campo">
                     <label className={s.acepto}>

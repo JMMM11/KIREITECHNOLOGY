@@ -5,6 +5,8 @@
 }
 .saltar:focus { top: 12px; }
 .main { display: block; min-height: 60svh; }
+.barraAdmin { background: var(--marca); color: #FFFFFF; --foco: #FFFFFF; }
+.barraAdminInterior { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 8px; font-size: var(--t-chico); font-weight: 600; }
 .aviso { background: var(--error-bg); color: var(--error); border-bottom: 1px solid currentColor; }
 .avisoInterior { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 10px; font-size: var(--t-chico); }
 .main:focus { outline: none; }
