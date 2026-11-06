@@ -9,13 +9,21 @@ import ErrorDatos from '../components/ui/ErrorDatos.jsx';
 import { useDatos } from '../context/DatosContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import { registrarVisto } from '../lib/vistos.js';
+import { datosProducto } from '../lib/seo.js';
 import s from './Producto.module.css';
 
 export default function Producto({ params }) {
   const { productos, cargando, error } = useDatos();
   const p = productos.find((x) => x.slug === params.slug);
-  useTituloPagina(p?.nombre ?? 'Producto');
+  useTituloPagina(p?.nombre ?? 'Producto', p ? `${p.nombre} en Panamá. ${p.descripcion}`.slice(0, 160) : undefined);
   useEffect(() => { if (p) registrarVisto(p.id); }, [p]);
+  // Datos del producto para Google; se quitan al salir de la página.
+  useEffect(() => {
+    if (!p) return undefined;
+    const script = Object.assign(document.createElement('script'), { type: 'application/ld+json', textContent: JSON.stringify(datosProducto(p)) });
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, [p]);
 
   if (cargando) return <EsqueletoProducto />;
   if (!p && error) return <ErrorDatos />;

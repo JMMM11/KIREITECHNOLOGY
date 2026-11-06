@@ -29,7 +29,7 @@ export default function Catalogo({ params = {}, buscar = false }) {
   const categoria = subcategorias.find((c) => c.id === params.categoria);
   const catId = categoria?.id ?? '';
   const enSeccion = useMemo(() => productos.filter((p) => subcategorias.some((c) => c.id === p.categoriaId)), [productos, subcategorias]);
-  useTituloPagina(categoria?.nombre ?? (buscar ? 'Buscar' : TECNO.nombre));
+  useTituloPagina(categoria?.nombre ?? (buscar ? 'Buscar' : TECNO.nombre), categoria ? `${categoria.nombre} en Panamá: ${categoria.frase.toLowerCase()}. Retiro gratis o envío a domicilio.` : 'Audífonos inalámbricos, relojes inteligentes y accesorios en Panamá con garantía. Lenovo, Xiaomi, LIGE y más.');
 
   const lista = useMemo(
     () => filtrarCatalogo(enSeccion, { categoria: catId, texto, orden, soloDisponibles }),

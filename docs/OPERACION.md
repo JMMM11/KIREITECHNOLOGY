@@ -12,6 +12,14 @@ Guía para publicar la tienda, volver atrás y actuar cuando algo sale mal.
 
 ## Publicar
 
+La primera vez en cada computadora hay que iniciar sesión en Firebase (si no, sale `Failed to authenticate, have you run firebase login?`):
+
+```bash
+npx firebase-tools login
+```
+
+Se abre el navegador: entra con la cuenta de Google dueña del proyecto `kirie-technology` y acepta. Después:
+
 ```bash
 npm run build
 npx firebase-tools deploy --only firestore:rules,hosting
@@ -22,6 +30,54 @@ npx firebase-tools deploy --only firestore:rules,hosting
 - Publica las reglas **antes o junto** con una web que use una colección nueva. Si no, esa sección mostrará el error de permisos.
 
 Después de publicar, abre la tienda en una ventana privada, abre la consola del navegador (F12) y revisa que no haya errores rojos, sobre todo de `Content Security Policy`.
+
+## Que Google encuentre la tienda
+
+Lo que ya hace el código: título y descripción propios en cada página, datos de negocio local (Panamá Oeste), preguntas frecuentes y, en cada producto, nombre, precio y disponibilidad en el formato que Google usa para mostrarlos en los resultados. `npm run build` genera `sitemap.xml` con cada producto publicado y `robots.txt`, que deja fuera el panel, la cuenta y el checkout.
+
+Lo que tienes que hacer tú, una vez, cuando la tienda esté publicada en Firebase:
+
+1. Entra a [Google Search Console](https://search.google.com/search-console) con tu cuenta de Google.
+2. Agrega una propiedad de tipo **Prefijo de URL** con la dirección de `SITIO.url` (hoy `https://kirie-technology-93481.web.app`).
+3. Verifícala con la opción **Etiqueta HTML**: copia solo el valor de `content` y pásamelo para ponerlo en `src/index.html`, o pégalo tú en el `<head>` como `<meta name="google-site-verification" content="...">`. Publica y pulsa **Verificar**.
+4. En **Sitemaps**, envía `sitemap.xml`.
+5. En **Inspección de URL**, pega la portada y pulsa **Solicitar indexación**. Google tarda de días a semanas en mostrarla.
+6. Revisa un producto en la [prueba de resultados enriquecidos](https://search.google.com/test/rich-results): debe detectar "Producto".
+7. Crea tu ficha gratis en [Google Business Profile](https://www.google.com/business/) como negocio en línea de Panamá Oeste (sin dirección pública) con el enlace de la tienda y el WhatsApp. Es lo que más ayuda en búsquedas como "audífonos Panamá".
+
+Lo que más ayuda después: que cada producto tenga fotos y descripción propias, enlazar la tienda desde Instagram y WhatsApp Business, y pedir a los clientes que comenten.
+
+## Dominio propio
+
+Cuando compres un dominio (por ejemplo `kireitechnology.com`):
+
+1. Cómpralo donde prefieras (Google Domains ya no existe; sirven Namecheap, Cloudflare o un registrador panameño para `.com.pa`).
+2. Firebase Console > Hosting > **Agregar dominio personalizado**. Firebase te da registros DNS (tipo A y TXT): cópialos en el panel del registrador. El certificado HTTPS se crea solo, en minutos u horas.
+3. Cambia `url` en `src/data/sitio.js` por `https://tudominio.com` (sin `/` al final). Con eso se actualizan la dirección canónica, Open Graph, los datos para Google, el sitemap y robots.txt.
+4. Firebase Console > Authentication > Configuración > **Dominios autorizados**: agrega el dominio (si no, el inicio de sesión con Google y Apple falla ahí).
+5. `npm run build` y `npx firebase-tools deploy --only hosting`.
+6. Search Console: agrega el dominio nuevo como propiedad y envía otra vez el sitemap. En la propiedad vieja usa **Cambio de dirección**.
+7. Actualiza el enlace en Instagram, WhatsApp Business y Google Business Profile.
+
+## Sentry: aviso cuando algo falla
+
+Sentry es un servicio que te avisa por correo cuando a un cliente le falla algo en la página (por ejemplo, un botón que da error en cierto celular), con el archivo y la línea donde ocurrió. Así lo arreglas antes de que te escriban. La tienda ya lo trae listo pero apagado; no envía nombre, correo, teléfono ni IP.
+
+1. Crea una cuenta en [sentry.io](https://sentry.io) (el plan gratuito alcanza para una tienda pequeña).
+2. Crea un proyecto de tipo **React**. Sentry te muestra un **DSN** (una dirección que empieza con `https://` y termina en `.ingest.sentry.io/...`). Es público por diseño.
+3. Ponlo en `.env.local` como `VITE_SENTRY_DSN=...` y en GitHub como variable `VITE_SENTRY_DSN`. Compila y publica.
+4. En Sentry: Settings > Security & Privacy > activa **Prevent Storing of IP Addresses**.
+5. Deja `VITE_SENTRY_REPLAY=false` salvo que quieras grabar las sesiones con error; si lo activas, hay que avisarlo en la política de privacidad.
+6. Nunca pongas el "auth token" de Sentry en el proyecto: es secreto.
+
+## Analítica: Google Analytics y Meta Pixel
+
+- **Google Analytics 4** te dice cuántas personas visitan, desde dónde llegan y qué productos miran. Es gratis.
+- **Meta Pixel** sirve para anuncios pagados en Facebook e Instagram: mide qué anuncio trajo a quién y arma públicos para volver a mostrarles anuncios. Solo vale la pena si vas a pagar publicidad en Meta.
+
+Las dos usan cookies que identifican a la persona, así que antes hay que agregar un aviso de cookies con "Aceptar" y "Rechazar", y no cargar nada hasta que acepte. También hay que actualizar la política de privacidad y la CSP de `firebase.json`.
+
+Recomendación: por ahora no instales ninguna. Usa Search Console (gratis y sin cookies) para ver qué buscan en Google para llegar a ti, y las estadísticas de Instagram para tus publicaciones. Si después quieres Google Analytics o vas a pagar anuncios en Meta, crea la cuenta, pásame el ID de medición (`G-...`) o el ID del píxel y agrego el aviso de cookies con ellos.
 
 ## Productos
 

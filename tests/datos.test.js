@@ -73,7 +73,8 @@ test('cada foto de producto y de portada existe', async () => {
 
 test('ruta de la copia liviana de una foto', async () => {
   const { anchosWeb, rutaWeb } = await import('../src/lib/fotos.js');
-  assert.equal(rutaWeb('Productos/Lenovo GM2 Pro (1).png', 640), 'Productos/web/Lenovo GM2 Pro (1)-640.jpg');
+  assert.equal(rutaWeb('Productos/Lenovo GM2 Pro (1).png', 640), 'Productos/web/Lenovo GM2 Pro (1).png-640.jpg');
+  assert.notEqual(rutaWeb('Productos/X (1).png', 640), rutaWeb('Productos/X (1).jpeg', 640));
   assert.deepEqual(anchosWeb('Productos/principal2.png'), [960, 1920]);
   assert.deepEqual(anchosWeb('Productos/Hogwarts (2).jpg'), [640, 1280]);
 });
@@ -83,4 +84,17 @@ test('el UID del dueño es el mismo en el código y en firestore.rules', async (
   const { SITIO } = await import('../src/data/sitio.js');
   const reglas = readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8');
   assert.ok(reglas.includes(`request.auth.uid == '${SITIO.duenoUid}'`));
+});
+
+test('datos de producto para Google: precio, rango y disponibilidad', async () => {
+  const { datosProducto } = await import('../src/lib/seo.js');
+  const porId = (id) => PRODUCTOS.find((p) => p.id === id);
+  const gm2 = datosProducto(porId('lenovo-gm2-pro'));
+  assert.equal(gm2['@type'], 'Product');
+  assert.deepEqual([gm2.offers['@type'], gm2.offers.lowPrice, gm2.offers.highPrice], ['AggregateOffer', '25.00', '30.00']);
+  assert.ok(gm2.image[0].startsWith('https://') && gm2.image[0].includes('/Productos/web/'));
+  assert.equal(datosProducto(porId('redmi-buds-4-harry-potter')).offers.availability, 'https://schema.org/BackOrder');
+  assert.equal(datosProducto(porId('lenovo-thinkplus-xt62')).offers.price, '20.00');
+  assert.equal(datosProducto(porId('lige-correa-metal')).offers, undefined);
+  assert.equal(datosProducto({ ...porId('lenovo-thinkplus-xt62'), stock: 0 }).offers.availability, 'https://schema.org/OutOfStock');
 });

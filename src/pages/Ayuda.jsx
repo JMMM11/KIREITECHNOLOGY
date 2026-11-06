@@ -11,7 +11,7 @@ import s from './Paginas.module.css';
 
 // Cada tema es una fila que se abre; la lista misma es el índice. /ayuda/pagos abre "Pagos".
 export default function Ayuda({ params = {} }) {
-  useTituloPagina('Ayuda');
+  useTituloPagina('Ayuda', 'Cómo comprar en Kirei Technology: pedidos por WhatsApp, pago con Yappy, entregas en Panamá y garantía.');
   const [abierto, setAbierto] = useState(params.seccion ?? null);
 
   useEffect(() => {

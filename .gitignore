@@ -11,3 +11,4 @@ _e2e_emulador/
 test-results/
 playwright-report/
 _sentry/
+dist/

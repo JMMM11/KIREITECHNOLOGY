@@ -12,7 +12,7 @@ import s from './Paginas.module.css';
 
 // Muestra "Próximamente" mientras no haya productos anime publicados.
 export default function Anime() {
-  useTituloPagina('Anime');
+  useTituloPagina('Anime', 'Accesorios anime en Panamá, como relojes de bolsillo de One Piece. Envío a domicilio o retiro gratis.');
   const { productos, cargando, error } = useDatos();
   const lista = productos.filter((p) => p.categoriaId === 'anime');
 

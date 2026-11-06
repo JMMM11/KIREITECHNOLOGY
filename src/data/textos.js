@@ -101,7 +101,7 @@ export const LEGAL = [
       'Esta política explica cómo Kirei Technology recopila, usa y protege tus datos personales, de conformidad con la Ley 81 de 2019 sobre Protección de Datos Personales de la República de Panamá (LPDP) y su Decreto Ejecutivo 285 de 2021.',
 
       '## 1. Responsable del tratamiento',
-      'El responsable del tratamiento de tus datos es Kirei Technology, con domicilio en Panamá Oeste, Montelimar, Calle Los Vientos [pendiente: número de local y RUC]. Puedes contactarnos por WhatsApp al +507 6156 0839 o al correo [pendiente].',
+      'El responsable del tratamiento de tus datos es [pendiente: nombre completo], persona natural que opera la tienda en línea Kirei Technology desde Panamá Oeste (RUC [pendiente]). No tenemos local abierto al público. Puedes contactar al responsable por WhatsApp al +507 6156 0839 o al correo [pendiente].',
 
       '## 2. Datos que recopilamos',
       'Recopilamos únicamente los datos necesarios para gestionar tu pedido o cita:',
@@ -118,7 +118,7 @@ export const LEGAL = [
       ['Ejecución de un contrato de compraventa: para procesar tu pedido.', 'Consentimiento del titular: cuando nos proporcionas datos de forma voluntaria, como tu correo.', 'Interés legítimo: para comunicarte el estado de tu pedido y atender tus reclamos.', 'Cumplimiento de obligación legal: para efectos fiscales y comerciales.'],
 
       '## 5. Tiempo de conservación',
-      'Conservamos tus datos mientras sea necesario para los fines indicados. El historial de pedidos se conserva por un máximo de 5 años, en cumplimiento de las obligaciones fiscales y comerciales de la República de Panamá. Los comentarios publicados se conservan hasta que los borres o los ocultemos. Tu cuenta se conserva mientras no la elimines. Después de esos plazos, los datos se eliminan o anonimizamos.',
+      'Conservamos tus datos mientras sea necesario para los fines indicados. El historial de pedidos se conserva por un máximo de 5 años, en cumplimiento de las obligaciones fiscales y comerciales de la República de Panamá. Las cuentas que no se usen durante [pendiente: número de años] años se eliminan junto con su perfil, direcciones, favoritos y comentarios; sus pedidos se conservan solo por el plazo fiscal. Los comentarios publicados se conservan hasta que los borres o los ocultemos. Tu cuenta se conserva mientras no la elimines. Después de esos plazos, los datos se eliminan o anonimizamos.',
 
       '## 6. Tus derechos (ARCO + portabilidad)',
       'De acuerdo con la Ley 81 de 2019, tienes los siguientes derechos sobre tus datos:',
@@ -135,7 +135,7 @@ export const LEGAL = [
       'La tienda no usa herramientas de analítica ni publicidad de terceros. Solo guarda en tu navegador lo necesario para tu sesión, tu carrito y la lista de productos que viste. Puedes borrarlo desde la configuración de tu navegador; si lo haces, tu carrito se vaciará y tendrás que volver a entrar a tu cuenta.',
 
       '## 10. Menores de edad',
-      'Esta tienda no está dirigida a menores de 18 años. Si eres menor, necesitas la autorización de tu padre, madre o tutor legal para realizar un pedido. No recopilamos datos de menores de forma consciente.',
+      'Esta tienda vende solo a personas mayores de 18 años. Al crear una cuenta o hacer un pedido confirmas que eres mayor de edad. No recopilamos datos de menores de forma consciente; si nos enteramos de que una cuenta es de un menor, la eliminamos.',
 
       '## 11. Modificaciones a esta política',
       'Podemos actualizar esta política cuando cambien nuestras prácticas o la legislación. La fecha de la última actualización aparece al pie de este documento. El uso continuado de la tienda después de la publicación de cambios implica la aceptación de la política actualizada.',
@@ -154,13 +154,14 @@ export const LEGAL = [
       'Estos términos y condiciones regulan el uso de la tienda en línea de Kirei Technology y la relación comercial entre el comprador y el vendedor, de conformidad con el Código de Comercio de la República de Panamá y la Ley 45 de 2007 sobre Protección al Consumidor y Defensa de la Competencia.',
 
       '## 1. Identificación del vendedor',
-      'Kirei Technology, con domicilio en Panamá Oeste, Montelimar, Calle Los Vientos [pendiente: número de local y RUC]. Teléfono de contacto: +507 6156 0839 (WhatsApp). Correo: [pendiente].',
+      'Kirei Technology es una tienda en línea operada por [pendiente: nombre completo], persona natural, con RUC [pendiente], desde Panamá Oeste. No tiene local abierto al público. Teléfono y WhatsApp: +507 6156 0839. Correo: [pendiente]. Solo vendemos a mayores de 18 años.',
 
       '## 2. Aceptación',
       'Al realizar un pedido en esta tienda, el comprador declara haber leído y aceptado estos términos y condiciones en su totalidad. Si no estás de acuerdo con alguno de los términos, no realices la compra.',
 
       '## 3. Productos y precios',
       'Todos los precios están expresados en dólares estadounidenses (USD), moneda de curso legal en la República de Panamá. Los precios incluyen los impuestos aplicables conforme a la ley panameña. Kirei Technology se reserva el derecho de modificar precios en cualquier momento, pero el precio que se aplicará a tu pedido será el vigente en el momento en que confirmes la compra por WhatsApp.',
+      'Vendemos productos originales de marcas de las que somos vendedores autorizados y productos compatibles. Cuando un producto compatible menciona una marca (por ejemplo, un reloj compatible con Samsung o Huawei), indica con qué equipos funciona, no que lo fabrique esa marca. [Pendiente: indicar en cada producto si es original o compatible.]',
       'Nos esforzamos por mantener la información de los productos actualizada. En caso de error evidente en el precio, nos comunicaremos contigo antes de procesar el pedido.',
 
       '## 4. Proceso de compra y confirmación',
@@ -170,7 +171,7 @@ export const LEGAL = [
 
       '## 5. Métodos de pago',
       'Aceptamos los siguientes métodos de pago:',
-      ['Yappy (pago móvil): al usuario @kireitechnology. Envía el comprobante por WhatsApp.', 'Productos por pedido (los de más de $60.00): se reservan con un abono del 50% y llegan en 15 días, sin contar fines de semana. El saldo se paga al entregar el producto.', 'Contra entrega: disponible en pedidos desde $30.00, con un cargo adicional de $5.00. Solo para entregas dentro de Panamá.'],
+      ['Yappy (pago móvil): al usuario @kireitechnology. Envía el comprobante por WhatsApp.', 'Productos por pedido (los de más de $60.00): se reservan con un abono del 50% y llegan en 15 días, sin contar fines de semana. El saldo se paga al entregar el producto. Si el producto no llega en ese plazo, se devuelve el abono completo.', 'Contra entrega: disponible en pedidos desde $30.00, con un cargo adicional de $5.00. Solo para entregas dentro de Panamá.'],
       'No almacenamos datos de tarjetas de crédito ni débito. Las transacciones se procesan a través de plataformas de pago seguras.',
 
       '## 6. Entregas y envíos',
@@ -184,7 +185,7 @@ export const LEGAL = [
       'La garantía no cubre daños por caídas, humedad, mal uso, modificaciones no autorizadas o desgaste natural.',
 
       '## 8. Devoluciones',
-      'Puedes solicitar la devolución de un producto dentro de los 7 días hábiles siguientes a la recepción, siempre que:',
+      '[Pendiente: el dueño confirma el plazo y las condiciones de devolución.] Puedes solicitar la devolución de un producto dentro de los 7 días hábiles siguientes a la recepción, siempre que:',
       ['El producto esté en las mismas condiciones en que fue entregado (sin uso, sin daños, con embalaje original).', 'Nos contactes por WhatsApp antes de devolver el producto para coordinar el proceso.'],
       'Los gastos de devolución corren por cuenta del comprador, salvo que el motivo sea un defecto imputable a Kirei Technology. La devolución del importe se realizará por el mismo método de pago utilizado en un plazo máximo de 10 días hábiles tras recibir y revisar el producto.',
       'De conformidad con la Ley 45 de 2007, el consumidor tiene derecho a retractarse de la compra en ventas a distancia dentro del plazo legal establecido.',
@@ -200,7 +201,7 @@ export const LEGAL = [
       'Si como consumidor consideras que tus derechos han sido vulnerados, puedes presentar una queja ante la Autoridad de Protección al Consumidor y Defensa de la Competencia (ACODECO) en www.acodeco.gob.pa.',
 
       '## 12. Contacto',
-      'Para cualquier consulta relacionada con tu pedido o estos términos, contáctanos por WhatsApp al +507 6156 0839 o al correo [pendiente]. Atendemos de lunes a sábado de [pendiente: horario].',
+      'Para cualquier consulta relacionada con tu pedido o estos términos, contáctanos por WhatsApp al +507 6156 0839 o al correo [pendiente]. Atendemos por WhatsApp, sin horario fijo: respondemos lo antes posible.',
 
       'Última actualización: octubre 2026. [Pendiente: revisión por asesor legal antes de publicar.]',
     ],

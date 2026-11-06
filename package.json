@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node -e \"require('fs').rmSync('assets', { recursive: true, force: true })\"",
-    "build": "vite build",
+    "build": "node scripts/compilar.mjs",
     "preview": "vite preview",
     "test": "node --test \"tests/*.test.js\"",
     "test:reglas": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-kirei \"node --test --test-concurrency=1 tests/reglas/*.test.js\"",
-    "build:pages": "node scripts/build-pages.mjs",
+    "build:pages": "node scripts/compilar.mjs pages",
     "test:e2e": "playwright test",
     "test:e2e:emulador": "npx -y firebase-tools@15 emulators:exec --only firestore,auth --project demo-kirei \"npx playwright test\""
   },

@@ -10,7 +10,7 @@ flowchart LR
   admin["Dueño en /admin"]
 
   subgraph hosting["Firebase Hosting"]
-    web["Tienda compilada: index.html y assets/"]
+    web["Tienda compilada: dist/"]
   end
 
   subgraph firebase["Firebase"]
@@ -68,7 +68,7 @@ flowchart TD
 | `public/` | Archivos que se copian tal cual: logo, fuentes, íconos, `robots.txt`, `sitemap.xml` |
 | `Productos/`, `reparaciones/` | Fotos originales de productos y servicios |
 
-El build se escribe en la raíz del repositorio (`index.html` y `assets/`), que es la carpeta que publica Firebase Hosting. `firebase.json` excluye todo lo que no debe publicarse: código fuente, pruebas, `docs/` y archivos ocultos como `.env.local`.
+La compilación (`scripts/compilar.mjs`) va a `dist/`, que es lo que publica Firebase Hosting, o a `_pages/` para GitHub Pages. Copia las fotos livianas (`web/`) y genera `sitemap.xml` y `robots.txt` con `SITIO.url`. Los originales de las fotos, el código fuente y las pruebas no se publican.
 
 ## Base de datos
 

@@ -1,0 +1,26 @@
+.seccion { overflow: hidden; }
+.cabecera { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.pausa {
+  min-height: 36px; padding: 0 14px; border: 1.5px solid var(--borde-fuerte); border-radius: 999px;
+  background: var(--superficie); color: var(--texto); font-size: var(--t-chico); font-weight: 600; cursor: pointer;
+}
+
+/* Bordes que se desvanecen para que los logos entren y salgan suave. */
+.ventana { -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
+.cinta { list-style: none; display: flex; gap: 16px; width: max-content; padding-block: 4px; animation: avanzar 32s linear infinite; }
+.cinta:hover, .cinta:focus-within, .pausada { animation-play-state: paused; }
+/* Fondo blanco fijo: los logos vienen recortados sobre blanco. */
+.marca { display: grid; place-items: center; width: 168px; height: 104px; padding: 16px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: #FFFFFF; }
+.marca img { width: auto; height: auto; max-width: 100%; max-height: 64px; object-fit: contain; }
+
+/* La segunda copia de la lista ocupa la otra mitad: moverse -50% (y medio espacio) deja todo en el mismo lugar. */
+@keyframes avanzar { to { transform: translateX(calc(-50% - 8px)); } }
+
+@media (min-width: 900px) { .marca { width: 200px; height: 116px; } .cinta { gap: 20px; } @keyframes avanzar { to { transform: translateX(calc(-50% - 10px)); } } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pausa { display: none; }
+  .ventana { -webkit-mask-image: none; mask-image: none; }
+  .cinta { animation: none; width: auto; flex-wrap: wrap; justify-content: center; padding-inline: var(--gutter); }
+  .cinta > [aria-hidden="true"] { display: none; }
+}

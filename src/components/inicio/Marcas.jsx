@@ -1,21 +1,32 @@
-import Carrusel from '../ui/Carrusel.jsx';
+import { useState } from 'react';
 import { INICIO } from '../../data/textos.js';
-import s from './Inicio.module.css';
+import s from './Marcas.module.css';
 
-// Logos de las marcas que vende la tienda, en el mismo carrusel que "Lo más pedido": se mueve solo si el cliente quiere.
+// Cinta infinita de logos. La lista va dos veces seguidas y se desplaza la mitad: al terminar, empieza igual.
+// Se detiene al pasar el mouse, al enfocar y con el botón (pedido de accesibilidad para todo lo que se mueve solo).
+// Con "reducir movimiento" los logos quedan quietos en filas.
 export default function Marcas() {
   const { titulo, lista } = INICIO.marcas;
+  const [pausada, setPausada] = useState(false);
+  const logos = (copia) => lista.map((m) => (
+    <li key={`${copia}-${m.nombre}`} className={s.marca} aria-hidden={copia ? 'true' : undefined}>
+      <img src={`${import.meta.env.BASE_URL}${m.logo}`} alt={copia ? '' : m.nombre} width={m.ancho} height={m.alto} loading="lazy" decoding="async" />
+    </li>
+  ));
   return (
-    <div className="seccion">
-      <div className="contenedor">
-        <Carrusel id="marcas" titulo={titulo}>
-          {lista.map((m) => (
-            <div key={m.nombre} className={s.marca}>
-              <img src={`${import.meta.env.BASE_URL}${m.logo}`} alt={m.nombre} width={m.ancho} height={m.alto} loading="lazy" decoding="async" />
-            </div>
-          ))}
-        </Carrusel>
+    <section className={`seccion ${s.seccion}`} aria-labelledby="marcas-titulo">
+      <div className={`contenedor ${s.cabecera}`}>
+        <h2 id="marcas-titulo" className="titulo">{titulo}</h2>
+        <button type="button" className={s.pausa} onClick={() => setPausada((p) => !p)} aria-pressed={pausada}>
+          {pausada ? 'Reanudar' : 'Pausar'}
+        </button>
       </div>
-    </div>
+      <div className={s.ventana}>
+        <ul className={`${s.cinta} ${pausada ? s.pausada : ''}`} aria-label="Marcas">
+          {logos(0)}
+          {logos(1)}
+        </ul>
+      </div>
+    </section>
   );
 }

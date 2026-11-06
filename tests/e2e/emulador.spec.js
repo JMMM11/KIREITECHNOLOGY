@@ -41,7 +41,7 @@ test('una cuenta no ve el pedido de otra ni entra al panel', async ({ browser })
   await ana.locator('input[type="tel"]').fill('6123 4567');
   await ana.getByRole('button', { name: /Continuar a entrega/ }).click();
   await ana.getByRole('button', { name: /Continuar a pago/ }).click();
-  await ana.getByRole('checkbox', { name: /Acepto que Kirei Technology/ }).check();
+  await ana.getByRole('checkbox', { name: /acepto que Kirei Technology/i }).check();
   const ventana = ana.context().waitForEvent('page');
   await ana.getByRole('button', { name: /Enviar pedido/ }).click();
   await (await ventana).close();

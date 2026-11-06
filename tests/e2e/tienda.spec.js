@@ -16,14 +16,21 @@ test('la portada carga con sus secciones y el carrusel de marcas', async ({ page
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Tecnología que te acompaña');
   await expect(page.getByRole('heading', { name: 'Marcas con las que trabajamos.' })).toBeVisible();
-  const marcas = page.locator('#marcas-pista');
-  await marcas.scrollIntoViewIfNeeded();
-  await expect(marcas.getByRole('img', { name: 'Lenovo' })).toBeVisible();
-  const siguiente = page.locator('section', { has: page.locator('#marcas-titulo') }).getByRole('button', { name: 'Ver más' });
-  if (await siguiente.isEnabled()) {
-    await siguiente.click();
-    await expect.poll(() => marcas.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
-  }
+  const cinta = page.getByRole('list', { name: 'Marcas' });
+  // La cinta nunca está quieta (es infinita): se llega a ella por su título.
+  await page.locator('#marcas-titulo').scrollIntoViewIfNeeded();
+  // Los 8 logos con nombre (la copia repetida para el bucle está oculta a lectores de pantalla).
+  await expect(cinta.getByRole('img')).toHaveCount(8);
+  await expect(cinta.getByRole('img', { name: 'Lenovo' })).toHaveCount(1);
+  // La cinta se mueve sola y el botón la detiene.
+  const posicion = () => cinta.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m41);
+  const antes = await posicion();
+  await page.waitForTimeout(600);
+  expect(await posicion()).not.toBe(antes);
+  await page.getByRole('button', { name: 'Pausar' }).click();
+  const quieta = await posicion();
+  await page.waitForTimeout(600);
+  expect(await posicion()).toBe(quieta);
   // Ninguna página debe moverse de lado en el celular.
   expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
 });
@@ -75,7 +82,7 @@ test('checkout: valida los datos, bloquea contra entrega bajo el mínimo y confi
   const enviar = page.getByRole('button', { name: /Enviar pedido de \$20\.00 por WhatsApp/ });
   await enviar.click();
   await expect(page.getByText('Marca la casilla para que podamos usar tus datos en este pedido.')).toBeVisible();
-  await page.getByRole('checkbox', { name: /Acepto que Kirei Technology/ }).check();
+  await page.getByRole('checkbox', { name: /acepto que Kirei Technology/i }).check();
   // WhatsApp no se abre de verdad: la prueba no sale a internet, solo revisa el mensaje armado.
   await context.route(/wa.me|whatsapp.com/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: 'ok' }));
   const whatsapp = context.waitForEvent('page');

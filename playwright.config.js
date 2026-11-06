@@ -24,7 +24,7 @@ export default defineConfig({
       { name: 'celular', use: { ...devices['Pixel 7'], channel: 'chrome' } },
     ],
   webServer: {
-    command: `node scripts/build-pages.mjs && npx vite preview --outDir ../${conEmulador ? '_e2e_emulador' : '_e2e'} --port ${puerto} --strictPort`,
+    command: `node scripts/compilar.mjs && npx vite preview --outDir ../${conEmulador ? '_e2e_emulador' : '_e2e'} --port ${puerto} --strictPort`,
     port: puerto,
     reuseExistingServer: false,
     timeout: 180000,

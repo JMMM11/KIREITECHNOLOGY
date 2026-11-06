@@ -220,7 +220,7 @@ export default function Checkout() {
                   <div className="campo">
                     <label className={s.acepto}>
                       <input type="checkbox" checked={f.acepto} onChange={cambiar('acepto')} aria-invalid={err.acepto ? 'true' : undefined} aria-describedby={err.acepto ? 'acepto-error' : undefined} />
-                      <span>Acepto que Kirei Technology use mis datos solo para gestionar este pedido. Lee la <Link href="/legal/privacidad">política de privacidad</Link>.</span>
+                      <span>Soy mayor de 18 años y acepto que Kirei Technology use mis datos solo para gestionar este pedido. Lee la <Link href="/legal/privacidad">política de privacidad</Link>.</span>
                     </label>
                     {err.acepto && <p id="acepto-error" className="error-campo">{err.acepto}</p>}
                   </div>

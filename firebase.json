@@ -15,30 +15,10 @@
   },
   "hosting": {
     "site": "kirie-technology-93481",
-    "public": ".",
+    "public": "dist",
     "ignore": [
-      "firebase.json",
-      "firestore.rules",
       "**/.*",
-      "**/node_modules/**",
-      "src/**",
-      "tests/**",
-      "docs/**",
-      "scripts/**",
-      "_pages/**",
-      "public/**",
-      "package.json",
-      "package-lock.json",
-      "vite.config.js",
-      "README.md",
-      "Productos/*.*",
-      "reparaciones/*.*",
-      "_e2e/**",
-      "_e2e_emulador/**",
-      "test-results/**",
-      "playwright.config.js",
-      "cspell.json",
-      "SECURITY.md"
+      "404.html"
     ],
     "headers": [
       {

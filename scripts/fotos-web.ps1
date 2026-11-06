@@ -1,4 +1,4 @@
-# Crea copias livianas (JPG) de las fotos de Productos/ y reparaciones/ en su subcarpeta web/.
+# Crea copias livianas (JPG) de las fotos de Productos/ y reparaciones/ en su subcarpeta web/, con el nombre completo del original (incluye la extensión).
 # Los originales no se tocan. Correr después de agregar fotos: powershell -File scripts/fotos-web.ps1
 # Anchos: 640 y 1280 para todas; 960 y 1920 para las de portada (principal*). Debe coincidir con src/components/ui/Foto.jsx.
 Add-Type -AssemblyName System.Drawing
@@ -16,7 +16,7 @@ foreach ($carpeta in 'Productos', 'reparaciones') {
     $anchos = if ($origen.BaseName -like 'principal*') { 960, 1920 } else { 640, 1280 }
     $img = $null
     foreach ($w in $anchos) {
-      $salida = Join-Path $destino "$($origen.BaseName)-$w.jpg"
+      $salida = Join-Path $destino "$($origen.Name)-$w.jpg"
       if ((Test-Path $salida) -and (Get-Item $salida).LastWriteTime -gt $origen.LastWriteTime) { continue }
       if (-not $img) { $img = [System.Drawing.Image]::FromFile($origen.FullName) }
       $ancho = [Math]::Min($w, $img.Width)

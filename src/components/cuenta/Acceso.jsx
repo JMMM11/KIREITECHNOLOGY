@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import Campo from '../ui/Campo.jsx';
 import Icono from '../ui/Icono.jsx';
 import { ICONOS } from '../iconos.js';
@@ -115,6 +115,7 @@ export default function Acceso() {
         {aviso && <p className={s.aviso} role="status">{aviso}</p>}
 
         <button className="btn btn-accion btn-bloque" disabled={enviando}>{enviando ? 'Un momento...' : textoBoton}</button>
+        {modo === 'crear' && <p className="ayuda">Al crear tu cuenta confirmas que eres mayor de 18 años y aceptas la <Link href="/legal/privacidad" className="enlace">política de privacidad</Link>.</p>}
 
         {modo !== 'recuperar' && (
           <div className={s.socialSep}><span>o continúa con</span></div>

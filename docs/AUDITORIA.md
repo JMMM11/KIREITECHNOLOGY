@@ -67,7 +67,7 @@ Antes de los reintentos nuevos: 9/10, 11/25 y 15/50. El emulador procesa unos 0,
 ## Pendiente manual
 
 1. Cambiar la contraseña del admin (se compartió en un chat).
-2. Publicar reglas y web: `npm run build` y `npx firebase-tools deploy --only firestore:rules,hosting`.
+2. Publicar reglas y web: `npx firebase-tools login` (una vez), luego `npm run build` y `npx firebase-tools deploy --only firestore:rules,hosting`.
 3. En `/admin > Productos`, pulsar **Publicar catálogo del proyecto**.
 4. GitHub: Settings > Pages > Source: GitHub Actions. Variables de Firebase y Sentry en Settings > Secrets and variables > Actions > Variables.
 5. Agregar `jmmm11.github.io` en Firebase > Authentication > Dominios autorizados.

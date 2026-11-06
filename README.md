@@ -46,7 +46,7 @@ npm run dev                  # http://localhost:5173
 | Comando | Para qué |
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo con recarga automática |
-| `npm run build` | Compila la tienda en la raíz del repositorio (`index.html` y `assets/`), para Firebase |
+| `npm run build` | Compila la tienda en `dist/` para Firebase, con su sitemap y robots.txt |
 | `npm run build:pages` | Compila la versión de GitHub Pages en `_pages/` (vive en `/KIREITECHNOLOGY/`) |
 | `npm run preview` | Sirve la versión compilada para revisarla |
 | `npm test` | Pruebas de lógica: precios, pedidos, validaciones, datos y contraste |
@@ -56,6 +56,8 @@ npm run dev                  # http://localhost:5173
 | `powershell -File scripts/fotos-web.ps1` | Crea las copias livianas de las fotos nuevas de `Productos/` y `reparaciones/` |
 
 ## Publicar
+
+La primera vez en tu computadora: `npx firebase-tools login` (abre el navegador para entrar con tu cuenta de Google).
 
 ```bash
 npm run build
