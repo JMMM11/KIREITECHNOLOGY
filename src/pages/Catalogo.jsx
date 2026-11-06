@@ -9,7 +9,7 @@ import { ICONOS } from '../components/iconos.js';
 import MiniaturaCategoria from '../components/ui/MiniaturaCategoria.jsx';
 import Desplegable from '../components/ui/Desplegable.jsx';
 import { ORDENES, SECCIONES } from '../data/catalogos.js';
-import { filtrarCatalogo } from '../lib/catalogo.js';
+import { enCategoria, filtrarCatalogo } from '../lib/catalogo.js';
 import { useDatos } from '../context/DatosContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from './Catalogo.module.css';
@@ -28,7 +28,7 @@ export default function Catalogo({ params = {}, buscar = false }) {
   const subcategorias = categorias.filter((c) => c.seccion === 'tecnologia');
   const categoria = subcategorias.find((c) => c.id === params.categoria);
   const catId = categoria?.id ?? '';
-  const enSeccion = useMemo(() => productos.filter((p) => subcategorias.some((c) => c.id === p.categoriaId)), [productos, subcategorias]);
+  const enSeccion = useMemo(() => productos.filter((p) => subcategorias.some((c) => enCategoria(p, c.id))), [productos, subcategorias]);
   useTituloPagina(categoria?.nombre ?? (buscar ? 'Buscar' : TECNO.nombre), categoria ? `${categoria.nombre} en Panamá: ${categoria.frase.toLowerCase()}. Retiro gratis o envío a domicilio.` : 'Audífonos inalámbricos, relojes inteligentes y accesorios en Panamá con garantía. Lenovo, Xiaomi, LIGE y más.');
 
   const lista = useMemo(

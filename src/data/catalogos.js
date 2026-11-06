@@ -6,7 +6,7 @@ export const SECCIONES = [
 
 export const CATEGORIAS = [
   { id: 'audifonos', seccion: 'tecnologia', nombre: 'Audífonos', frase: 'Inalámbricos, gaming y ediciones especiales', orden: 1, visible: true },
-  { id: 'relojes', seccion: 'tecnologia', nombre: 'Relojes inteligentes', frase: 'Pantallas AMOLED y táctiles, correas de malla y metal', orden: 2, visible: true },
+  { id: 'relojes', seccion: 'tecnologia', nombre: 'Relojes', frase: 'Inteligentes y de bolsillo, con correas de malla y metal', orden: 2, visible: true },
   { id: 'cargadores', seccion: 'tecnologia', nombre: 'Cargadores y power banks', frase: 'Energía para llevar', orden: 3, visible: false },
   { id: 'accesorios-pc', seccion: 'tecnologia', nombre: 'Accesorios', frase: 'Soportes y más para tu escritorio', orden: 4, visible: true },
   { id: 'anime', seccion: 'anime', nombre: 'Anime', frase: 'Accesorios de tus series favoritas', orden: 5, visible: true },

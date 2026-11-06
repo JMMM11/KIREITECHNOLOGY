@@ -21,10 +21,13 @@ const ORDENADORES = {
   nombre: (a, b) => a.nombre.localeCompare(b.nombre, 'es'),
 };
 
+// tambienEn: categorías extra donde también aparece (el reloj One Piece es anime y reloj).
+export const enCategoria = (p, id) => p.categoriaId === id || !!p.tambienEn?.includes(id);
+
 export function filtrarCatalogo(productos, { categoria = '', texto = '', orden = 'relevancia', soloDisponibles = false } = {}) {
   const q = normalizar(texto);
   return productos
-    .filter((p) => !categoria || p.categoriaId === categoria)
+    .filter((p) => !categoria || enCategoria(p, categoria))
     .filter((p) => !soloDisponibles || (p.estadoVenta !== 'agotado' && p.precioCentavos != null))
     .filter((p) => !q || normalizar(`${p.nombre} ${p.marca ?? ''} ${p.descripcion ?? ''}`).includes(q))
     .sort(ORDENADORES[orden] ?? ORDENADORES.relevancia);

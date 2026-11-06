@@ -46,7 +46,7 @@ test('precios en centavos enteros o pendientes', () => {
 test('búsqueda sin tildes y orden por precio con pendientes al final', async () => {
   const lista = await listarProductos();
   assert.ok(filtrarCatalogo(lista, { texto: 'audifonos' }).length >= 2);
-  const orden = filtrarCatalogo(lista, { orden: 'precio-asc' });
+  const orden = filtrarCatalogo([...lista, { id: 'sin-precio', nombre: 'Sin precio', precioCentavos: null }], { orden: 'precio-asc' });
   const conPrecio = orden.filter((p) => p.precioCentavos != null).map((p) => p.precioCentavos);
   assert.deepEqual(conPrecio, [...conPrecio].sort((a, b) => a - b));
   assert.equal(orden.at(-1).precioCentavos, null);
@@ -55,7 +55,14 @@ test('búsqueda sin tildes y orden por precio con pendientes al final', async ()
 test('la búsqueda encuentra por marca', async () => {
   const lista = await listarProductos();
   assert.deepEqual(filtrarCatalogo(lista, { texto: 'xiaomi' }).map((p) => p.id), ['redmi-buds-4-harry-potter']);
-  assert.equal(filtrarCatalogo(lista, { texto: 'Lenovo' }).length, 2);
+  assert.equal(filtrarCatalogo(lista, { texto: 'Lenovo' }).length, 6);
+});
+
+test('la sección relojes trae los LIGE y el reloj One Piece, que sigue en anime', async () => {
+  const lista = await listarProductos();
+  const relojes = filtrarCatalogo(lista, { categoria: 'relojes' }).map((p) => p.id).sort();
+  assert.deepEqual(relojes, ['lige-active-2', 'lige-correa-metal', 'lige-pantalla-cuadrada', 'reloj-bolsillo-one-piece']);
+  assert.ok(filtrarCatalogo(lista, { categoria: 'anime' }).some((p) => p.id === 'reloj-bolsillo-one-piece'));
 });
 
 test('cada foto de producto y de portada existe', async () => {
@@ -95,6 +102,6 @@ test('datos de producto para Google: precio, rango y disponibilidad', async () =
   assert.ok(gm2.image[0].startsWith('https://') && gm2.image[0].includes('/Productos/web/'));
   assert.equal(datosProducto(porId('redmi-buds-4-harry-potter')).offers.availability, 'https://schema.org/BackOrder');
   assert.equal(datosProducto(porId('lenovo-thinkplus-xt62')).offers.price, '20.00');
-  assert.equal(datosProducto(porId('lige-correa-metal')).offers, undefined);
+  assert.equal(datosProducto({ ...porId('lige-correa-metal'), precioCentavos: null, variantes: undefined }).offers, undefined);
   assert.equal(datosProducto({ ...porId('lenovo-thinkplus-xt62'), stock: 0 }).offers.availability, 'https://schema.org/OutOfStock');
 });
