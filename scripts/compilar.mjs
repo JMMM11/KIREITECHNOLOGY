@@ -4,6 +4,7 @@
 // BASE_PATH y SALIDA cambian la base y la carpeta (las pruebas E2E compilan en _e2e/).
 import { cpSync, copyFileSync, writeFileSync } from 'node:fs';
 import { build } from 'vite';
+import { CATEGORIAS } from '../src/data/catalogos.js';
 import { PRODUCTOS } from '../src/data/productos.js';
 import { SITIO } from '../src/data/sitio.js';
 
@@ -20,6 +21,7 @@ copyFileSync(`${salida}/index.html`, `${salida}/404.html`);
 // Para Google: todas las páginas públicas, incluido cada producto publicado. Siempre con la dirección principal.
 const rutas = [
   ['/', '1.0'], ['/tecnologia', '0.9'], ['/anime', '0.8'], ['/reparaciones', '0.8'], ['/ayuda', '0.6'], ['/legal/privacidad', '0.3'], ['/legal/terminos', '0.3'],
+  ...CATEGORIAS.filter((c) => c.visible && c.seccion === 'tecnologia').map((c) => [`/tecnologia/${c.id}`, '0.8']),
   ...PRODUCTOS.filter((p) => p.estado === 'publicado').map((p) => [`/producto/${p.slug ?? p.id}`, '0.8']),
 ];
 writeFileSync(`${salida}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>
