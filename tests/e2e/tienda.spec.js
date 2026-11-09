@@ -39,7 +39,7 @@ test('el buscador encuentra productos y avisa cuando no hay resultados', async (
   await page.goto('/tecnologia');
   const campo = page.getByRole('main').getByRole('searchbox', { name: 'Buscar productos' });
   await campo.fill('lenovo');
-  await expect(page.getByRole('main').getByRole('heading', { level: 3 })).toHaveCount(2);
+  await expect(page.getByRole('main').getByRole('heading', { level: 3 })).toHaveCount(6);
   await campo.fill('zzzz-no-existe');
   await expect(page.getByText('No encontramos productos con esos filtros.')).toBeVisible();
   await page.getByRole('button', { name: 'Limpiar filtros' }).click();

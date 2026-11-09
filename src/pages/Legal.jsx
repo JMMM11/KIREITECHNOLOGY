@@ -4,10 +4,10 @@ import { LEGAL } from '../data/textos.js';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from './Paginas.module.css';
 
-// Privacidad y términos como pestañas de una sola página. Sin documento elegido, abre Privacidad.
+// Privacidad, términos, envíos y devoluciones como pestañas de una sola página. Sin documento elegido, abre Privacidad.
 export default function Legal({ params = {} }) {
   const doc = LEGAL.find((d) => d.id === params.doc) ?? LEGAL[0];
-  useTituloPagina(doc.tituloLargo);
+  useTituloPagina(doc.tituloLargo, doc.descripcion);
 
   return (
     <>

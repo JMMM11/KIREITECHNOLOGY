@@ -37,6 +37,7 @@ export default function Anime() {
     <>
       <CabeceraPagina titulo="Zona Anime." texto="Accesorios de tus series favoritas." />
       <div className="contenedor">
+        <h2 className={s.conteo}>{lista.length} {lista.length === 1 ? 'producto' : 'productos'}</h2>
         <ul className={s.rejilla}>
           {lista.map((p) => <li key={p.id} className={s.celda}><TarjetaProducto producto={p} /></li>)}
         </ul>

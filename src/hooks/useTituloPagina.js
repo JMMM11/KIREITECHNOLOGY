@@ -10,7 +10,8 @@ const DESCRIPCION_GENERAL = typeof document === 'undefined' ? '' : meta()?.conte
 // Título, descripción y dirección canónica de cada página: Google los usa en los resultados de búsqueda.
 export function useTituloPagina(titulo, descripcion) {
   useEffect(() => {
-    document.title = titulo ? `${titulo} | ${BASE}` : `${BASE} | Tecnología en Panamá`;
+    const completo = `${titulo} | ${BASE}`;
+    document.title = !titulo ? `${BASE} | Tecnología en Panamá` : completo.length > 60 ? titulo : completo;
     meta()?.setAttribute('content', descripcion || DESCRIPCION_GENERAL);
     // Siempre la dirección principal, aunque se vea desde GitHub Pages: así Google no ve dos tiendas.
     const ruta = location.pathname.slice(import.meta.env.BASE_URL.length - 1) || '/';

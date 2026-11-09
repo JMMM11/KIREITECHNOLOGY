@@ -41,6 +41,7 @@ export default function Footer() {
           <h2 className={s.titulo}>Ayuda</h2>
           <ul className={s.lista}>
             {AYUDA.map((a) => <li key={a.id}><Link href={`/ayuda/${a.id}`}>{a.titulo}</Link></li>)}
+            <li><Link href="/contacto">Contacto</Link></li>
           </ul>
         </nav>
         <div className={s.contacto}>

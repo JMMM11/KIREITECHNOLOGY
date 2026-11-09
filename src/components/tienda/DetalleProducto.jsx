@@ -60,7 +60,7 @@ export default function DetalleProducto({ producto: p }) {
       </div>
 
       <div className={s.info}>
-        {categoria && <Link href={`/tecnologia/${categoria.id}`} className={s.categoria}>{categoria.nombre}</Link>}
+        {categoria && <Link href={categoria.seccion === 'anime' ? '/anime' : `/tecnologia/${categoria.id}`} className={s.categoria}>{categoria.nombre}</Link>}
         <h1 className={s.nombre}>{p.nombre}</h1>
         {(p.estadoVenta || p.ejemplo) && (
           <div className={s.insignias}>

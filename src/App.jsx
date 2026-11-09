@@ -13,6 +13,7 @@ const Anime = lazy(() => import('./pages/Anime.jsx'));
 const Reparaciones = lazy(() => import('./pages/Reparaciones.jsx'));
 const Ayuda = lazy(() => import('./pages/Ayuda.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
+const Contacto = lazy(() => import('./pages/Contacto.jsx'));
 const NoEncontrada = lazy(() => import('./pages/NoEncontrada.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
 const Cuenta = lazy(() => import('./pages/Cuenta.jsx'));
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/reparaciones" component={Reparaciones} />
             <Route path="/ayuda/:seccion?" component={Ayuda} />
             <Route path="/legal/:doc?" component={Legal} />
+            <Route path="/contacto" component={Contacto} />
             <Route path="/cuenta/:seccion?/:id?" component={Cuenta} />
             <Route component={NoEncontrada} />
           </Switch>

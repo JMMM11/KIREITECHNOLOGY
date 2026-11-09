@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Plantilla de la imagen para compartir (public/og-kirei.jpg). Se genera con: node scripts/og/generar.mjs -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Unbounded; font-weight: 600; src: url(../../public/fuentes/unbounded-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 400; src: url(../../public/fuentes/poppins-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 600; src: url(../../public/fuentes/poppins-latin-600-normal.woff2) format('woff2'); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body { display: grid; grid-template-columns: 560px 1fr; background: #0B1F33; color: #fff; font-family: Poppins, sans-serif; }
+  .texto { display: flex; flex-direction: column; padding: 56px 40px 52px 64px; }
+  .logo { width: 300px; height: auto; margin-left: -14px; }
+  h1 { margin-top: auto; font-family: Unbounded, sans-serif; font-weight: 600; font-size: 50px; line-height: 1.08; letter-spacing: -0.03em; }
+  h1 span { color: #F7931E; }
+  p { margin-top: 18px; font-size: 22px; line-height: 1.4; color: #C9D3DE; }
+  .chips { display: flex; gap: 10px; margin-top: 28px; }
+  .chip { padding: 10px 18px; border-radius: 999px; font-size: 17px; font-weight: 600; background: #F7931E; color: #111; }
+  .chip.borde { background: none; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.45); }
+  .fotos { display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; padding: 24px 24px 24px 0; }
+  .fotos img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; display: block; }
+  .fotos .alta { grid-row: span 2; }
+</style>
+</head>
+<body>
+  <section class="texto">
+    <img class="logo" src="../../public/marca/kirei-logo-fondo-oscuro.svg" alt="">
+    <h1>Audífonos y relojes <span>con garantía.</span></h1>
+    <p>Lenovo, Xiaomi, LIGE y ediciones especiales. Envíos en todo Panamá.</p>
+    <div class="chips"><span class="chip">Paga con Yappy</span><span class="chip borde">Retiro gratis</span></div>
+  </section>
+  <section class="fotos">
+    <img class="alta" src="../../Productos/Lenovo GM2 Pro (7).jpg" alt="">
+    <img src="../../Productos/Razer Pikachu (4).jpg" alt="">
+    <img src="../../Productos/principal.png" alt="" style="object-position: 62% 70%">
+  </section>
+</body>
+</html>

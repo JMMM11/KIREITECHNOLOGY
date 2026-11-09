@@ -9,6 +9,8 @@ import PedidosAdmin from './PedidosAdmin.jsx';
 import CitasAdmin from './CitasAdmin.jsx';
 import ClientesAdmin from './ClientesAdmin.jsx';
 import ComentariosAdmin from './ComentariosAdmin.jsx';
+import ResumenAdmin from './ResumenAdmin.jsx';
+import InventarioAdmin from './InventarioAdmin.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { entrar, esAdmin, importarLocales, salir, sobrantes, todosLosProductos, vigilarSesion } from '../../services/admin.js';
@@ -16,6 +18,7 @@ import { SITIO } from '../../data/sitio.js';
 import { PRODUCTOS } from '../../data/productos.js';
 import s from './Admin.module.css';
 
+const VISTAS = [['resumen', 'Resumen'], ['productos', 'Productos'], ['inventario', 'Inventario'], ['pedidos', 'Pedidos'], ['citas', 'Citas'], ['clientes', 'Clientes'], ['comentarios', 'Comentarios']];
 const NOMBRE_CATEGORIA = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c.nombre]));
 
 function Entrar() {
@@ -127,7 +130,7 @@ function Productos() {
 export default function PanelAdmin() {
   const [usuario, setUsuario] = useState(undefined);
   const [admin, setAdmin] = useState(undefined);
-  const [vista, setVista] = useState('productos');
+  const [vista, setVista] = useState('resumen');
   useEffect(() => vigilarSesion(async (u) => {
     setAdmin(u ? await esAdmin(u.uid) : false);
     setUsuario(u);
@@ -158,15 +161,21 @@ export default function PanelAdmin() {
         </div>
         {usuario && (
           <div className={`contenedor ${s.vistas}`} role="group" aria-label="Sección del panel">
-            <button type="button" className={s.vista} aria-pressed={vista === 'productos'} onClick={() => setVista('productos')}>Productos</button>
-            <button type="button" className={s.vista} aria-pressed={vista === 'pedidos'} onClick={() => setVista('pedidos')}>Pedidos</button>
-            <button type="button" className={s.vista} aria-pressed={vista === 'citas'} onClick={() => setVista('citas')}>Citas</button>
-            <button type="button" className={s.vista} aria-pressed={vista === 'clientes'} onClick={() => setVista('clientes')}>Clientes</button>
-            <button type="button" className={s.vista} aria-pressed={vista === 'comentarios'} onClick={() => setVista('comentarios')}>Comentarios</button>
+            {VISTAS.map(([id, texto]) => (
+              <button key={id} type="button" className={s.vista} aria-pressed={vista === id} onClick={() => setVista(id)}>{texto}</button>
+            ))}
           </div>
         )}
       </header>
-      <main className="contenedor">{!usuario ? <Entrar /> : vista === 'pedidos' ? <PedidosAdmin /> : vista === 'citas' ? <CitasAdmin /> : vista === 'clientes' ? <ClientesAdmin esDuenoTienda={esDuenoTienda} /> : vista === 'comentarios' ? <ComentariosAdmin /> : <Productos />}</main>
+      <main className="contenedor">{!usuario ? <Entrar /> : {
+        resumen: <ResumenAdmin ir={setVista} />,
+        productos: <Productos />,
+        inventario: <InventarioAdmin />,
+        pedidos: <PedidosAdmin />,
+        citas: <CitasAdmin />,
+        clientes: <ClientesAdmin esDuenoTienda={esDuenoTienda} />,
+        comentarios: <ComentariosAdmin />,
+      }[vista]}</main>
     </div>
   );
 }

@@ -29,7 +29,7 @@ function textoCita(c) {
 }
 
 export default function Reparaciones() {
-  useTituloPagina('Reparación de computadoras', 'Reparación de computadoras y laptops en Panamá Oeste: diagnóstico, cambio de pantalla, batería o teclado, instalación de Windows y mantenimiento. Agenda por WhatsApp.');
+  useTituloPagina('Reparación de computadoras', 'Reparación de computadoras y laptops en Panamá Oeste: diagnóstico, pantalla, batería, teclado, Windows y mantenimiento. Agenda por WhatsApp.');
   const [f, setF] = useState({ nombre: '', telefono: '', dispositivo: '', servicio: '', fechaPreferida: '', detalle: '', acepto: false });
   const [err, setErr] = useState({});
   const [enviada, setEnviada] = useState(null);

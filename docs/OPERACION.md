@@ -47,6 +47,26 @@ Lo que tienes que hacer tú, una vez, cuando la tienda esté publicada en Fireba
 
 Lo que más ayuda después: que cada producto tenga fotos y descripción propias, enlazar la tienda desde Instagram y WhatsApp Business, y pedir a los clientes que comenten.
 
+Revisión técnica antes de publicar cambios grandes (con `npx vite preview --port 5193` corriendo sobre un build hecho con `VITE_FIREBASE_PROJECT_ID= npm run build`):
+
+- `node tests/seo/auditoria.mjs http://localhost:5193`: recorre todos los enlaces de la tienda y avisa de enlaces rotos, páginas sin H1 o con más de uno, saltos de encabezados, títulos o descripciones largos, canonical mal puesto, imágenes sin texto alternativo y productos sin datos para Google.
+- `node tests/seo/movil.mjs http://localhost:5193`: en celular con 4G simulada, mide LCP y CLS y revisa que ninguna página se salga de lado.
+
+La imagen para compartir (`public/og-kirei.jpg`) se genera desde `scripts/og/og.html` con `node scripts/og/generar.mjs`. Para cambiar fotos o textos, edita el HTML y vuelve a generarla.
+
+## Enlaces desde otros sitios (backlinks)
+
+Google confía más en una tienda cuando otros sitios la enlazan. Sin pagar por enlaces (Google lo castiga), en este orden:
+
+1. **Perfiles propios:** bio de Instagram, perfil y catálogo de WhatsApp Business, Facebook y TikTok si los abres. Cada uno con el enlace de la tienda.
+2. **Google Business Profile** y **Bing Places**: fichas gratis como negocio en línea de Panamá Oeste.
+3. **Directorios de Panamá:** Páginas Amarillas Panamá, Encuentra24 (publica productos con el enlace a la tienda) y grupos de compra y venta de Facebook de Panamá Oeste.
+4. **Marcas y proveedores:** si eres vendedor autorizado de LIGE, Lenovo u otra marca, pide que te incluyan en su lista de vendedores de Panamá.
+5. **Contenido que la gente comparte:** guías cortas en Instagram o un blog (por ejemplo, "qué audífonos Lenovo comprar en Panamá") que enlacen a los productos.
+6. **Clientes y conocidos:** pide a quien tenga página, blog o canal que mencione la tienda si quedó contento.
+
+Revisa en Search Console > Enlaces quién te enlaza. Evita los sitios que venden enlaces o los intercambios masivos.
+
 ## Dominio propio
 
 Cuando compres un dominio (por ejemplo `kireitechnology.com`):

@@ -70,7 +70,9 @@
 .legalBarra { border-bottom: 1px solid var(--borde); background: var(--superficie); }
 .legalBarraInterior { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 24px; padding-block: 8px; }
 .legalMarca { font-size: 1.25rem; font-weight: 600; }
-.legalPestanas { list-style: none; display: flex; gap: 4px; }
+.legalBarraInterior > nav { min-width: 0; max-width: 100%; }
+.legalPestanas { list-style: none; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.legalPestanas li { flex: none; }
 .legalPestana {
   position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px;
   font-size: var(--t-chico); color: var(--texto-suave); text-decoration: none;
@@ -85,3 +87,12 @@
 @media (min-width: 900px) { .legalDoc { padding-top: 88px; } }
 
 @media (hover: hover) and (pointer: fine) { .temaFila:hover .temaSigno { border-color: var(--marca); } .legalPestana:not([aria-current="page"]):hover { color: var(--marca); } }
+
+.conteo { margin-bottom: 14px; font-size: 1rem; font-weight: 600; letter-spacing: 0; }
+
+/* Contacto */
+.contactoPagina { display: grid; gap: 28px; padding-bottom: 64px; }
+.canales { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.canal { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border: 1px solid var(--borde, #e3e0d8); border-radius: 16px; background: var(--superficie, #fff); }
+.canal a { overflow-wrap: anywhere; font-weight: 600; }
+.canalTitulo { font-size: 1rem; font-weight: 600; letter-spacing: 0; margin-bottom: 4px; }

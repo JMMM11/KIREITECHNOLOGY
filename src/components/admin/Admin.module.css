@@ -63,3 +63,30 @@
 .filtro select { min-height: 40px; }
 .items { padding-left: 18px; font-size: var(--t-chico); }
 .detalle { white-space: pre-line; overflow-wrap: anywhere; }
+
+/* Resumen e inventario */
+.vistas { overflow-x: auto; scrollbar-width: none; }
+.tarjetas { list-style: none; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.tarjeta { display: grid; gap: 6px; align-content: start; padding: 18px; border: 1px solid var(--borde); border-radius: var(--radio-tarjeta); background: var(--superficie); }
+.cifra { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.enlace { justify-self: start; padding: 0; border: 0; background: none; color: var(--marca); font: inherit; font-size: var(--t-chico); font-weight: 600; cursor: pointer; }
+.reportes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.subtitulo { font-size: 1rem; font-weight: 600; letter-spacing: 0; margin-bottom: 6px; }
+.barras { list-style: none; display: grid; gap: 10px; }
+.barras li { display: grid; grid-template-columns: 3.2em 1fr auto; align-items: center; gap: 10px; font-size: var(--t-chico); }
+.barraMes { color: var(--texto-suave); text-transform: capitalize; }
+.barraPista { height: 10px; border-radius: 999px; background: var(--superficie-2); overflow: hidden; }
+.barraRelleno { display: block; height: 100%; border-radius: inherit; background: var(--accion); transition: width 0.4s ease; }
+.barraValor { font-variant-numeric: tabular-nums; }
+.ranking { list-style: none; display: grid; gap: 8px; padding: 0; font-size: var(--t-chico); }
+.ranking li { display: flex; justify-content: space-between; gap: 12px; }
+.capital { text-transform: capitalize; }
+.stock { display: flex; gap: 8px; align-items: center; flex: none; }
+.stock input { width: 96px; min-height: 40px; padding: 6px 10px; border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-detalle); background: var(--superficie); font: inherit; }
+.stock input[aria-invalid="true"] { border-color: var(--error, #b42318); }
+@media (max-width: 560px) {
+  .fila:has(.stock) { flex-wrap: wrap; }
+  .stock { width: 100%; }
+  .stock input { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .barraRelleno { transition: none; } }

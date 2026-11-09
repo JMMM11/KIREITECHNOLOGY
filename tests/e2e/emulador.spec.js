@@ -75,3 +75,28 @@ test('una cuenta no ve el pedido de otra ni entra al panel', async ({ browser })
   expect(subirPrecio.status()).toBe(403);
   expect(hacerseAdmin.status()).toBe(403);
 });
+
+test('un admin ve el resumen y cambia unidades en inventario', async ({ browser }) => {
+  const admin = await (await browser.newContext()).newPage();
+  await crearCuenta(admin, 'Carla', 'carla@prueba.test');
+  const uid = await admin.evaluate(async () => {
+    const db = await new Promise((listo) => { const r = indexedDB.open('firebaseLocalStorageDb'); r.onsuccess = () => listo(r.result); });
+    const todo = await new Promise((listo) => { const q = db.transaction('firebaseLocalStorage').objectStore('firebaseLocalStorage').getAll(); q.onsuccess = () => listo(q.result); });
+    return todo.find((x) => x.value?.stsTokenManager)?.value.uid;
+  });
+  await admin.request.patch(`${FIRESTORE}/admins/${uid}`, { headers: DUENO_EMULADOR, data: { fields: { nombre: { stringValue: 'Carla' } } } });
+
+  await admin.goto('/admin');
+  await expect(admin.getByRole('heading', { name: 'Resumen' })).toBeVisible({ timeout: 15000 });
+  await expect(admin.getByRole('heading', { name: 'Ventas por mes' })).toBeVisible();
+  if (process.env.CAPTURAS) await admin.screenshot({ path: 'test-results/panel-resumen.png', fullPage: true });
+
+  await admin.getByRole('button', { name: 'Inventario', exact: true }).click();
+  const campo = admin.getByLabel('Unidades de Audífonos de prueba');
+  await campo.fill('2');
+  await admin.getByRole('button', { name: 'Guardar' }).first().click();
+  await expect(admin.getByText('Guardado.')).toBeVisible();
+  if (process.env.CAPTURAS) await admin.screenshot({ path: 'test-results/panel-inventario.png', fullPage: true });
+  const doc = await admin.request.get(`${FIRESTORE}/productos/audifonos-prueba`, { headers: DUENO_EMULADOR });
+  expect((await doc.json()).fields.stock.integerValue).toBe('2');
+});
