@@ -1,7 +1,7 @@
 // Datos estructurados de un producto (schema.org/Product): Google puede mostrar precio y disponibilidad en los resultados.
 import { SITIO } from '../data/sitio.js';
 import { rutaWeb } from './fotos.js';
-import { precioDe } from './catalogo.js';
+import { descripcionPlana, precioDe } from './catalogo.js';
 
 const dinero = (centavos) => (centavos / 100).toFixed(2);
 
@@ -16,7 +16,7 @@ export function datosProducto(p) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: p.nombre,
-    description: p.descripcion,
+    description: descripcionPlana(p.descripcion),
     sku: p.id,
     ...(imagenes.length && { image: imagenes }),
     ...(p.marca && { brand: { '@type': 'Brand', name: p.marca } }),

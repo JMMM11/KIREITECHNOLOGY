@@ -105,3 +105,16 @@ test('datos de producto para Google: precio, rango y disponibilidad', async () =
   assert.equal(datosProducto({ ...porId('lige-correa-metal'), precioCentavos: null, variantes: undefined }).offers, undefined);
   assert.equal(datosProducto({ ...porId('lenovo-thinkplus-xt62'), stock: 0 }).offers.availability, 'https://schema.org/OutOfStock');
 });
+
+test('descripción: párrafos, listas, resumen y versión plana', async () => {
+  const { partirDescripcion, resumenDescripcion, descripcionPlana } = await import('../src/lib/catalogo.js');
+  const t = 'Uno dos.\nTres.\n\n- Batería: 6 h\n- IP54\n\nFinal.';
+  assert.deepEqual(partirDescripcion(t), [
+    { tipo: 'parrafo', texto: 'Uno dos. Tres.' },
+    { tipo: 'lista', items: ['Batería: 6 h', 'IP54'] },
+    { tipo: 'parrafo', texto: 'Final.' },
+  ]);
+  assert.equal(resumenDescripcion(t), 'Uno dos. Tres.');
+  assert.equal(descripcionPlana(t), 'Uno dos. Tres. Batería: 6 h. IP54 Final.');
+  assert.deepEqual(partirDescripcion(''), []);
+});

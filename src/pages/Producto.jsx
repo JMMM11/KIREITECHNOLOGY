@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'wouter';
 import DetalleProducto from '../components/tienda/DetalleProducto.jsx';
+import DescripcionProducto from '../components/tienda/DescripcionProducto.jsx';
+import { resumenDescripcion } from '../lib/catalogo.js';
 import Comentarios from '../components/tienda/Comentarios.jsx';
 import TarjetaProducto from '../components/tienda/TarjetaProducto.jsx';
 import { EsqueletoProducto } from '../components/ui/Esqueleto.jsx';
@@ -15,7 +17,7 @@ import s from './Producto.module.css';
 export default function Producto({ params }) {
   const { productos, cargando, error } = useDatos();
   const p = productos.find((x) => x.slug === params.slug);
-  useTituloPagina(p?.nombre ?? 'Producto', p ? `${p.nombre} en Panamá. ${p.descripcion}`.slice(0, 160) : undefined);
+  useTituloPagina(p?.nombre ?? 'Producto', p ? `${p.nombre} en Panamá. ${resumenDescripcion(p.descripcion)}`.slice(0, 160) : undefined);
   useEffect(() => { if (p) registrarVisto(p.id); }, [p]);
   // Datos del producto para Google; se quitan al salir de la página.
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function Producto({ params }) {
   return (
     <div className="contenedor">
       <DetalleProducto key={p.id} producto={p} />
+      <DescripcionProducto texto={p.descripcion} />
       <Comentarios productoId={p.id} />
       {relacionados.length > 0 && (
         <section className={s.relacionados} aria-labelledby="relacionados-titulo">

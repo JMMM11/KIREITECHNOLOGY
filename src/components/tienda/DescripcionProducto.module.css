@@ -1,0 +1,4 @@
+.seccion { display: grid; gap: 16px; margin-top: 48px; padding-block: 32px 8px; border-top: 1px solid var(--borde); }
+.cuerpo { display: grid; gap: 14px; max-width: 72ch; color: var(--texto-suave); line-height: 1.65; }
+.lista { display: grid; gap: 8px; padding-left: 1.2em; }
+.lista strong { color: var(--texto); font-weight: 600; }

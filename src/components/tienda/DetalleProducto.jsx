@@ -9,7 +9,7 @@ import Profundidad from '../ui/Profundidad.jsx';
 import Precio from './Precio.jsx';
 import { ICONOS } from '../iconos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
-import { precioDe, quedanPocas } from '../../lib/catalogo.js';
+import { precioDe, quedanPocas, resumenDescripcion } from '../../lib/catalogo.js';
 import { useCarrito, variantesDe, topeCantidad } from '../../context/CarritoContext.jsx';
 import { useDatos } from '../../context/DatosContext.jsx';
 import { SITIO, TARIFAS } from '../../data/sitio.js';
@@ -74,7 +74,7 @@ export default function DetalleProducto({ producto: p }) {
         )}
         {quedanPocas(stock) && <p className={s.quedan} role="status">{stock === 1 ? 'Solo queda 1 unidad.' : `Solo quedan ${stock} unidades.`}</p>}
         <BotonFavorito producto={p} conTexto />
-        <p className="suave">{p.descripcion}</p>
+        <p className="suave">{resumenDescripcion(p.descripcion)}</p>
 
         {vs.length > 1 && (
           <fieldset className={s.opciones}>
@@ -121,7 +121,7 @@ export default function DetalleProducto({ producto: p }) {
         <ul className={s.datos}>
           <li><Icono de={ICONOS.garantia.de} mov={ICONOS.garantia.mov} tam={20} /><span>{SITIO.garantia}</span></li>
           <li><Icono de={ICONOS.envio.de} mov={ICONOS.envio.mov} tam={20} /><span>Retiro gratis o envío a domicilio en Panamá por {formatoPrecio(TARIFAS.envioDomicilio)}.</span></li>
-          <li><Icono de={ICONOS.pago.de} mov={ICONOS.pago.mov} tam={20} /><span>Pago con {SITIO.pagoEnLinea} ({SITIO.yappy}) o contra entrega desde{formatoPrecio(TARIFAS.contraEntregaMinimo)} (cargo de {formatoPrecio(TARIFAS.contraEntregaCargo)}).</span></li>
+          <li><Icono de={ICONOS.pago.de} mov={ICONOS.pago.mov} tam={20} /><span>Pago con {SITIO.pagoEnLinea} ({SITIO.yappy}) o contra entrega desde {formatoPrecio(TARIFAS.contraEntregaMinimo)} (cargo de {formatoPrecio(TARIFAS.contraEntregaCargo)}).</span></li>
         </ul>
       </div>
     </div>

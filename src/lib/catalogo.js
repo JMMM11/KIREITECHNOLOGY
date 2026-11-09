@@ -32,3 +32,17 @@ export function filtrarCatalogo(productos, { categoria = '', texto = '', orden =
     .filter((p) => !q || normalizar(`${p.nombre} ${p.marca ?? ''} ${p.descripcion ?? ''}`).includes(q))
     .sort(ORDENADORES[orden] ?? ORDENADORES.relevancia);
 }
+
+// Descripción con formato simple: párrafos separados por una línea en blanco y listas con "- " al inicio de cada línea.
+export function partirDescripcion(texto = '') {
+  return texto.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean).map((b) => {
+    const lineas = b.split('\n').map((l) => l.trim());
+    return lineas.every((l) => l.startsWith('- '))
+      ? { tipo: 'lista', items: lineas.map((l) => l.slice(2)) }
+      : { tipo: 'parrafo', texto: lineas.join(' ') };
+  });
+}
+// Primer párrafo: va junto al precio y en la descripción para Google.
+export const resumenDescripcion = (texto = '') => partirDescripcion(texto).find((b) => b.tipo === 'parrafo')?.texto ?? '';
+// Todo en una línea, para los datos estructurados.
+export const descripcionPlana = (texto = '') => partirDescripcion(texto).map((b) => (b.tipo === 'lista' ? b.items.join('. ') : b.texto)).join(' ');

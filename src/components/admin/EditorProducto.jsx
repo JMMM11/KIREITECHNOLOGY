@@ -117,7 +117,8 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
         </div>
       </div>
 
-      <Campo etiqueta="Descripción" como="textarea" rows={4} value={f.descripcion} onChange={cambiar('descripcion')} />
+      <Campo etiqueta="Descripción" como="textarea" rows={14} value={f.descripcion} onChange={cambiar('descripcion')}
+        ayuda='El primer párrafo sale junto al precio. Deja una línea en blanco entre párrafos. Para una lista de características, empieza cada línea con "- " (por ejemplo: "- Batería: 6 horas").' />
 
       <fieldset className={s.grupo}>
         <legend className="leyenda">Fotos</legend>
