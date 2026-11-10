@@ -14,7 +14,8 @@ export function useTituloPagina(titulo, descripcion) {
     document.title = !titulo ? `${BASE} | Tecnología en Panamá` : completo.length > 60 ? titulo : completo;
     meta()?.setAttribute('content', descripcion || DESCRIPCION_GENERAL);
     // Siempre la dirección principal, aunque se vea desde GitHub Pages: así Google no ve dos tiendas.
-    const ruta = location.pathname.slice(import.meta.env.BASE_URL.length - 1) || '/';
+    // Sin "/" final: /tecnologia y /tecnologia/ son la misma página para Google.
+    const ruta = location.pathname.slice(import.meta.env.BASE_URL.length - 1).replace(/(.)\/+$/, '$1') || '/';
     canonica()?.setAttribute('href', `${SITIO.url}${ruta}`);
   }, [titulo, descripcion]);
 }

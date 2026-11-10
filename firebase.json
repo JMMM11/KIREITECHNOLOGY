@@ -16,6 +16,7 @@
   "hosting": {
     "site": "kirie-technology-93481",
     "public": "dist",
+    "trailingSlash": false,
     "ignore": [
       "**/.*",
       "404.html"

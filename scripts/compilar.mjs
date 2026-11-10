@@ -37,6 +37,7 @@ Disallow: /admin
 Disallow: /cuenta
 Disallow: /checkout
 Disallow: /carrito
+Disallow: /buscar
 
 Sitemap: ${SITIO.url}/sitemap.xml
 `);
