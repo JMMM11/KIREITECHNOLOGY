@@ -41,7 +41,7 @@ export function Perfil() {
     <form className={s.formulario} onSubmit={guardar} noValidate>
       <h2 className={s.seccionTitulo}>Mi perfil</h2>
       <Campo etiqueta="Nombre" autoComplete="name" value={f.nombre} onChange={(e) => setF({ ...f, nombre: e.target.value })} error={err.nombre} />
-      <Campo etiqueta="Teléfono" opcional type="tel" autoComplete="tel" value={f.telefono} onChange={(e) => setF({ ...f, telefono: e.target.value })} error={err.telefono} ayuda="Lo usamos para coordinar tus entregas por WhatsApp." />
+      <Campo etiqueta="Teléfono" prefijo="+507" opcional type="tel" autoComplete="tel" value={f.telefono} onChange={(e) => setF({ ...f, telefono: e.target.value })} error={err.telefono} ayuda="Lo usamos para coordinar tus entregas por WhatsApp." />
       <Campo etiqueta="Correo" value={usuario.email} readOnly ayuda="Es tu usuario para entrar. Para cambiarlo, escríbenos." />
       {perfil.creadoEn && <p className="suave chico">Cliente desde el {fechaCorta(perfil.creadoEn)}.</p>}
       <Resultado {...res} />

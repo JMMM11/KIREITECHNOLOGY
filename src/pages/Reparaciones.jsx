@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
 import PortadaReparaciones from '../components/reparaciones/PortadaReparaciones.jsx';
 import ListaServicios from '../components/reparaciones/ListaServicios.jsx';
@@ -11,6 +11,7 @@ import { SITIO } from '../data/sitio.js';
 import { errores, validarNombre, validarRequerido, validarTelefono } from '../lib/validacion.js';
 import { crearCita } from '../services/tienda.js';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
+import { useCuenta } from '../context/CuentaContext.jsx';
 import s from './Paginas.module.css';
 
 const hoy = () => new Date().toISOString().slice(0, 10);
@@ -32,6 +33,10 @@ export default function Reparaciones() {
   useTituloPagina('Reparación de computadoras', 'Reparación de computadoras y laptops en Panamá Oeste: diagnóstico, pantalla, batería, teclado, Windows y mantenimiento. Agenda por WhatsApp.');
   const [f, setF] = useState({ nombre: '', telefono: '', dispositivo: '', servicio: '', fechaPreferida: '', detalle: '', acepto: false });
   const [err, setErr] = useState({});
+  const { perfil } = useCuenta();
+  useEffect(() => {
+    if (perfil) setF((x) => ({ ...x, nombre: x.nombre || perfil.nombre || '', telefono: x.telefono || perfil.telefono || '' }));
+  }, [perfil]);
   const [enviada, setEnviada] = useState(null);
   const formulario = useRef(null);
 
@@ -105,7 +110,7 @@ export default function Reparaciones() {
           ) : (
             <form ref={formulario} className={s.formulario} noValidate onSubmit={(e) => { e.preventDefault(); enviar('whatsapp'); }}>
               <Campo etiqueta="Nombre" autoComplete="name" value={f.nombre} onChange={cambiar('nombre')} error={err.nombre} />
-              <Campo etiqueta="Teléfono" type="tel" inputMode="tel" autoComplete="tel" placeholder="6123 4567" value={f.telefono} onChange={cambiar('telefono')} error={err.telefono} />
+              <Campo etiqueta="Teléfono" prefijo="+507" type="tel" inputMode="tel" autoComplete="tel" placeholder="6123 4567" value={f.telefono} onChange={cambiar('telefono')} error={err.telefono} />
               <Campo como="select" etiqueta="Dispositivo" value={f.dispositivo} onChange={cambiar('dispositivo')} error={err.dispositivo}>
                 <option value="">Elige tu equipo</option>
                 {DISPOSITIVOS.map((d) => <option key={d}>{d}</option>)}

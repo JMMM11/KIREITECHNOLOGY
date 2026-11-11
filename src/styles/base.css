@@ -76,3 +76,11 @@ textarea.entrada { min-height: 112px; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Campo con prefijo fijo (teléfono de Panamá): el prefijo va dentro del mismo borde. */
+.entrada-prefijo { display: flex; align-items: stretch; border: 1.5px solid var(--borde-fuerte); border-radius: var(--radio-detalle); background: var(--superficie); }
+.entrada-prefijo > span { display: flex; align-items: center; padding: 0 12px; border-right: 1px solid var(--borde); color: var(--texto-suave); font-weight: 600; }
+.entrada-prefijo .entrada { border: 0; border-radius: inherit; min-width: 0; }
+.entrada-prefijo:has(.entrada[aria-invalid="true"]) { border-color: var(--error); }
+.entrada-prefijo:focus-within { outline: 3px solid var(--foco); outline-offset: 1px; border-color: var(--foco); }
+.entrada-prefijo .entrada:focus-visible { outline: none; }

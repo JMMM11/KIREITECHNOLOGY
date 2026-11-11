@@ -42,7 +42,7 @@ export default function Producto({ params }) {
   return (
     <div className="contenedor">
       <DetalleProducto key={p.id} producto={p} />
-      <DescripcionProducto texto={p.descripcion} />
+      <DescripcionProducto producto={p} />
       <Comentarios productoId={p.id} />
       {relacionados.length > 0 && (
         <section className={s.relacionados} aria-labelledby="relacionados-titulo">

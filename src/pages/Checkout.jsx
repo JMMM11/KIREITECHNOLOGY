@@ -177,7 +177,7 @@ export default function Checkout() {
               {paso === 0 && (
                 <>
                   <Campo etiqueta="Nombre" autoComplete="name" value={f.nombre} onChange={cambiar('nombre')} error={err.nombre} />
-                  <Campo etiqueta="Teléfono" type="tel" inputMode="tel" autoComplete="tel" placeholder="6123 4567" value={f.telefono} onChange={cambiar('telefono')} error={err.telefono} ayuda="Te escribimos a este número para confirmar el pedido." />
+                  <Campo etiqueta="Teléfono" prefijo="+507" type="tel" inputMode="tel" autoComplete="tel" placeholder="6123 4567" value={f.telefono} onChange={cambiar('telefono')} error={err.telefono} ayuda="Te escribimos a este número para confirmar el pedido." />
                   <Campo etiqueta="Correo" opcional type="email" autoComplete="email" value={f.correo} onChange={cambiar('correo')} error={err.correo} />
                 </>
               )}

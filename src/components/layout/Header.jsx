@@ -8,6 +8,7 @@ import { SITIO, TARIFAS } from '../../data/sitio.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { useCarrito } from '../../context/CarritoContext.jsx';
 import { useCuenta } from '../../context/CuentaContext.jsx';
+import { useDatos } from '../../context/DatosContext.jsx';
 import { conFirebase } from '../../services/tienda.js';
 import s from './Header.module.css';
 
@@ -15,6 +16,7 @@ function Buscador() {
   const [, navegar] = useLocation();
   const [q, setQ] = useState('');
   const id = useId();
+  const { productos } = useDatos();
   return (
     <form
       role="search"
@@ -22,7 +24,8 @@ function Buscador() {
       onSubmit={(e) => { e.preventDefault(); navegar(q.trim() ? `/buscar/${encodeURIComponent(q.trim())}` : '/buscar'); }}
     >
       <label htmlFor={id} className="sr-only">Buscar productos</label>
-      <input id={id} type="search" className={s.campo} placeholder="Buscar productos" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
+      <input id={id} type="search" className={s.campo} placeholder="Buscar productos" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" list={`${id}-sugerencias`} />
+      <datalist id={`${id}-sugerencias`}>{productos.map((p) => <option key={p.id} value={p.nombre} />)}</datalist>
       <button type="submit" className={s.lupa} aria-label="Buscar">
         <Icono de={ICONOS.buscar.de} mov={ICONOS.buscar.mov} entrada={false} tam={18} />
       </button>
