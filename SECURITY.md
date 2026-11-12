@@ -11,3 +11,5 @@ Escríbenos por WhatsApp al +507 6156 0839 con:
 Respondemos lo antes posible y te avisamos cuando esté corregido. No accedas, modifiques ni borres datos de otras personas al investigar.
 
 Cómo está protegida la tienda: [docs/SEGURIDAD.md](docs/SEGURIDAD.md).
+
+Revisar documentos .md ya q son importantes para el entendimiento y para hacer las cosas 
