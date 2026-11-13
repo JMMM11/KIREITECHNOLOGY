@@ -84,3 +84,5 @@ Diagrama automático del repositorio: [gitdiagram.com/JMMM11/KIREITECHNOLOGY](ht
 ## Contacto
 
 WhatsApp +507 6156 0839 · Instagram [@kireitechnology](https://www.instagram.com/kireitechnology/)
+
+## Revisar este documento ya que es muy importante entenderlo 
