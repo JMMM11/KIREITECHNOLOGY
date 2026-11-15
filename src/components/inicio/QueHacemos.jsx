@@ -47,7 +47,7 @@ export default function QueHacemos() {
           </Aparece>
 
           <div className={s.columna}>
-            <Aparece alVer como="article" i={1} className={`${s.tarjeta} ${s.taller}`} aria-labelledby="t-taller">
+            <Aparece alVer como="article" i={1} className={`${s.tarjeta} ${s.taller} tema-taller`} aria-labelledby="t-taller">
               <Icono de={ICONOS.reparar.de} mov={ICONOS.reparar.mov} entrada={false} tam={28} />
               <h3 id="t-taller" className={s.nombre}>Reparaciones</h3>
               <p className={s.texto}>Diagnóstico, pantalla, batería, teclado y Windows. Mira cómo trabajamos.</p>
@@ -55,7 +55,7 @@ export default function QueHacemos() {
             </Aparece>
 
             <div className={s.par}>
-              <Aparece alVer como="article" i={2} className={`${s.tarjeta} ${s.aroma}`} aria-labelledby="t-aroma">
+              <Aparece alVer como="article" i={2} className={`${s.tarjeta} ${s.aroma} tema-aroma`} aria-labelledby="t-aroma">
                 <Icono de={ICONOS_CATEGORIA.aroma.de} mov={ICONOS_CATEGORIA.aroma.mov} entrada={false} tam={28} />
                 <h3 id="t-aroma" className={s.nombre}>Aroma</h3>
                 <p className={s.texto}>Perfumes y fragancias.</p>

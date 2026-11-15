@@ -67,3 +67,34 @@
   --alto-nav-movil: 68px;
 }
 @media (min-width: 768px) { :root { --gutter: 32px; } }
+
+/* Temas por sección. Cada uno es una superficie: remapea los tokens de rol dentro de su bloque y nada más.
+   Taller (Reparaciones): grafito y azul puro, sin degradados de color. Aroma: marfil, champán, ciruela, negro y dorado, con serif. */
+.tema-taller {
+  --fondo-taller: #0F1216;
+  --fondo-taller-2: #161B21;
+  --texto-claro: #B7C4D3;
+  --accion: #0A6CFF;
+  --accion-hover: #0557D6;
+  --accion-texto: #FFFFFF;
+  --acento-texto: #4D94FF; /* el azul para texto chico: el de los botones no llega a 4.5:1 sobre grafito */
+  --foco: #FFFFFF;
+  background: var(--fondo-taller); color: #FFFFFF;
+}
+.tema-aroma {
+  --aroma-marfil: #F6F1E7;
+  --aroma-champan: #E9D9BC;
+  --aroma-ciruela: #4A1F3A;
+  --aroma-negro: #141014;
+  --aroma-dorado: #A8853A; /* solo líneas y detalles: no alcanza para texto sobre marfil */
+  --aroma-texto-suave: #5E4A52;
+  --marca: #4A1F3A;
+  --marca-hover: #5E2A4B;
+  --accion: #4A1F3A;
+  --accion-hover: #5E2A4B;
+  --accion-texto: #FFFFFF;
+  --foco: #4A1F3A;
+  --fuente-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  background: var(--aroma-marfil); color: var(--aroma-negro);
+}
+

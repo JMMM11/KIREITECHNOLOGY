@@ -13,7 +13,7 @@ export default function PortadaReparaciones({ onAgendar }) {
   const consulta = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent('Hola Kirei, tengo una consulta de reparación.')}`;
   return (
     <section className="contenedor" aria-labelledby="reparaciones-titulo">
-      <div className={s.portada}>
+      <div className={`${s.portada} tema-taller`}>
         <div className={s.portadaTexto}>
           <Aparece como="h1" id="reparaciones-titulo" className={s.portadaTitulo}>Reparamos tu computadora.</Aparece>
           <Aparece como="p" i={1} className={s.portadaBajada}>Laptops y PCs con Windows. Pantalla, batería, teclado, sistema y limpieza.</Aparece>

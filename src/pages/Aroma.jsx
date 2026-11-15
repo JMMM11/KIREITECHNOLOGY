@@ -2,6 +2,7 @@ import SeccionTienda from './SeccionTienda.jsx';
 
 const DATOS = {
   categoriaId: 'aroma',
+  tema: 'tema-aroma',
   titulo: 'Aroma',
   descripcion: 'Perfumes y fragancias en Panamá con Kirei Technology. Envío a domicilio o retiro gratis.',
   vacio: {

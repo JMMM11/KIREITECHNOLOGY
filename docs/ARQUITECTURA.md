@@ -195,6 +195,17 @@ Solo los comentarios `publicado` se ven en la tienda. Al eliminar su cuenta, el 
 
 Las rutas no usan `#`. Firebase Hosting responde `index.html` a cualquier ruta (`rewrites` en `firebase.json`) y por eso `vite.config.js` usa `base: '/'`: con rutas relativas, recargar `/producto/x` buscaría los archivos en `/producto/assets/`.
 
+## Sistema visual
+
+Los tokens viven en `src/styles/tokens.css` y `tests/contraste.test.js` verifica cada par texto/fondo.
+
+- **Global (toda la web):** papel `#F7F5F1`, azul marino `#0B1F33` como marca, naranja `#F7931E` como acción. Poppins para leer, Unbounded para títulos. Radios: controles redondos, tarjetas 14 px. No se cambia por sección.
+- **Temas por sección:** una clase en el contenedor (`tema-taller`, `tema-aroma`) remapea los tokens de rol (`--accion`, `--marca`, `--foco`, `--fuente-display`) solo dentro de ese bloque. Los componentes no saben del tema: un `btn btn-accion` sale azul en el taller y ciruela en Aroma sin tocar su CSS.
+  - `tema-taller` (Reparaciones: portada, laptop, conceptos): grafito `#0F1216` y azul puro `#0A6CFF` como único acento, sin degradados de color. Para texto chico se usa `--acento-texto` (`#4D94FF`), porque el azul de los botones no llega a 4.5:1 sobre grafito.
+  - `tema-aroma` (Aroma): marfil `#F6F1E7`, champán `#E9D9BC`, ciruela `#4A1F3A` (marca y acción), negro `#141014`, dorado `#A8853A` solo para líneas. Títulos en serif (`Cormorant Garamond` si se instala; mientras tanto Georgia).
+  - Anime no tiene tema propio: usa el global, con la tarjeta azul marino en la portada. Se decidió conservarla así.
+- **Reglas:** un acento por sección; tarjetas solo cuando agrupan algo que se toca; sombras y degradados solo para profundidad real (el halo de la laptop), nunca de color a color; microinteracciones de 150 a 250 ms con `--ease-salida`; todo respeta `prefers-reduced-motion`.
+
 ## Portada y entrada de las páginas
 
 La portada (`src/pages/Inicio.jsx`) presenta lo que Kirei hace y vende; los productos y los precios viven en cada sección (`/tecnologia`, `/aroma`, `/anime`).

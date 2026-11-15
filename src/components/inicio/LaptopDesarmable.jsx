@@ -49,7 +49,7 @@ export default function LaptopDesarmable({ conceptos = true }) {
   const activo = PASOS[reducir ? 1 : paso];
 
   return (
-    <section className={s.seccion} aria-labelledby="taller-titulo">
+    <section className={`${s.seccion} tema-taller`} aria-labelledby="taller-titulo">
       <div className={`contenedor ${s.encabezado}`}>
         <p className={s.etiqueta}>Taller Kirei</p>
         <h2 id="taller-titulo" className={s.titulo}>Tu laptop, por dentro.</h2>
