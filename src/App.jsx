@@ -10,6 +10,7 @@ const Producto = lazy(() => import('./pages/Producto.jsx'));
 const CarritoPagina = lazy(() => import('./pages/CarritoPagina.jsx'));
 const Checkout = lazy(() => import('./pages/Checkout.jsx'));
 const Anime = lazy(() => import('./pages/Anime.jsx'));
+const Aroma = lazy(() => import('./pages/Aroma.jsx'));
 const Reparaciones = lazy(() => import('./pages/Reparaciones.jsx'));
 const Ayuda = lazy(() => import('./pages/Ayuda.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/producto/:slug" component={Producto} />
             <Route path="/carrito" component={CarritoPagina} />
             <Route path="/checkout" component={Checkout} />
+            <Route path="/aroma" component={Aroma} />
             <Route path="/anime" component={Anime} />
             <Route path="/reparaciones" component={Reparaciones} />
             <Route path="/ayuda/:seccion?" component={Ayuda} />

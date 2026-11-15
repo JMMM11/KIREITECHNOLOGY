@@ -25,7 +25,7 @@ function Item({ href, texto, icono, activo }) {
   );
 }
 
-// Barra inferior fija en el teléfono con las dos secciones de la tienda siempre a mano.
+// Barra inferior fija en el teléfono con las secciones de la tienda siempre a mano.
 export default function NavMovil() {
   const [ubicacion] = useLocation();
   const { articulos, abrir } = useCarrito();
@@ -36,6 +36,7 @@ export default function NavMovil() {
       <nav className={s.barra} aria-label="Navegación principal del teléfono">
         <Item href="/" texto="Inicio" icono={ICONOS_NAV.inicio} activo={ubicacion === '/'} />
         <Item href="/tecnologia" texto="Tecnología" icono={ICONOS_NAV.tecnologia} activo={esActivo(ubicacion, '/tecnologia')} />
+        <Item href="/aroma" texto="Aroma" icono={ICONOS_NAV.aroma} activo={esActivo(ubicacion, '/aroma')} />
         <Item href="/anime" texto="Anime" icono={ICONOS_NAV.anime} activo={esActivo(ubicacion, '/anime')} />
         <button type="button" className={s.item} onClick={abrir} aria-haspopup="dialog">
           <span className={s.conCuenta}>

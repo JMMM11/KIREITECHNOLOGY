@@ -1,0 +1,75 @@
+/* Dos móviles inclinados, como en una foto de producto: marco de titanio, brillo y pantallas con la tienda. */
+.escena {
+  position: relative; width: min(100%, 640px); aspect-ratio: 1 / 1; margin-inline: auto;
+  perspective: 1600px; perspective-origin: 50% 40%;
+}
+.resplandor {
+  position: absolute; inset: 14% 8% 2%; z-index: 0; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(247 147 30 / 0.16), rgb(11 31 51 / 0.07) 60%, transparent);
+  filter: blur(30px);
+}
+.lado { position: absolute; width: 42%; transform-style: preserve-3d; will-change: transform; }
+.izquierdo { left: 5%; top: 8%; z-index: 1; rotate: -7deg; }
+.izquierdo > div { transform: rotateY(16deg) rotateX(6deg); }
+.derecho { right: 5%; top: 0; z-index: 2; rotate: 6deg; }
+.derecho > div { transform: rotateY(-14deg) rotateX(6deg); }
+
+/* Marco: la caja fija la medida (cqw) y el marco la usa */
+.caja { container-type: inline-size; width: 100%; }
+.marco {
+  position: relative; width: 100%; aspect-ratio: 9 / 19.2; padding: 2.6cqw;
+  border-radius: 15cqw;
+  background: linear-gradient(150deg, #4a5360 0%, #1c232c 28%, #0b1016 55%, #2d353f 80%, #59616d 100%);
+  box-shadow:
+    inset 0 0 0 0.6cqw rgb(255 255 255 / 0.2),
+    inset 0 0 3cqw rgb(0 0 0 / 0.65),
+    0 6cqw 8cqw -3cqw rgb(11 31 51 / 0.45),
+    0 1.5cqw 3cqw rgb(11 31 51 / 0.25);
+}
+/* Botones laterales: encendido a la derecha, volumen a la izquierda. */
+.marco::before, .marco::after { content: ''; position: absolute; width: 1.1cqw; border-radius: 1cqw; background: linear-gradient(#59616d, #1c232c); }
+.marco::before { right: -0.8cqw; top: 26cqw; height: 15cqw; }
+.marco::after { left: -0.8cqw; top: 22cqw; height: 9cqw; box-shadow: 0 13cqw 0 #2d353f, 0 25cqw 0 #2d353f; }
+
+.pantalla { position: relative; height: 100%; overflow: hidden; border-radius: 12.4cqw; background: #F7F5F1; isolation: isolate; }
+.isla { position: absolute; top: 3.2cqw; left: 50%; z-index: 3; width: 27cqw; height: 7.6cqw; border-radius: 99cqw; background: #05090d; translate: -50% 0; }
+.brillo {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(112deg, rgb(255 255 255 / 0.28) 0%, rgb(255 255 255 / 0.06) 22%, transparent 38%, transparent 70%, rgb(255 255 255 / 0.1) 100%);
+}
+.barra { position: absolute; bottom: 2.4cqw; left: 50%; z-index: 3; width: 30cqw; height: 1.3cqw; border-radius: 1cqw; background: rgb(11 31 51 / 0.85); translate: -50% 0; }
+
+/* Pantalla de menú */
+.menu { display: grid; align-content: start; height: 100%; padding: 17cqw 8cqw 9cqw; background: linear-gradient(170deg, #FFFFFF, #F1EDE6); }
+.menuEtiqueta { font-family: var(--fuente-display); font-size: 5.2cqw; font-weight: 600; letter-spacing: 0.02em; color: var(--accion); }
+.menuLista { list-style: none; display: grid; margin-top: 8cqw; }
+.menuLista li {
+  display: flex; align-items: center; justify-content: space-between; padding-block: 5cqw;
+  border-bottom: 0.4cqw solid rgb(11 31 51 / 0.1);
+  font-family: var(--fuente-display); font-size: 8.2cqw; font-weight: 600; letter-spacing: -0.04em; color: rgb(11 31 51 / 0.55);
+}
+.menuLista li[data-activo] { color: var(--marca); }
+.menuLista b { font-size: 9cqw; color: var(--accion); font-weight: 600; }
+.menuPie { align-self: end; margin-top: auto; font-size: 3.6cqw; color: rgb(11 31 51 / 0.55); }
+.menu { grid-template-rows: auto auto 1fr; }
+
+/* Pantalla de inicio */
+.inicio { display: grid; align-content: start; gap: 5cqw; height: 100%; padding: 16cqw 7cqw 9cqw; background: #F7F5F1; }
+.inicioBarra { display: flex; align-items: center; justify-content: space-between; }
+.inicioBarra img { width: 3.6cqw; height: auto; }
+.bolsa { width: 6cqw; height: 6cqw; border: 0.8cqw solid var(--marca); border-radius: 1.6cqw; }
+.inicioTitulo { font-family: var(--fuente-display); font-size: 11.2cqw; font-weight: 600; line-height: 1.02; letter-spacing: -0.05em; color: var(--marca); }
+.inicioTitulo span { color: #5b6470; }
+.tarjeta { display: grid; gap: 1.2cqw; padding: 3.4cqw; border-radius: 6cqw; background: #FFFFFF; box-shadow: 0 1cqw 3cqw rgb(11 31 51 / 0.1); }
+.tarjetaFoto { display: grid; aspect-ratio: 1.3; border-radius: 4cqw; overflow: hidden; background: #FFFFFF; }
+.tarjetaFoto :global(img), .tarjetaFoto :global(picture) { width: 100%; height: 100%; object-fit: contain; }
+.tarjetaNombre { font-size: 4.6cqw; font-weight: 600; color: var(--texto); line-height: 1.2; }
+.tarjetaPrecio { font-size: 4.2cqw; color: #5b6470; }
+.boton { display: grid; place-items: center; height: 10.5cqw; border-radius: 99cqw; background: var(--accion); font-size: 4.2cqw; font-weight: 600; color: #111111; }
+
+@media (max-width: 560px) {
+  .escena { aspect-ratio: 1 / 1.08; }
+  .lado { width: 47%; }
+  .izquierdo { left: 0; top: 8%; }
+  .derecho { right: 0; }
+}

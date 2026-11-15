@@ -1,4 +1,5 @@
 import { Link } from 'wouter';
+import Aparece from '../components/ui/Aparece.jsx';
 import Acceso from '../components/cuenta/Acceso.jsx';
 import Pedidos from '../components/cuenta/Pedidos.jsx';
 import { Direcciones, Favoritos, Perfil, Seguridad } from '../components/cuenta/Secciones.jsx';
@@ -67,7 +68,7 @@ function Panel({ seccion, id }) {
       <header className={s.saludo}>
         <span className={s.avatar} aria-hidden="true">{nombre.charAt(0).toUpperCase()}</span>
         <div>
-          <h1 className={s.hola}>Hola, {nombre.split(' ')[0]}</h1>
+          <Aparece como="h1" className={s.hola}>Hola, {nombre.split(' ')[0]}</Aparece>
           <p className="suave chico">{usuario.email}</p>
         </div>
       </header>

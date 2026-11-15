@@ -25,7 +25,7 @@ export default function Layout({ children }) {
       </a>
       <BarraAdmin />
       <Header />
-      {!/^\/(tecnologia|buscar|producto|anime)/.test(ubicacion) && <AvisoDatos />}
+      {!/^\/(tecnologia|buscar|producto|aroma|anime)/.test(ubicacion) && <AvisoDatos />}
       <main id="contenido" ref={main} tabIndex={-1} className={s.main}>
         {children}
       </main>

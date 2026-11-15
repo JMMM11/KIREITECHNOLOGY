@@ -1,0 +1,68 @@
+/* Lo que hacemos: cuatro mundos en una rejilla asimétrica. Mucho aire, esquinas grandes. */
+.seccion { padding-block: clamp(72px, 10vw, 136px); }
+.encabezado { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 56px); }
+.titulo { font-size: clamp(2.2rem, 6.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.045em; color: var(--marca); }
+.bajada { font-size: clamp(1.0625rem, 2vw, 1.375rem); color: var(--texto-suave); max-width: 40ch; text-wrap: balance; }
+
+.rejilla { display: grid; gap: 14px; }
+.columna { display: grid; gap: 14px; }
+.par { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.tarjeta { position: relative; display: grid; gap: 10px; align-content: end; overflow: hidden; isolation: isolate; border-radius: 28px; padding: clamp(20px, 3vw, 32px); }
+.nombre { font-family: var(--fuente-display); font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.045em; line-height: 1.05; }
+.texto { font-size: var(--t-chico); line-height: 1.5; max-width: 38ch; }
+
+/* Tecnología: foto grande con velo azul para leer el texto */
+.tecno { min-height: clamp(420px, 56vw, 640px); color: #FFFFFF; --foco: #FFFFFF; }
+.fotoFondo { position: absolute; inset: 0; z-index: -2; }
+.fotoFondo :global(img), .fotoFondo :global(picture) { width: 100%; height: 100%; object-fit: cover; }
+.velo { position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(11 31 51 / 0.94) 0%, rgb(11 31 51 / 0.62) 42%, rgb(11 31 51 / 0.08) 78%); }
+.contenido { display: grid; gap: 12px; }
+.tecno .texto { color: #E4E9EF; font-size: clamp(0.9375rem, 1.6vw, 1.0625rem); }
+.categorias { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 99px;
+  font-size: var(--t-chico); font-weight: 600; color: #FFFFFF; text-decoration: none;
+  background: rgb(255 255 255 / 0.14); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28); backdrop-filter: blur(10px);
+  transition: background-color 0.2s, transform 0.16s ease-out;
+}
+.chip:active { transform: scale(0.97); }
+
+/* Reparaciones: oscura, hermana de la sección del taller */
+.taller { background: linear-gradient(150deg, #0b1620, #0a1119); color: #FFFFFF; --foco: #FFFFFF; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1); min-height: 240px; }
+.taller::before { content: ''; position: absolute; z-index: -1; right: -20%; top: -40%; width: 80%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(closest-side, rgb(50 120 210 / 0.45), transparent); }
+.taller :global(svg) { color: var(--accion); }
+.taller .texto { color: #B7C4D3; }
+
+/* Aroma y Anime */
+.aroma { background: #FDEBD3; color: var(--marca); min-height: 230px; }
+.aroma :global(svg) { color: #C46F0A; }
+.aroma .texto { color: #5b4a30; }
+.pronto { justify-self: start; padding: 3px 11px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; color: #8A4B00; background: rgb(255 255 255 / 0.65); }
+.anime { background: var(--marca); color: #FFFFFF; --foco: #FFFFFF; min-height: 230px; }
+.anime :global(svg) { color: var(--accion); }
+.anime .texto { color: #D8D8D8; }
+
+.enlace, .enlaceClaro { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 600; text-decoration: none; }
+.enlace { color: var(--marca); }
+.enlaceClaro { color: #FFFFFF; }
+.enlace span, .enlaceClaro span { color: var(--accion); font-size: 1.3em; line-height: 1; transition: transform 0.2s var(--ease-salida); }
+.enlace:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; border-radius: 6px; }
+.enlaceClaro:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 4px; border-radius: 6px; }
+.pie { margin-top: 28px; font-size: var(--t-chico); color: var(--texto-suave); }
+
+@media (hover: hover) and (pointer: fine) {
+  .enlace:hover, .enlaceClaro:hover { text-decoration: underline; text-underline-offset: 6px; }
+  .enlace:hover span, .enlaceClaro:hover span { transform: translateX(3px); }
+  .chip:hover { background: rgb(255 255 255 / 0.26); }
+}
+
+@media (min-width: 900px) {
+  .rejilla { grid-template-columns: 1.35fr 1fr; gap: 18px; }
+  .columna { grid-template-rows: auto 1fr; gap: 18px; }
+  .par { gap: 18px; }
+  .tecno { min-height: 640px; }
+  .taller { min-height: 270px; }
+  .aroma, .anime { min-height: 270px; }
+}
+@media (max-width: 519px) { .par { grid-template-columns: 1fr; } }

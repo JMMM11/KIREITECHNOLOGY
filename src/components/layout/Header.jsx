@@ -81,6 +81,7 @@ export default function Header() {
             <ul className={s.lista}>
               <li><EnlaceNav href="/">Inicio</EnlaceNav></li>
               <li><EnlaceNav href="/tecnologia">Tecnología</EnlaceNav></li>
+              <li><EnlaceNav href="/aroma">Aroma</EnlaceNav></li>
               <li><EnlaceNav href="/anime">Anime</EnlaceNav></li>
               <li><EnlaceNav href="/reparaciones">Reparaciones</EnlaceNav></li>
               <li><EnlaceNav href="/ayuda">Ayuda</EnlaceNav></li>

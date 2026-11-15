@@ -67,9 +67,8 @@ test('la sección relojes trae los LIGE y el reloj One Piece, que sigue en anime
 
 test('cada foto de producto y de portada existe', async () => {
   const { existsSync } = await import('node:fs');
-  const { HERO } = await import('../src/data/textos.js');
   const { FOTOS_REPARACION, SERVICIOS, GRUPOS_SERVICIO } = await import('../src/data/servicios.js');
-  const fotos = [...HERO.fotos, ...PRODUCTOS.flatMap((p) => p.fotos ?? []), ...Object.values(FOTOS_REPARACION), ...[...GRUPOS_SERVICIO, ...SERVICIOS].map((x) => x.foto).filter(Boolean)];
+  const fotos = [...PRODUCTOS.flatMap((p) => p.fotos ?? []), ...Object.values(FOTOS_REPARACION), ...[...GRUPOS_SERVICIO, ...SERVICIOS].map((x) => x.foto).filter(Boolean)];
   for (const f of fotos) assert.ok(existsSync(new URL(`../${f.src}`, import.meta.url)), `${f.src} no existe`);
   // La tienda sirve las copias livianas: si falta una, corre scripts/fotos-web.ps1.
   const { anchosWeb, rutaWeb } = await import('../src/lib/fotos.js');
@@ -129,4 +128,12 @@ test('editor: la descripción se separa en presentación, tabla y nota, y vuelve
   assert.equal(armarDescripcion({ intro: ' A ', specs: [{ dato: 'Peso:', valor: '90 g\n' }, { dato: 'Vacío', valor: ' ' }], nota: '' }), 'A\n\n- Peso: 90 g');
   assert.deepEqual(leerDescripcion('Solo texto corto.'), { intro: 'Solo texto corto.', specs: [], nota: '' });
   for (const p of PRODUCTOS) assert.equal(armarDescripcion(leerDescripcion(p.descripcion)), p.descripcion, p.id);
+});
+
+test('cada categoría pertenece a una sección y Aroma existe para los perfumes', async () => {
+  const { SECCIONES, CATEGORIAS } = await import('../src/data/catalogos.js');
+  const ids = SECCIONES.map((x) => x.id);
+  assert.deepEqual(ids, ['tecnologia', 'aroma', 'anime']);
+  for (const c of CATEGORIAS) assert.ok(ids.includes(c.seccion), c.id);
+  for (const x of SECCIONES) assert.ok(CATEGORIAS.some((c) => c.seccion === x.id), `${x.id} sin categoría`);
 });

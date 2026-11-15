@@ -3,7 +3,7 @@
 import { chromium } from '@playwright/test';
 
 const base = (process.argv[2] ?? 'http://localhost:5193').replace(/\/$/, '');
-const rutas = ['/', '/tecnologia', '/tecnologia/audifonos', '/producto/lenovo-gm2-pro', '/producto/heart-buds', '/anime', '/reparaciones',
+const rutas = ['/', '/tecnologia', '/tecnologia/audifonos', '/aroma', '/producto/lenovo-gm2-pro', '/producto/heart-buds', '/anime', '/reparaciones',
   '/ayuda', '/contacto', '/legal/envios', '/legal/devoluciones', '/carrito', '/cuenta', '/no-existe'];
 const navegador = await chromium.launch({ channel: 'chrome' });
 let fallas = 0;

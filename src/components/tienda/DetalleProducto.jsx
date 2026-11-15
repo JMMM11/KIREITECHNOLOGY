@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Link } from 'wouter';
 import { AnimatePresence, motion } from 'motion/react';
+import Aparece from '../ui/Aparece.jsx';
 import BotonFavorito from './BotonFavorito.jsx';
 import Foto from '../ui/Foto.jsx';
 import Badge from '../ui/Badge.jsx';
@@ -59,8 +60,8 @@ export default function DetalleProducto({ producto: p }) {
         )}
       </div>
 
-      <div className={s.info}>
-        {categoria && <Link href={categoria.seccion === 'anime' ? '/anime' : `/tecnologia/${categoria.id}`} className={s.categoria}>{categoria.nombre}</Link>}
+      <Aparece i={1} className={s.info}>
+        {categoria && <Link href={categoria.seccion === 'tecnologia' ? `/tecnologia/${categoria.id}` : `/${categoria.seccion}`} className={s.categoria}>{categoria.nombre}</Link>}
         <h1 className={s.nombre}>{p.nombre}</h1>
         {(p.estadoVenta || p.ejemplo) && (
           <div className={s.insignias}>
@@ -125,7 +126,7 @@ export default function DetalleProducto({ producto: p }) {
           <li><Icono de={ICONOS.envio.de} mov={ICONOS.envio.mov} tam={20} /><span>Retiro gratis o envío a domicilio en Panamá por {formatoPrecio(TARIFAS.envioDomicilio)}.</span></li>
           <li><Icono de={ICONOS.pago.de} mov={ICONOS.pago.mov} tam={20} /><span>Pago con {SITIO.pagoEnLinea} ({SITIO.yappy}) o contra entrega desde {formatoPrecio(TARIFAS.contraEntregaMinimo)} (cargo de {formatoPrecio(TARIFAS.contraEntregaCargo)}).</span></li>
         </ul>
-      </div>
+      </Aparece>
     </div>
   );
 }

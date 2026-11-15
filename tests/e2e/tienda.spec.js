@@ -14,7 +14,7 @@ const precio = (page) => page.getByRole('main').locator('p').filter({ hasText: /
 
 test('la portada carga con sus secciones y el carrusel de marcas', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Tecnología que te acompaña');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Tecnología. Sin complicarte.');
   await expect(page.getByRole('heading', { name: 'Marcas con las que trabajamos.' })).toBeVisible();
   const cinta = page.getByRole('list', { name: 'Marcas' });
   // La cinta nunca está quieta (es infinita): se llega a ella por su título.
@@ -108,4 +108,45 @@ test('los enlaces directos y las rutas que no existen responden bien', async ({ 
   await expect(page.getByRole('heading', { name: 'Este producto ya no está.' })).toBeVisible();
   await page.goto('/esta-pagina-no-existe');
   await expect(page.getByRole('heading', { name: 'Aquí no hay señal.' })).toBeVisible();
+});
+
+test('Aroma existe como sección y avisa que llega pronto', async ({ page }) => {
+  await page.goto('/');
+  // Menú de escritorio o barra del teléfono: Aroma siempre está a un toque.
+  await expect(page.getByRole('link', { name: 'Aroma' }).first()).toBeVisible();
+  await page.goto('/aroma');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Aroma: próximamente.');
+  await expect(page.getByRole('link', { name: 'Avísame por WhatsApp' })).toHaveAttribute('href', /wa\.me\/50761560839/);
+});
+
+test('el taller arma y desarma la laptop con el scroll', async ({ page }) => {
+  await page.goto('/');
+  const escena = page.locator('[role="img"][aria-label^="Una laptop"] > div');
+  const etapa = async (q) => {
+    await page.evaluate((frac) => {
+      const pista = document.querySelector('#taller-titulo').closest('section').querySelector('[class*="pista"]');
+      const r = pista.getBoundingClientRect();
+      window.scrollTo(0, r.top + window.scrollY + (r.height - innerHeight) * frac);
+    }, q);
+    await page.waitForTimeout(1400);
+    return Number(await escena.evaluate((el) => getComputedStyle(el).getPropertyValue('--e')));
+  };
+  expect(await etapa(0.02)).toBeLessThan(0.05);
+  expect(await etapa(0.48)).toBeGreaterThan(0.95);
+  expect(await etapa(0.99)).toBeLessThan(0.05);
+  // Los cuatro pasos están en el texto aunque solo se vea uno a la vez.
+  for (const paso of ['Diagnóstico', 'Desarme', 'Reparación y mejora', 'Armado y prueba']) {
+    await expect(page.getByRole('heading', { name: paso, level: 3 })).toHaveCount(1);
+  }
+});
+
+test('con movimiento reducido la laptop queda desarmada y quieta', async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: 'reduce' });
+  const page = await ctx.newPage();
+  await page.goto('http://localhost:' + (process.env.PUERTO ?? '5190') + '/');
+  const pista = page.locator('#taller-titulo').locator('xpath=ancestor::section').locator('[class*="pistaFija"]');
+  await expect(pista).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Diagnóstico', level: 3 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Armado y prueba', level: 3 })).toBeVisible();
+  await ctx.close();
 });

@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { motion } from 'motion/react';
+import Aparece from '../components/ui/Aparece.jsx';
 import { LEGAL } from '../data/textos.js';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from './Paginas.module.css';
@@ -25,13 +25,7 @@ export default function Legal({ params = {} }) {
           </nav>
         </div>
       </div>
-      <motion.article
-        key={doc.id}
-        className={`contenedor ${s.legalDoc}`}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <Aparece como="article" key={doc.id} className={`contenedor ${s.legalDoc}`}>
         <h1 className={s.legalTitulo}>{doc.tituloLargo}</h1>
         {doc.parrafos.map((item, i) =>
           Array.isArray(item)
@@ -40,7 +34,7 @@ export default function Legal({ params = {} }) {
             ? <h2 key={i} className={s.legalSeccion}>{item.slice(3)}</h2>
             : <p key={i}>{item}</p>
         )}
-      </motion.article>
+      </Aparece>
     </>
   );
 }

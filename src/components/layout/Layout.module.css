@@ -4,7 +4,8 @@
   background: var(--marca); color: var(--marca-texto); font-weight: 600; text-decoration: none;
 }
 .saltar:focus { top: 12px; }
-.main { display: block; min-height: 60svh; }
+/* Alto de pantalla completa: mientras carga la página, el pie queda fuera de la vista y no salta cuando llega el contenido. */
+.main { display: block; min-height: 100svh; }
 .barraAdmin { background: var(--marca); color: #FFFFFF; --foco: #FFFFFF; }
 .barraAdminInterior { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 8px; font-size: var(--t-chico); font-weight: 600; }
 .aviso { background: var(--error-bg); color: var(--error); border-bottom: 1px solid currentColor; }

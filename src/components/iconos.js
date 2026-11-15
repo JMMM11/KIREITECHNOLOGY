@@ -4,7 +4,7 @@ import {
   CheckCircleFill, Truck, InfoCircle, House, HouseFill, Grid, GridFill, Search, Bag, BagFill, ThreeDots,
   ShieldCheck, Shop, CashCoin, Whatsapp, Envelope,
   GeoAlt, Clock, ArrowRight, ArrowLeft, XLg, PlusLg, DashLg, Trash3, ChevronDown, Funnel, Lightning, Sliders,
-  QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2,
+  Droplet, DropletFill, Tools, Cpu, QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2,
   Person, PersonCircle, BoxSeam, ShieldLock, BoxArrowRight, ChevronRight, XCircle,
 } from 'react-bootstrap-icons';
 
@@ -13,6 +13,7 @@ export const ICONOS_CATEGORIA = {
   relojes: { de: Smartwatch, mov: 'sacudir' },
   cargadores: { de: BatteryCharging, mov: 'aparecer' },
   'accesorios-pc': { de: Mouse, mov: 'gota' },
+  aroma: { de: Droplet, mov: 'gota' },
   anime: { de: Heart, mov: 'latido' },
 };
 
@@ -32,6 +33,7 @@ export const ICONOS_ESTADO = {
 export const ICONOS_NAV = {
   inicio: { de: House, lleno: HouseFill, mov: 'gota' },
   tecnologia: { de: Grid, lleno: GridFill, mov: 'aparecer' },
+  aroma: { de: Droplet, lleno: DropletFill, mov: 'gota' },
   anime: { de: Heart, lleno: HeartFill, mov: 'latido' },
   carrito: { de: Bag, lleno: BagFill, mov: 'latido' },
   mas: { de: ThreeDots, lleno: ThreeDots, mov: 'aparecer' },
@@ -64,6 +66,9 @@ export const ICONOS = {
   buscar: { de: Search, mov: 'latido' },
   bolsa: { de: Bag, mov: 'latido' },
   laptop: { de: Laptop, mov: 'aparecer' },
+  reparar: { de: Tools, mov: 'giro' },
+  mejorar: { de: Cpu, mov: 'latido' },
+  tienda: { de: Shop, mov: 'gota' },
   info: { de: InfoCircle, mov: 'aparecer' },
   cuenta: { de: PersonCircle, mov: 'aparecer' },
   perfil: { de: Person, mov: 'aparecer' },

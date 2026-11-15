@@ -54,7 +54,7 @@ flowchart TD
 
 | Carpeta | Qué hay |
 | --- | --- |
-| `src/pages` | Inicio, Catálogo, Producto, Carrito, Checkout, Anime, Reparaciones, Ayuda, Legal, Cuenta, Admin y 404 |
+| `src/pages` | Inicio, Catálogo, Producto, Carrito, Checkout, Aroma, Anime, Reparaciones, Ayuda, Contacto, Legal, Cuenta, Admin y 404 |
 | `src/components/admin` | Panel: productos, pedidos, citas, clientes y comentarios |
 | `src/components/cuenta` | Acceso, Mis pedidos, perfil, favoritos, direcciones y seguridad |
 | `src/components/tienda` | Tarjetas, detalle, carrito, comentarios y precios |
@@ -184,11 +184,24 @@ Solo los comentarios `publicado` se ven en la tienda. Al eliminar su cuenta, el 
 | `/buscar/:q?` | Búsqueda |
 | `/producto/:slug` | Detalle del producto |
 | `/carrito`, `/checkout` | Carrito y compra |
+| `/aroma` | Aroma (perfumes). Muestra "Próximamente" hasta que haya productos en la categoría `aroma` |
 | `/anime` | Zona Anime |
 | `/reparaciones` | Servicios y citas |
 | `/ayuda/:seccion?` | Preguntas frecuentes |
-| `/legal/:doc?` | Privacidad y términos |
+| `/contacto` | Canales de contacto |
+| `/legal/:doc?` | Privacidad, términos, envíos y devoluciones |
 | `/cuenta/:seccion?/:id?` | Cuenta del cliente |
 | `/admin` | Panel de administración |
 
 Las rutas no usan `#`. Firebase Hosting responde `index.html` a cualquier ruta (`rewrites` en `firebase.json`) y por eso `vite.config.js` usa `base: '/'`: con rutas relativas, recargar `/producto/x` buscaría los archivos en `/producto/assets/`.
+
+## Portada y entrada de las páginas
+
+La portada (`src/pages/Inicio.jsx`) presenta lo que Kirei hace y vende; los productos y los precios viven en cada sección (`/tecnologia`, `/aroma`, `/anime`).
+
+- `HeroKirei`: título grande y dos móviles inclinados (`TelefonosHero`, hechos en CSS, con la interfaz de la tienda en la pantalla).
+- `QueHacemos`: Tecnología, Reparaciones, Aroma y Anime.
+- `LaptopDesarmable`: una laptop en 3D (solo CSS) que se desarma y se arma con el scroll. Una variable (`--e`, de 0 armada a 1 desarmada) mueve cada pieza con `calc()`. Con movimiento reducido queda desarmada y quieta. También se usa en `/reparaciones`.
+- `Aparece` (`src/components/ui`): la entrada de marca (sube desde un desenfoque de 8 px, escalonada 0,15 s). La usan las cabeceras de todas las páginas.
+
+Para agregar otra sección de la tienda (por ejemplo, otra línea de productos): una entrada en `SECCIONES` y otra en `CATEGORIAS` de `src/data/catalogos.js`, un archivo de página como `src/pages/Aroma.jsx`, la ruta en `src/App.jsx`, el enlace en `Header.jsx` y `NavMovil.jsx`, y la ruta en el sitemap de `scripts/compilar.mjs`.

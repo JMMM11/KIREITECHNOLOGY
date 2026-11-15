@@ -2,23 +2,7 @@
 import { formatoPrecio } from '../lib/formatoPrecio.js';
 import { SITIO, TARIFAS } from './sitio.js';
 
-// Portada: la foto se recoge en una tarjeta al bajar. Los botones se ven desde el primer momento.
-export const HERO = {
-  fotos: [
-    { src: 'Productos/principal.png', ancho: 2560, alto: 1440 },
-    { src: 'Productos/principal2.png', ancho: 1672, alto: 941 },
-  ],
-  titulo: 'Tecnología que te acompaña',
-  // Se escriben una tras otra en la portada; la primera es la que leen los lectores de pantalla.
-  frases: ['todo el día.', 'en cada llamada.', 'en tus partidas.', 'a donde vayas.'],
-  texto: `Audífonos, relojes y accesorios con garantía. Retira gratis o recibe en casa por ${formatoPrecio(TARIFAS.envioDomicilio)}.`,
-  principal: { texto: 'Explorar tecnología', a: '/tecnologia' },
-  secundario: { texto: 'Reparaciones', a: '/reparaciones' },
-};
-
 export const INICIO = {
-  secciones: { titulo: 'Elige una sección.' },
-  pedidos: { titulo: 'Lo más pedido.', enlace: 'Ver toda la tecnología' },
   // Logos recortados de la imagen de marcas del dueño (public/marcas/).
   marcas: {
     titulo: 'Marcas con las que trabajamos.',
@@ -39,11 +23,6 @@ export const INICIO = {
     { id: 'envio', valor: TARIFAS.envioDomicilio / 100, prefijo: '$', texto: 'envío a domicilio en Panamá' },
     { id: 'pago', valor: TARIFAS.contraEntregaMinimo / 100, prefijo: '$', texto: 'mínimo para pagar contra entrega' },
   ],
-  reparaciones: {
-    titulo: '¿Tu computadora falla?',
-    texto: 'Diagnóstico, cambio de pantalla, batería o teclado e instalación de Windows.',
-    accion: 'Agenda tu diagnóstico',
-  },
 };
 
 // Ayuda: cada tema es una fila que se abre. "resumen" se lee con la fila cerrada.
