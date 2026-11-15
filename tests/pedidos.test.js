@@ -27,7 +27,7 @@ test('armarPedido deja la forma que exigen las reglas', () => {
   assert.equal(p.items[0].varianteNombre, '');
   assert.equal(p.totalCentavos, 4000);
   assert.ok(!JSON.stringify(p).includes('undefined'));
-  assert.deepEqual(Object.keys(p).sort(), ['cargoContraEntregaCentavos', 'cliente', 'entrega', 'envioCentavos', 'estado', 'items', 'nota', 'pago', 'subtotalCentavos', 'totalCentavos', 'uid']);
+  assert.deepEqual(Object.keys(p).sort(), ['cargoContraEntregaCentavos', 'cliente', 'consentimiento', 'entrega', 'envioCentavos', 'estado', 'items', 'nota', 'pago', 'subtotalCentavos', 'totalCentavos', 'uid']);
   assert.equal(p.uid, null);
 });
 

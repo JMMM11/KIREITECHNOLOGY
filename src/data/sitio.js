@@ -24,6 +24,8 @@ export const SITIO = {
   tiempoPorPedido: 'Los productos abonados llegan en 15 días (sin contar fines de semana). El saldo pendiente se paga al entregar el producto. Si no llega en ese plazo, te devolvemos el abono.',
   // Mientras sea true se muestran los estados de ejemplo y un aviso. Al lanzar, poner en false.
   vistaPrevia: false,
+  // Versión de la política de privacidad que acepta el cliente. Cámbiala al cambiar la política: queda guardada en cada pedido y cuenta.
+  versionPrivacidad: '2026-11',
   // UID del dueño: el único que da acceso al panel a otras personas. Debe coincidir con firestore.rules.
   duenoUid: 'SiAnST1DF5RATL2pq75ehocMwD73',
   // Productos de más de este monto (centavos) se traen por pedido. Datos de la imagen de pedidos del dueño.

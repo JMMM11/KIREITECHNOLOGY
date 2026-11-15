@@ -120,3 +120,10 @@ test('el cliente con cuenta ve solo sus pedidos; nadie firma pedidos a nombre de
   await rechaza(guardarPedido(cliente, datos({ uid: 'ana' }), 1));
   await rechaza(actualizarPedido(ana, 'KT-1001', { estado: 'entregado' }));
 });
+
+test('un pedido sin la versión de privacidad aceptada se rechaza', async () => {
+  const { consentimiento, ...sinConsentimiento } = datos();
+  assert.ok(consentimiento);
+  await rechaza(guardarPedido(cliente, sinConsentimiento, 1));
+  await rechaza(guardarPedido(cliente, datos({ consentimiento: '' }), 1));
+});

@@ -45,3 +45,13 @@
   .detalle { grid-template-columns: 1.1fr 1fr; gap: 64px; padding-block: 48px 96px; align-items: start; }
   .galeria { position: sticky; top: 24px; }
 }
+
+.comprar { display: grid; justify-self: stretch; align-self: stretch; }
+/* En el celular el botón de compra queda al alcance del pulgar, sobre la barra de abajo, mientras se ve el producto. */
+@media (max-width: 899px) {
+  .comprar {
+    position: sticky; bottom: calc(var(--alto-nav-movil) + env(safe-area-inset-bottom) + 8px); z-index: 5;
+    margin-inline: -8px; padding: 8px; border-radius: calc(var(--radio-detalle) + 8px);
+    background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px);
+  }
+}

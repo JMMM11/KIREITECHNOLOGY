@@ -46,3 +46,20 @@ export function partirDescripcion(texto = '') {
 export const resumenDescripcion = (texto = '') => partirDescripcion(texto).find((b) => b.tipo === 'parrafo')?.texto ?? '';
 // Todo en una línea, para los datos estructurados.
 export const descripcionPlana = (texto = '') => partirDescripcion(texto).map((b) => (b.tipo === 'lista' ? b.items.join('. ') : b.texto)).join(' ');
+
+// Para el editor del panel: la descripción en tres partes (presentación, tabla de datos y nota final) y de vuelta a texto.
+export function leerDescripcion(texto = '') {
+  const bloques = partirDescripcion(texto);
+  const intro = bloques[0]?.tipo === 'parrafo' ? bloques.shift().texto : '';
+  const i = bloques.findIndex((b) => b.tipo === 'lista');
+  const lista = i >= 0 ? bloques.splice(i, 1)[0].items : [];
+  const specs = lista.map((it) => { const [dato, ...resto] = it.split(': '); return resto.length ? { dato, valor: resto.join(': ') } : { dato: '', valor: it }; });
+  const nota = bloques.map((b) => (b.tipo === 'lista' ? b.items.map((x) => `- ${x}`).join('\n') : b.texto)).join('\n\n');
+  return { intro, specs, nota };
+}
+
+export function armarDescripcion({ intro = '', specs = [], nota = '' }) {
+  const filas = specs.map((s) => ({ dato: s.dato.trim().replace(/:$/, ''), valor: s.valor.trim().replace(/\s*\n\s*/g, ' ') })).filter((s) => s.valor);
+  const lista = filas.map((s) => (s.dato ? `- ${s.dato}: ${s.valor}` : `- ${s.valor}`)).join('\n');
+  return [intro.trim(), lista, nota.trim()].filter(Boolean).join('\n\n');
+}

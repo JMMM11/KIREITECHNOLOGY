@@ -90,3 +90,12 @@
   .stock input { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .barraRelleno { transition: none; } }
+
+/* Editor de especificaciones: una fila por dato */
+.specs { list-style: none; display: grid; gap: 8px; width: 100%; padding: 0; }
+.spec { display: grid; grid-template-columns: minmax(140px, 1fr) 2fr auto; gap: 8px; align-items: center; }
+.specAcciones { display: flex; gap: 12px; }
+.specAcciones button:disabled { opacity: 0.35; cursor: default; }
+@media (max-width: 640px) {
+  .spec { grid-template-columns: 1fr; padding-bottom: 10px; border-bottom: 1px solid var(--borde); }
+}

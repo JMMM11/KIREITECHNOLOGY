@@ -1,5 +1,7 @@
 // Lógica pura de pedidos (probada en tests/pedidos.test.js). Lo que valida aquí lo vuelve a exigir firestore.rules.
 
+import { SITIO } from '../data/sitio.js';
+
 // Orden del flujo; "cancelado" se puede elegir en cualquier momento desde el panel.
 export const ESTADOS_PEDIDO = ['recibido', 'confirmado', 'enviado', 'entregado', 'cancelado'];
 export const ENTREGAS_PEDIDO = ['retiro', 'punto_encuentro', 'domicilio'];
@@ -47,6 +49,8 @@ export function armarPedido({ uid, cliente, entrega, pago, items, totales, nota 
     envioCentavos,
     cargoContraEntregaCentavos,
     totalCentavos: subtotalCentavos + (envioCentavos ?? 0) + cargoContraEntregaCentavos,
+    // Prueba de la casilla marcada en el checkout (la hora es creadoEn).
+    consentimiento: SITIO.versionPrivacidad,
   };
 }
 

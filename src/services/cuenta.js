@@ -20,10 +20,10 @@ export const salir = () => signOut(auth);
 export const recuperar = (correo) => sendPasswordResetEmail(auth, correo);
 
 // Crea el perfil si es la primera vez que entra con este proveedor.
-async function perfilSiNuevo(user) {
+async function perfilSiNuevo(user, acepto = false) {
   const ref = perfilRef(user.uid);
   const snap = await getDoc(ref);
-  if (!snap.exists()) await setDoc(ref, { nombre: user.displayName ?? '', ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+  if (!snap.exists()) await setDoc(ref, { nombre: user.displayName ?? '', ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp(), ...(acepto && { aceptoPrivacidad: SITIO.versionPrivacidad }) });
 }
 
 // Las reglas solo aceptan el correo de la propia sesión; sin correo (algunas cuentas de Apple), no se guarda.
@@ -40,22 +40,22 @@ export async function esAdmin(uid) {
   try { return (await getDoc(doc(db, 'admins', uid))).exists(); } catch { return false; }
 }
 
-export async function entrarGoogle() {
+export async function entrarGoogle(acepto) {
   const { user } = await signInWithPopup(auth, new GoogleAuthProvider());
-  await perfilSiNuevo(user);
+  await perfilSiNuevo(user, acepto);
 }
 
-export async function entrarApple() {
+export async function entrarApple(acepto) {
   const provider = new OAuthProvider('apple.com');
   provider.addScope('name');
   const { user } = await signInWithPopup(auth, provider);
-  await perfilSiNuevo(user);
+  await perfilSiNuevo(user, acepto);
 }
 
 export async function registrar({ nombre, correo, clave }) {
   const { user } = await createUserWithEmailAndPassword(auth, correo, clave);
   await updateProfile(user, { displayName: nombre });
-  await setDoc(perfilRef(user.uid), { nombre, ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp() });
+  await setDoc(perfilRef(user.uid), { nombre, ...correoDe(user), telefono: '', direcciones: [], favoritos: [], creadoEn: serverTimestamp(), aceptoPrivacidad: SITIO.versionPrivacidad });
 }
 
 export async function leerPerfil(uid) {

@@ -184,3 +184,6 @@
   .botonPeligro:hover { background: var(--error); border-color: var(--error); color: #FFFFFF; }
 }
 @media (prefers-reduced-motion: reduce) { .esqueletoFila { animation: none; } }
+
+.acepto { display: flex; gap: 12px; align-items: flex-start; font-size: var(--t-chico); cursor: pointer; }
+.acepto input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--marca); }

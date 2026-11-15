@@ -46,7 +46,8 @@ service cloud.firestore {
       allow read: if esDueno(uid) || esAdmin();
       allow delete: if esDueno(uid);
       allow create, update: if esDueno(uid)
-        && request.resource.data.keys().hasOnly(['nombre', 'correo', 'telefono', 'direcciones', 'favoritos', 'creadoEn'])
+        && request.resource.data.keys().hasOnly(['nombre', 'correo', 'telefono', 'direcciones', 'favoritos', 'creadoEn', 'aceptoPrivacidad'])
+        && (!('aceptoPrivacidad' in request.resource.data) || (request.resource.data.aceptoPrivacidad is string && request.resource.data.aceptoPrivacidad.size() <= 20))
         && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 80
         // El correo solo puede ser el de la propia cuenta: el dueño lo usa para saber a quién da acceso al panel.
         && (!('correo' in request.resource.data) || request.resource.data.correo == request.auth.token.email)
@@ -75,9 +76,10 @@ service cloud.firestore {
     }
     function pedidoValido(id, d) {
       return d.keys().hasAll(['uid', 'numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
-          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
+          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos', 'consentimiento'])
         && d.keys().hasOnly(['uid', 'numero', 'estado', 'creadoEn', 'cliente', 'entrega', 'pago', 'nota', 'items',
-          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos'])
+          'subtotalCentavos', 'envioCentavos', 'cargoContraEntregaCentavos', 'totalCentavos', 'consentimiento'])
+        && texto(d.consentimiento, 1, 20)
         && (d.uid == null || esDueno(d.uid))
         && d.numero == getAfter(rutaContador()).data.ultimo
         && id == 'KT-' + string(d.numero)

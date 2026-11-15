@@ -25,6 +25,7 @@ async function crearCuenta(page, nombre, correo) {
   await page.getByRole('textbox', { name: 'Nombre', exact: true }).fill(nombre);
   await page.getByRole('textbox', { name: 'Correo', exact: true }).fill(correo);
   await page.locator('input[type="password"]').fill('clave-segura-123');
+  await page.getByRole('checkbox', { name: /acepto la política de privacidad/ }).check();
   await page.getByRole('button', { name: 'Crear mi cuenta' }).click();
   await expect(page.getByText(`Hola, ${nombre}`).first()).toBeVisible({ timeout: 15000 });
 }
@@ -99,4 +100,34 @@ test('un admin ve el resumen y cambia unidades en inventario', async ({ browser 
   if (process.env.CAPTURAS) await admin.screenshot({ path: 'test-results/panel-inventario.png', fullPage: true });
   const doc = await admin.request.get(`${FIRESTORE}/productos/audifonos-prueba`, { headers: DUENO_EMULADOR });
   expect((await doc.json()).fields.stock.integerValue).toBe('2');
+});
+
+test('el admin llena las especificaciones como tabla y la tienda las muestra', async ({ browser }) => {
+  const admin = await (await browser.newContext()).newPage();
+  await crearCuenta(admin, 'Dani', 'dani@prueba.test');
+  const uid = await admin.evaluate(async () => {
+    const db = await new Promise((listo) => { const r = indexedDB.open('firebaseLocalStorageDb'); r.onsuccess = () => listo(r.result); });
+    const todo = await new Promise((listo) => { const q = db.transaction('firebaseLocalStorage').objectStore('firebaseLocalStorage').getAll(); q.onsuccess = () => listo(q.result); });
+    return todo.find((x) => x.value?.stsTokenManager)?.value.uid;
+  });
+  await admin.request.patch(`${FIRESTORE}/admins/${uid}`, { headers: DUENO_EMULADOR, data: { fields: { nombre: { stringValue: 'Dani' } } } });
+
+  await admin.goto('/admin');
+  await admin.getByRole('button', { name: 'Productos', exact: true }).click();
+  await admin.getByRole('button', { name: 'Editar' }).first().click();
+  await admin.getByRole('button', { name: 'Agregar fila' }).click();
+  await admin.getByLabel('Dato 1', { exact: true }).fill('Batería');
+  await admin.getByLabel('Valor de Batería').fill('6 horas por carga');
+  await admin.getByRole('button', { name: 'Agregar fila' }).click();
+  await admin.getByLabel('Dato 2', { exact: true }).fill('Bluetooth');
+  await admin.getByLabel('Valor de Bluetooth').fill('5.3');
+  await admin.getByRole('button', { name: 'Subir Bluetooth' }).click();
+  if (process.env.CAPTURAS) await admin.screenshot({ path: 'test-results/panel-editor.png', fullPage: true });
+  await admin.getByRole('button', { name: /^Guardar/ }).click();
+  await expect(admin.getByRole('heading', { name: 'Productos' })).toBeVisible();
+
+  const doc = await admin.request.get(`${FIRESTORE}/productos/audifonos-prueba`, { headers: DUENO_EMULADOR });
+  expect((await doc.json()).fields.descripcion.stringValue).toBe('Producto de prueba.\n\n- Bluetooth: 5.3\n- Batería: 6 horas por carga');
+  await admin.goto('/producto/audifonos-prueba');
+  await expect(admin.getByRole('row', { name: /Bluetooth\s*5\.3/ })).toBeVisible();
 });

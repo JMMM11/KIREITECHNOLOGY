@@ -4,12 +4,16 @@ import Foto from '../ui/Foto.jsx';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { borrarProducto, guardarProducto, subirFoto } from '../../services/admin.js';
 import { aCentavos, idDesdeNombre, reordenarFotos } from './editor.js';
+import { armarDescripcion, leerDescripcion } from '../../lib/catalogo.js';
 import s from './Admin.module.css';
 
 export const NUEVO = {
   nombre: '', categoriaId: CATEGORIAS[0].id, precioCentavos: null, precioAntesCentavos: null, stock: null,
   estado: 'borrador', destacado: false, nuevo: true, descripcion: '', fotos: [], tono: 'foto', licencia: null,
 };
+
+// Nombres de datos que se repiten en los productos: se sugieren al escribir.
+const DATOS_SUGERIDOS = ['Bluetooth', 'Batería', 'Pantalla', 'Resistencia al agua', 'Carga', 'Colores', 'Incluye', 'Compatibilidad', 'Micrófono', 'Alcance', 'Correa', 'App', 'Peso', 'Medidas', 'Material'];
 
 const aTexto = (c) => (c == null ? '' : (c / 100).toFixed(2));
 
@@ -18,7 +22,7 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
   const [f, setF] = useState(() => ({
     nombre: producto.nombre, categoriaId: producto.categoriaId, marca: producto.marca ?? '',
     precio: aTexto(producto.precioCentavos), antes: aTexto(producto.precioAntesCentavos), stock: producto.stock == null ? '' : String(producto.stock),
-    estado: producto.estado, destacado: Boolean(producto.destacado), nuevo: Boolean(producto.nuevo), descripcion: producto.descripcion ?? '',
+    estado: producto.estado, destacado: Boolean(producto.destacado), nuevo: Boolean(producto.nuevo), ...leerDescripcion(producto.descripcion ?? ''), ...(producto === NUEVO && { specs: [{ dato: '', valor: '' }] }),
     fotos: producto.fotos ?? [], variantes: (producto.variantes ?? []).map((v) => ({ ...v, precioTexto: aTexto(v.precioCentavos) })),
   }));
   const [err, setErr] = useState({});
@@ -26,6 +30,8 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
   const [guardando, setGuardando] = useState(false);
 
   const cambiar = (campo) => (e) => setF({ ...f, [campo]: e.target.type === 'checkbox' ? e.target.checked : e.target.value });
+  const cambiarSpec = (i, campo, valor) => setF((x) => ({ ...x, specs: x.specs.map((sp, j) => (j === i ? { ...sp, [campo]: valor } : sp)) }));
+  const moverSpec = (i, d) => setF((x) => { const specs = [...x.specs]; [specs[i], specs[i + d]] = [specs[i + d], specs[i]]; return { ...x, specs }; });
   const cambiarVariante = (i, campo, valor) => setF((x) => ({ ...x, variantes: x.variantes.map((v, j) => (j === i ? { ...v, [campo]: valor } : v)) }));
   const ordenar = (orden) => setF((x) => ({ ...x, ...reordenarFotos(x, orden) }));
   const indices = f.fotos.map((_, i) => i);
@@ -75,7 +81,7 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
         ...producto, id,
         nombre: f.nombre.trim(), categoriaId: f.categoriaId, marca: f.marca.trim() || undefined,
         precioCentavos: precio, precioAntesCentavos: antes, stock,
-        estado: f.estado, destacado: f.destacado, nuevo: f.nuevo, descripcion: f.descripcion.trim(), fotos: f.fotos,
+        estado: f.estado, destacado: f.destacado, nuevo: f.nuevo, descripcion: armarDescripcion(f), fotos: f.fotos,
         variantes: variantes.length ? variantes : undefined,
         opcion: variantes.length ? (producto.opcion ?? 'Color') : undefined,
       });
@@ -117,8 +123,35 @@ export default function EditorProducto({ producto, existentes, alTerminar }) {
         </div>
       </div>
 
-      <Campo etiqueta="Descripción" como="textarea" rows={14} value={f.descripcion} onChange={cambiar('descripcion')}
-        ayuda='El primer párrafo sale junto al precio. Deja una línea en blanco entre párrafos. Para una lista de características, empieza cada línea con "- " (por ejemplo: "- Batería: 6 horas").' />
+      <Campo etiqueta="Presentación" como="textarea" rows={4} value={f.intro} onChange={cambiar('intro')}
+        ayuda="Uno o dos párrafos cortos: qué es y para quién. Sale junto al precio." />
+
+      <fieldset className={s.grupo}>
+        <legend className="leyenda">Detalles y especificaciones</legend>
+        <p className="ayuda">Cada fila es un dato y su valor, como en la tabla que ve el cliente. La marca se agrega sola arriba. Las filas sin valor no se guardan.</p>
+        {f.specs.length > 0 && (
+          <ol className={s.specs}>
+            {f.specs.map((sp, i) => (
+              <li key={i} className={s.spec}>
+                <label className="sr-only" htmlFor={`spec-dato-${i}`}>Dato {i + 1}</label>
+                <input id={`spec-dato-${i}`} className="entrada" list="datos-sugeridos" placeholder="Dato (ej. Batería)" value={sp.dato} onChange={(e) => cambiarSpec(i, 'dato', e.target.value)} />
+                <label className="sr-only" htmlFor={`spec-valor-${i}`}>Valor de {sp.dato || `dato ${i + 1}`}</label>
+                <input id={`spec-valor-${i}`} className="entrada" placeholder="Valor (ej. 6 horas por carga)" value={sp.valor} onChange={(e) => cambiarSpec(i, 'valor', e.target.value)} />
+                <span className={s.specAcciones}>
+                  <button type="button" className={s.enlaceBoton} onClick={() => moverSpec(i, -1)} disabled={i === 0} aria-label={`Subir ${sp.dato || 'fila'}`}>Subir</button>
+                  <button type="button" className={s.enlaceBoton} onClick={() => moverSpec(i, 1)} disabled={i === f.specs.length - 1} aria-label={`Bajar ${sp.dato || 'fila'}`}>Bajar</button>
+                  <button type="button" className={s.enlaceBoton} onClick={() => setF((x) => ({ ...x, specs: x.specs.filter((_, j) => j !== i) }))} aria-label={`Quitar ${sp.dato || 'fila'}`}>Quitar</button>
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
+        <datalist id="datos-sugeridos">{DATOS_SUGERIDOS.map((d) => <option key={d} value={d} />)}</datalist>
+        <button type="button" className="btn btn-fantasma" onClick={() => setF((x) => ({ ...x, specs: [...x.specs, { dato: '', valor: '' }] }))}>Agregar fila</button>
+      </fieldset>
+
+      <Campo etiqueta="Nota final" opcional como="textarea" rows={2} value={f.nota} onChange={cambiar('nota')}
+        ayuda="Va debajo de la tabla. Por ejemplo: entrega inmediata, producto original o por pedido." />
 
       <fieldset className={s.grupo}>
         <legend className="leyenda">Fotos</legend>

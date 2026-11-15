@@ -118,3 +118,15 @@ test('descripción: párrafos, listas, resumen y versión plana', async () => {
   assert.equal(descripcionPlana(t), 'Uno dos. Tres. Batería: 6 h. IP54 Final.');
   assert.deepEqual(partirDescripcion(''), []);
 });
+
+test('editor: la descripción se separa en presentación, tabla y nota, y vuelve igual', async () => {
+  const { leerDescripcion, armarDescripcion } = await import('../src/lib/catalogo.js');
+  const t = 'Intro.\n\n- Bluetooth: 5.3\n- Colores: negro y blanco\n\nEntrega inmediata.';
+  const d = leerDescripcion(t);
+  assert.deepEqual(d, { intro: 'Intro.', specs: [{ dato: 'Bluetooth', valor: '5.3' }, { dato: 'Colores', valor: 'negro y blanco' }], nota: 'Entrega inmediata.' });
+  assert.equal(armarDescripcion(d), t);
+  // Filas vacías fuera, ":" sobrante y saltos de línea no rompen el formato.
+  assert.equal(armarDescripcion({ intro: ' A ', specs: [{ dato: 'Peso:', valor: '90 g\n' }, { dato: 'Vacío', valor: ' ' }], nota: '' }), 'A\n\n- Peso: 90 g');
+  assert.deepEqual(leerDescripcion('Solo texto corto.'), { intro: 'Solo texto corto.', specs: [], nota: '' });
+  for (const p of PRODUCTOS) assert.equal(armarDescripcion(leerDescripcion(p.descripcion)), p.descripcion, p.id);
+});

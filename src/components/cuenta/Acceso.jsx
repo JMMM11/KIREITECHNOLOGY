@@ -23,11 +23,13 @@ function volver(navegar) {
   } catch { /* sin almacenamiento: se queda en la cuenta */ }
 }
 
+const FALTA_ACEPTAR = 'Marca la casilla para crear tu cuenta.';
+
 export default function Acceso() {
   const { cuenta, recargarPerfil } = useCuenta();
   const [, navegar] = useLocation();
   const [modo, setModo] = useState('entrar');
-  const [f, setF] = useState({ nombre: '', correo: '', clave: '' });
+  const [f, setF] = useState({ nombre: '', correo: '', clave: '', acepto: false });
   const [err, setErr] = useState({});
   const [aviso, setAviso] = useState('');
   const [enviando, setEnviando] = useState(false);
@@ -36,10 +38,11 @@ export default function Acceso() {
   const ir = (m) => { setModo(m); setErr({}); setAviso(''); };
 
   async function entrarCon(proveedor) {
+    if (modo === 'crear' && !f.acepto) { setErr({ acepto: FALTA_ACEPTAR }); return; }
     setEnviando(true);
     try {
       const m = await cuenta();
-      await (proveedor === 'google' ? m.entrarGoogle() : m.entrarApple());
+      await (proveedor === 'google' ? m.entrarGoogle(modo === 'crear') : m.entrarApple(modo === 'crear'));
       volver(navegar);
     } catch (error) {
       setErr({ general: mensajeAuth(error) });
@@ -53,6 +56,7 @@ export default function Acceso() {
       nombre: modo === 'crear' ? validarNombre(f.nombre) : '',
       correo: validarCorreo(f.correo, { obligatorio: true }),
       clave: modo === 'crear' ? validarClave(f.clave) : modo === 'entrar' && !f.clave ? 'Escribe tu contraseña.' : '',
+      acepto: modo === 'crear' && !f.acepto ? FALTA_ACEPTAR : '',
     });
     setErr(fallos);
     if (Object.keys(fallos).length) return;
@@ -114,8 +118,17 @@ export default function Acceso() {
         {err.general && <p className="error-campo" role="alert">{err.general}</p>}
         {aviso && <p className={s.aviso} role="status">{aviso}</p>}
 
+        {modo === 'crear' && (
+          <div>
+            <label className={s.acepto}>
+              <input type="checkbox" checked={f.acepto} onChange={(e) => { setF({ ...f, acepto: e.target.checked }); setErr({ ...err, acepto: '' }); }}
+                aria-invalid={err.acepto ? 'true' : undefined} aria-describedby={err.acepto ? 'acepto-cuenta-error' : undefined} />
+              <span>Soy mayor de 18 años y acepto la <Link href="/legal/privacidad" className="enlace">política de privacidad</Link>: mis datos se usan solo para mis pedidos.</span>
+            </label>
+            {err.acepto && <p id="acepto-cuenta-error" className="error-campo">{err.acepto}</p>}
+          </div>
+        )}
         <button className="btn btn-accion btn-bloque" disabled={enviando}>{enviando ? 'Un momento...' : textoBoton}</button>
-        {modo === 'crear' && <p className="ayuda">Al crear tu cuenta confirmas que eres mayor de 18 años y aceptas la <Link href="/legal/privacidad" className="enlace">política de privacidad</Link>.</p>}
 
         {modo !== 'recuperar' && (
           <div className={s.socialSep}><span>o continúa con</span></div>
@@ -141,7 +154,6 @@ export default function Acceso() {
         )}
         {modo === 'entrar' && <button type="button" className={s.enlaceBoton} onClick={() => ir('recuperar')}>Olvidé mi contraseña</button>}
         {modo === 'recuperar' && <button type="button" className={s.enlaceBoton} onClick={() => ir('entrar')}>Volver a entrar</button>}
-        {modo === 'crear' && <p className="ayuda">Al crear tu cuenta aceptas que usemos tus datos solo para tus pedidos, según la política de privacidad.</p>}
       </form>
     </div>
   );

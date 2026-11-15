@@ -106,6 +106,7 @@ export default function DetalleProducto({ producto: p }) {
           </div>
         )}
 
+        <div className={s.comprar}>
         {precio == null ? (
           <a className="btn btn-accion btn-bloque" href={consulta} target="_blank" rel="noopener noreferrer">
             <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={18} /> Consultar precio por WhatsApp
@@ -117,6 +118,7 @@ export default function DetalleProducto({ producto: p }) {
             Agregar al carrito
           </button>
         )}
+        </div>
 
         <ul className={s.datos}>
           <li><Icono de={ICONOS.garantia.de} mov={ICONOS.garantia.mov} tam={20} /><span>{SITIO.garantia}</span></li>
