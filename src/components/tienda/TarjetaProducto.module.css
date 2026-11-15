@@ -17,13 +17,6 @@
 .enlace:focus-visible { outline: none; }
 .tarjeta:has(.enlace:focus-visible) { outline: 3px solid var(--foco); outline-offset: 3px; }
 .pie { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
-.rapido {
-  position: relative; z-index: 1; display: grid; place-items: center;
-  width: 44px; height: 44px; flex: none; padding: 0;
-  border: 1.5px solid var(--marca); border-radius: 50%; background: var(--superficie); color: var(--marca);
-  transition: transform var(--dur-corta) var(--ease-salida);
-}
-.rapido:active { transform: scale(0.92); }
 @media (min-width: 700px) {
   .cuerpo { padding: 16px 18px 18px; }
   .nombre { font-size: 1rem; }
@@ -31,5 +24,4 @@
 @media (hover: hover) and (pointer: fine) {
   .tarjeta:hover { border-color: var(--borde-fuerte); }
   .tarjeta:hover .media img { transform: scale(1.04); }
-  .rapido:hover { background: var(--marca); color: var(--marca-texto); }
 }
