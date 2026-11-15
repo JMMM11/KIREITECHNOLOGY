@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
 import PortadaReparaciones from '../components/reparaciones/PortadaReparaciones.jsx';
 import ListaServicios from '../components/reparaciones/ListaServicios.jsx';
-import LaptopDesarmable from '../components/inicio/LaptopDesarmable.jsx';
+import LaptopTaller from '../components/reparaciones/laptop/LaptopTaller.jsx';
 import Campo from '../components/ui/Campo.jsx';
 import Icono from '../components/ui/Icono.jsx';
 import { ICONOS } from '../components/iconos.js';
@@ -87,7 +87,7 @@ export default function Reparaciones() {
   return (
     <>
       <PortadaReparaciones onAgendar={() => irAlFormulario()} />
-      <LaptopDesarmable conceptos={false} />
+      <LaptopTaller />
       <ListaServicios onElegir={(servicio) => { setF((x) => ({ ...x, servicio })); irAlFormulario(); }} />
 
       <section id="cita" className={`seccion ${s.citaSeccion}`} aria-labelledby="cita-titulo">

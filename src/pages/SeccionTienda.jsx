@@ -11,8 +11,8 @@ import { useDatos } from '../context/DatosContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from './Paginas.module.css';
 
-// Sección de la tienda con una sola categoría (Anime, Aroma). Muestra "Próximamente" mientras no haya productos publicados.
-// datos: { categoriaId, titulo, descripcion, vacio: { titulo, texto, mensaje }, cabecera: { titulo, texto }, tema? (clase de styles/tokens.css) }
+// Sección de la tienda con una sola categoría (Anime). Muestra "Próximamente" mientras no haya productos publicados.
+// datos: { categoriaId, titulo, descripcion, vacio: { titulo, texto, mensaje }, cabecera: { titulo, texto } }
 export default function SeccionTienda({ datos }) {
   useTituloPagina(datos.titulo, datos.descripcion);
   const { productos, cargando, error } = useDatos();
@@ -22,7 +22,7 @@ export default function SeccionTienda({ datos }) {
   if (error && productos.length === 0) return <ErrorDatos />;
   if (lista.length === 0) {
     return (
-      <div className={`contenedor ${s.proximamente} ${datos.tema ?? ''}`}>
+      <div className={`contenedor ${s.proximamente}`}>
         <Aparece como="h1" className="display">{datos.vacio.titulo}</Aparece>
         <Aparece como="p" i={1} className="sub">{datos.vacio.texto}</Aparece>
         <Aparece i={2} className={s.acciones}>
@@ -36,7 +36,7 @@ export default function SeccionTienda({ datos }) {
   }
 
   return (
-    <div className={datos.tema}>
+    <>
       <CabeceraPagina titulo={datos.cabecera.titulo} texto={datos.cabecera.texto} />
       <div className="contenedor">
         <h2 className={s.conteo}>{lista.length} {lista.length === 1 ? 'producto' : 'productos'}</h2>
@@ -44,6 +44,6 @@ export default function SeccionTienda({ datos }) {
           {lista.map((p) => <li key={p.id} className={s.celda}><TarjetaProducto producto={p} /></li>)}
         </ul>
       </div>
-    </div>
+    </>
   );
 }

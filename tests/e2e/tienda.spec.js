@@ -115,38 +115,49 @@ test('Aroma existe como sección y avisa que llega pronto', async ({ page }) => 
   // Menú de escritorio o barra del teléfono: Aroma siempre está a un toque.
   await expect(page.getByRole('link', { name: 'Aroma' }).first()).toBeVisible();
   await page.goto('/aroma');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Aroma: próximamente.');
-  await expect(page.getByRole('link', { name: 'Avísame por WhatsApp' })).toHaveAttribute('href', /wa\.me\/50761560839/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The Art of Fragrance');
+  // Sin perfumes publicados se ve el catálogo de muestra, marcado como tal y sin compra.
+  await expect(page.getByText('Catálogo de muestra.')).toBeVisible();
+  await expect(page.getByText('Muestra', { exact: true })).toHaveCount(6);
+  await page.getByRole('group', { name: 'Filtrar por familia' }).getByRole('button', { name: 'Cítricas' }).click();
+  await expect(page.getByRole('heading', { level: 3, name: 'Cítrico 507' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'Madera Negra' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Consultar/ }).first()).toHaveAttribute('href', /wa\.me\/50761560839/);
+  // Recomendador: dulce, intensa, de noche y oriental lleva a Ámbar Nocturno.
+  for (const opcion of ['Dulces', 'Intensas', 'Noche', 'Oriental']) await page.getByRole('radio', { name: opcion, exact: true }).check();
+  await expect(page.getByRole('status').getByRole('link', { name: /Ámbar Nocturno/ })).toBeVisible();
 });
 
-test('el taller arma y desarma la laptop con el scroll', async ({ page }) => {
+test('la laptop 3D vive solo en reparaciones: carga, se reproduce sola y se puede pausar y recorrer', async ({ page }) => {
   await page.goto('/');
-  const escena = page.locator('[role="img"][aria-label^="Una laptop"] > div');
-  const etapa = async (q) => {
-    await page.evaluate((frac) => {
-      const pista = document.querySelector('#taller-titulo').closest('section').querySelector('[class*="pista"]');
-      const r = pista.getBoundingClientRect();
-      window.scrollTo(0, r.top + window.scrollY + (r.height - innerHeight) * frac);
-    }, q);
-    await page.waitForTimeout(1400);
-    return Number(await escena.evaluate((el) => getComputedStyle(el).getPropertyValue('--e')));
-  };
-  expect(await etapa(0.02)).toBeLessThan(0.05);
-  expect(await etapa(0.48)).toBeGreaterThan(0.95);
-  expect(await etapa(0.99)).toBeLessThan(0.05);
-  // Los cuatro pasos están en el texto aunque solo se vea uno a la vez.
-  for (const paso of ['Diagnóstico', 'Desarme', 'Reparación y mejora', 'Armado y prueba']) {
-    await expect(page.getByRole('heading', { name: paso, level: 3 })).toHaveCount(1);
-  }
+  await expect(page.locator('#taller-titulo')).toHaveCount(0);            // en la portada no hay laptop
+  await expect(page.getByRole('heading', { level: 3, name: 'Reparación' })).toBeVisible();
+  await page.goto('/reparaciones');
+  await page.locator('#taller-titulo').scrollIntoViewIfNeeded();
+  await expect(page.locator('[data-fase="lista"]')).toHaveCount(1, { timeout: 60_000 });
+  await expect(page.locator('[data-fase] canvas')).toHaveCount(1);
+  const barra = page.getByRole('slider', { name: 'Recorrer el desarme' });
+  const antes = Number(await barra.inputValue());
+  await page.waitForTimeout(1500);
+  expect(Number(await barra.inputValue())).toBeGreaterThan(antes);         // avanza sin tocar nada
+  await page.getByRole('button', { name: 'Pausar' }).click();
+  const pausada = await barra.inputValue();
+  await page.waitForTimeout(700);
+  expect(await barra.inputValue()).toBe(pausada);
+  await barra.fill('18');                                                    // recorrer a mano hasta la vista desarmada
+  await expect(page.locator('li[aria-current="step"]')).toContainText('Reparación y mejora');
+  await expect(page.getByRole('link', { name: 'Framework Laptop 13' })).toBeVisible();   // atribución de la licencia CC BY
 });
 
-test('con movimiento reducido la laptop queda desarmada y quieta', async ({ browser }) => {
+test('con movimiento reducido la laptop 3D arranca quieta y desarmada', async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: 'reduce' });
   const page = await ctx.newPage();
-  await page.goto('http://localhost:' + (process.env.PUERTO ?? '5190') + '/');
-  const pista = page.locator('#taller-titulo').locator('xpath=ancestor::section').locator('[class*="pistaFija"]');
-  await expect(pista).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Diagnóstico', level: 3 })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Armado y prueba', level: 3 })).toBeVisible();
+  await page.goto('http://localhost:' + (process.env.PUERTO ?? '5190') + '/reparaciones');
+  await page.locator('#taller-titulo').scrollIntoViewIfNeeded();
+  await expect(page.locator('[data-fase="lista"]')).toHaveCount(1, { timeout: 60_000 });
+  const barra = page.getByRole('slider', { name: 'Recorrer el desarme' });
+  await page.waitForTimeout(900);
+  expect(Number(await barra.inputValue())).toBe(18);
+  await expect(page.getByRole('button', { name: 'Reproducir' })).toBeVisible();
   await ctx.close();
 });

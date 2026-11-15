@@ -1,0 +1,63 @@
+/* Taller en 3D: grafito, un solo acento azul y mucho aire. El halo del fondo es gris, no de color. */
+.seccion { margin-top: clamp(48px, 7vw, 96px); padding-block: clamp(64px, 9vw, 128px) clamp(40px, 5vw, 64px); background: radial-gradient(70% 60% at 62% 46%, var(--fondo-taller-2), var(--fondo-taller) 75%); overflow: hidden; }
+.encabezado { display: grid; gap: 14px; justify-items: center; text-align: center; margin-bottom: clamp(20px, 3vw, 40px); }
+.sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acento-texto); }
+.titulo { font-size: clamp(2.2rem, 6.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.045em; }
+.bajada { font-size: clamp(1.0625rem, 2vw, 1.375rem); color: var(--texto-claro); max-width: 36ch; text-wrap: balance; }
+
+.escenario { display: grid; gap: 20px; }
+.lienzo { position: relative; height: clamp(340px, 58svh, 560px); }
+.tres { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease-salida); }
+.lienzo[data-fase="lista"] .tres { opacity: 1; }
+.tres :global(canvas) { display: block; width: 100%; height: 100%; }
+.cargando { position: absolute; inset: 0; display: grid; place-content: center; padding: 24px; text-align: center; color: var(--texto-claro); font-size: var(--t-chico); max-width: 44ch; margin: auto; }
+.lienzo[data-fase="cargando"] .cargando::after, .lienzo[data-fase="espera"] .cargando::after {
+  content: ''; display: block; width: 120px; height: 2px; margin: 14px auto 0; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accion), transparent) 0 0 / 50% 100% no-repeat, rgb(255 255 255 / 0.14);
+  animation: carga 1.1s linear infinite;
+}
+@keyframes carga { from { background-position: -60% 0, 0 0; } to { background-position: 160% 0, 0 0; } }
+
+/* Etiquetas sobre las piezas: solo en pantallas grandes, donde caben sin taparlas. */
+.etiquetas { display: none; }
+.etiqueta { position: absolute; top: 0; left: 0; opacity: 0; will-change: transform, opacity; }
+.etiqueta i {
+  position: absolute; top: -11px; left: 18px; padding: 3px 10px; border-radius: 99px; white-space: nowrap;
+  font-style: normal; font-size: 0.75rem; font-weight: 600; color: #FFFFFF; background: rgb(15 18 22 / 0.72); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); backdrop-filter: blur(6px);
+}
+.etiqueta[data-lado="-1"] i { left: auto; right: 18px; }
+.etiqueta::before { content: ''; position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: var(--accion); box-shadow: 0 0 0 3px rgb(10 108 255 / 0.25); }
+.etiqueta::after { content: ''; position: absolute; top: 0; left: 4px; width: 13px; height: 1px; background: rgb(255 255 255 / 0.5); }
+.etiqueta[data-lado="-1"]::after { left: auto; right: 4px; }
+
+.panel { display: grid; gap: 18px; align-content: center; }
+.pasos { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.marca { display: inline-flex; align-items: baseline; gap: 7px; font-size: var(--t-chico); font-weight: 600; color: rgb(255 255 255 / 0.62); transition: color 0.3s; }
+.marca span { font-family: var(--fuente-display); font-size: 0.75rem; }
+.marca[aria-current] { color: #FFFFFF; }
+.marca[aria-current] span { color: var(--acento-texto); }
+.texto { display: grid; gap: 8px; align-content: start; min-height: 9.5rem; }
+.pasoTitulo { font-family: var(--fuente-display); font-size: clamp(1.5rem, 3.6vw, 2.5rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.08; animation: entra 0.5s var(--ease-salida) both; }
+.pasoTexto { color: var(--texto-claro); font-size: clamp(0.9375rem, 1.6vw, 1.0625rem); max-width: 44ch; animation: entra 0.5s 0.06s var(--ease-salida) both; }
+@keyframes entra { from { opacity: 0; transform: translateY(10px); } }
+
+.controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.boton {
+  min-height: 44px; padding: 0 18px; border: 0; border-radius: 99px; font-size: var(--t-chico); font-weight: 600; color: #FFFFFF;
+  background: rgb(255 255 255 / 0.08); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.24); transition: background-color 0.2s, transform 0.16s ease-out;
+}
+.boton:active { transform: scale(0.97); }
+.boton:disabled, .barra:disabled { opacity: 0.45; }
+.barra { flex: 1 1 160px; min-width: 0; height: 44px; accent-color: var(--accion); background: none; }
+.boton:focus-visible, .barra:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+.credito { margin-top: clamp(28px, 4vw, 48px); font-size: var(--t-mini); line-height: 1.6; color: rgb(255 255 255 / 0.62); max-width: 96ch; }
+.credito a { color: inherit; text-underline-offset: 3px; }
+
+@media (hover: hover) and (pointer: fine) { .boton:not(:disabled):hover { background: rgb(255 255 255 / 0.16); } }
+@media (min-width: 900px) {
+  .escenario { grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.6fr); gap: 32px; align-items: center; }
+  .lienzo { order: 2; height: clamp(480px, 74svh, 760px); }
+  .etiquetas { display: block; position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .pasos { display: grid; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .pasoTitulo, .pasoTexto, .cargando::after { animation: none !important; } }

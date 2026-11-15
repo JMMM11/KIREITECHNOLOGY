@@ -1,19 +1,20 @@
-// Mapa único de íconos con su movimiento. Un solo set: Bootstrap Icons.
+// Mapa único de íconos con su movimiento. Un solo set: Bootstrap Icons (más el de Aroma, que es propio).
 import {
   Headphones, Smartwatch, BatteryCharging, Mouse, Heart, HeartFill, Tag, ExclamationCircle, SlashCircle, Inbox, CheckCircle,
   CheckCircleFill, Truck, InfoCircle, House, HouseFill, Grid, GridFill, Search, Bag, BagFill, ThreeDots,
   ShieldCheck, Shop, CashCoin, Whatsapp, Envelope,
   GeoAlt, Clock, ArrowRight, ArrowLeft, XLg, PlusLg, DashLg, Trash3, ChevronDown, Funnel, Lightning, Sliders,
-  Droplet, DropletFill, Tools, Cpu, QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2,
+  Tools, Cpu, QuestionCircle, CalendarEvent, Telephone, Laptop, Instagram, Check2,
   Person, PersonCircle, BoxSeam, ShieldLock, BoxArrowRight, ChevronRight, XCircle,
 } from 'react-bootstrap-icons';
+import { IconoAroma, IconoAromaLleno } from './ui/IconoAroma.jsx';
 
 export const ICONOS_CATEGORIA = {
   audifonos: { de: Headphones, mov: 'latido' },
   relojes: { de: Smartwatch, mov: 'sacudir' },
   cargadores: { de: BatteryCharging, mov: 'aparecer' },
   'accesorios-pc': { de: Mouse, mov: 'gota' },
-  aroma: { de: Droplet, mov: 'gota' },
+  aroma: { de: IconoAroma, mov: 'gota' },
   anime: { de: Heart, mov: 'latido' },
 };
 
@@ -33,7 +34,7 @@ export const ICONOS_ESTADO = {
 export const ICONOS_NAV = {
   inicio: { de: House, lleno: HouseFill, mov: 'gota' },
   tecnologia: { de: Grid, lleno: GridFill, mov: 'aparecer' },
-  aroma: { de: Droplet, lleno: DropletFill, mov: 'gota' },
+  aroma: { de: IconoAroma, lleno: IconoAromaLleno, mov: 'gota' },
   anime: { de: Heart, lleno: HeartFill, mov: 'latido' },
   carrito: { de: Bag, lleno: BagFill, mov: 'latido' },
   mas: { de: ThreeDots, lleno: ThreeDots, mov: 'aparecer' },

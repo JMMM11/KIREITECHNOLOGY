@@ -17,7 +17,8 @@ for (const ruta of rutas) {
     new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
     new PerformanceObserver((l) => { const e = l.getEntries().at(-1); if (e) window.__lcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
   });
-  await pagina.goto(base + ruta, { waitUntil: 'networkidle' });
+  await pagina.goto(base + ruta, { waitUntil: 'load' });   // sin networkidle: la conexión con Firestore queda abierta
+  await pagina.waitForTimeout(2500);
   await pagina.mouse.wheel(0, 1500);
   await pagina.waitForTimeout(800);
   const m = await pagina.evaluate(() => ({ ancho: document.documentElement.scrollWidth, cls: window.__cls, lcp: window.__lcp }));

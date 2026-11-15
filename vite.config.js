@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { createReadStream, existsSync } from 'node:fs';
+import { createReadStream, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { SITIO } from './src/data/sitio.js';
 
@@ -12,7 +12,8 @@ const fotosProductos = {
     for (const carpeta of ['Productos', 'reparaciones']) {
       server.middlewares.use(`/${carpeta}`, (req, res, next) => {
         const ruta = resolve(carpeta, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, ''));
-        if (!ruta.startsWith(resolve(carpeta)) || !existsSync(ruta)) return next();
+        // Solo archivos: /reparaciones también es una página y la carpeta existe con ese nombre.
+        if (!ruta.startsWith(resolve(carpeta)) || !statSync(ruta, { throwIfNoEntry: false })?.isFile()) return next();
         createReadStream(ruta).pipe(res);
       });
     }

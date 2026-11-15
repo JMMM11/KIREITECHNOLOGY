@@ -15,6 +15,7 @@ export default defineConfig({
   testMatch: conEmulador ? /emulador\.spec\.js/ : /tienda\.spec\.js/,
   fullyParallel: !conEmulador,
   retries: 0,
+  workers: 3,   // la laptop 3D se dibuja por software en las pruebas: con más procesos a la vez, le quita CPU al resto y fallan por tiempo
   reporter: [['list']],
   use: { baseURL: `http://localhost:${puerto}`, channel: 'chrome', trace: 'retain-on-failure' },
   projects: conEmulador

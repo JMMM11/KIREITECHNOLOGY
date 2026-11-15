@@ -15,8 +15,8 @@ while (pendientes.length) {
   const ruta = pendientes.shift();
   if (vistas.has(ruta)) continue;
   vistas.add(ruta);
-  await pagina.goto(base + ruta, { waitUntil: 'networkidle' });
-  await pagina.waitForTimeout(300);
+  await pagina.goto(base + ruta, { waitUntil: 'load' });   // sin networkidle: la conexión con Firestore queda abierta
+  await pagina.waitForTimeout(1500);
   const d = await pagina.evaluate(() => ({
     titulo: document.title,
     descripcion: document.querySelector('meta[name="description"]')?.content ?? '',

@@ -1,6 +1,6 @@
 import HeroKirei from '../components/inicio/HeroKirei.jsx';
 import QueHacemos from '../components/inicio/QueHacemos.jsx';
-import LaptopDesarmable from '../components/inicio/LaptopDesarmable.jsx';
+import Conceptos from '../components/inicio/Conceptos.jsx';
 import Marcas from '../components/inicio/Marcas.jsx';
 import Garantias from '../components/inicio/Garantias.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
@@ -12,7 +12,7 @@ export default function Inicio() {
     <>
       <HeroKirei />
       <QueHacemos />
-      <LaptopDesarmable />
+      <Conceptos />
       <Marcas />
       <Garantias />
     </>
