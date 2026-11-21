@@ -1,36 +1,51 @@
-/* Portada de Aroma: estudio a oscuras (marino noche), la palabra grande detrás y el frasco flotando delante.
-   Paleta Kirei y Poppins: 300 para lo grande, 600 para botones. */
-.pista { position: relative; height: 360svh; background: var(--marino-noche); color: #FFFFFF; --foco: #FFFFFF; }
-.escena { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-.lienzo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-
-/* .pista delante: la página de Aroma pinta sus h1 y h2 en marino; aquí van claros. */
-.pista .titulo {
-  position: absolute; left: 6%; top: 7%; z-index: 1; margin: 0;
-  font-family: var(--fuente); font-weight: 300; font-size: clamp(4.5rem, 17vw, 16rem); line-height: 0.9; letter-spacing: 0.04em;
-  text-transform: uppercase; color: #FFFFFF;
+/* Portada de Aroma: estudio a oscuras (marino noche). "AROMA." grande a la izquierda, el frasco flotando a la derecha.
+   Todo entra solo, escalonado. Paleta Kirei y Poppins: 300 para lo grande, 600 para botones. */
+.portada {
+  position: relative; overflow: hidden; height: calc(100svh - var(--alto-header)); min-height: 600px; max-height: 1000px;   /* cabe bajo el encabezado */
+  background: var(--marino-noche); color: #FFFFFF; --foco: #FFFFFF;
 }
-.copia { position: absolute; left: 6%; bottom: 9%; z-index: 3; display: grid; gap: 10px; max-width: 34ch; }
+
+/* .portada delante: la página de Aroma pinta sus h1 y h2 en marino; aquí van claros. */
+.portada .titulo {
+  position: absolute; left: 6%; top: 8%; z-index: 1; margin: 0; display: flex;
+  font-family: var(--fuente); font-weight: 300; font-size: clamp(4rem, 12.5vw, 12rem); line-height: 0.9; letter-spacing: 0.04em; color: #FFFFFF;
+}
+.titulo span { display: inline-block; animation: letra 1.1s var(--ease-salida) both; }
+.titulo span:last-child { color: var(--accion); }
+@keyframes letra { from { opacity: 0; transform: translateY(0.35em); filter: blur(14px); } }
+
+.frasco { position: absolute; right: 4%; top: 4%; bottom: 4%; width: 44%; z-index: 2; }
+.foto, .lienzo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.foto { object-fit: contain; animation: sube 1.6s 0.2s var(--ease-salida) both; transition: opacity 0.6s; }
+.lienzo { opacity: 0; transition: opacity 0.6s; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent); mask-image: radial-gradient(closest-side, #000 72%, transparent); }   /* sin bordes visibles */
+.lienzo :global(canvas) { display: block; width: 100%; height: 100%; }
+.frasco[data-listo] .lienzo { opacity: 1; }
+.frasco[data-listo] .foto { opacity: 0; }
+@keyframes sube { from { opacity: 0; transform: translateY(14%) scale(0.92); filter: blur(10px); } }
+
+.nota { margin: 0 0 18px; font-size: clamp(1.15rem, 1.9vw, 1.6rem); font-weight: 300; line-height: 1.3; color: #FDEBD3; }
+
+.copia { position: absolute; left: 6%; bottom: 8%; z-index: 3; display: grid; gap: 12px; max-width: 40ch; animation: entra2 1s 1.9s var(--ease-salida) both; }
+@keyframes entra2 { from { opacity: 0; transform: translateY(30px); filter: blur(8px); } }
 .sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accion); }
-.texto { font-size: clamp(1rem, 1.6vw, 1.1875rem); font-weight: 300; line-height: 1.5; color: #B7C4D3; }
-.telefono { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-chico); font-weight: 600; color: #FFFFFF; text-underline-offset: 4px; }
-
-.nota {
-  position: absolute; left: 6%; top: 42%; z-index: 3; margin: 0; transform-origin: left center;
-  font-size: clamp(1.6rem, 3.6vw, 3rem); font-weight: 300; line-height: 1.1; color: #FDEBD3;
-}
-
-.final { position: absolute; left: 6%; bottom: 10%; z-index: 3; display: grid; gap: 22px; justify-items: start; transform-origin: left bottom; }
-.pista .finalTitulo { margin: 0; font-family: var(--fuente); font-weight: 300; font-size: clamp(2.4rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; }
-.finalTitulo span { color: var(--accion); }
+.portada .lema { margin: 0; font-family: var(--fuente); font-weight: 300; font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.01em; color: #FFFFFF; }
+.lema span { color: var(--accion); }
+.texto { font-size: clamp(0.95rem, 1.4vw, 1.0625rem); font-weight: 300; line-height: 1.5; color: #B7C4D3; }
+.acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 6px; }
 .boton { min-height: 48px; }
+.telefono { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-chico); font-weight: 600; color: #FFFFFF; text-underline-offset: 4px; }
 .telefono:focus-visible, .boton:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
 
-/* Celular: el bloque final ocupa hasta el 80 % abajo, sin tapar el frasco */
-@media (max-width: 599px) {
-  .pista .titulo { top: 9%; }
-  .nota { top: 26%; }
-  /* la barra de navegación del celular tapa el borde inferior de la escena */
-  .copia { right: 6%; bottom: calc(var(--alto-nav-movil) + 20px); }
-  .final { left: 10%; right: 10%; bottom: calc(var(--alto-nav-movil) + 24px); }
+/* Celular: título arriba, frasco al centro y el texto abajo, en orden normal */
+@media (max-width: 699px) {
+  .portada { height: auto; min-height: 100svh; max-height: none; display: grid; grid-template-rows: auto auto auto; align-content: start; gap: 8px;
+    padding: 28px 6% calc(var(--alto-nav-movil) + 24px); }
+  .portada .titulo { position: static; font-size: clamp(3.5rem, 19vw, 6rem); }
+  .frasco { position: relative; inset: auto; width: 100%; height: 36svh; }
+  .nota { display: none; }
+  .copia { position: static; max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo span, .foto, .copia { animation: none; }
 }

@@ -7,7 +7,8 @@
 
 .escenario { display: grid; gap: 20px; }
 .lienzo { position: relative; height: clamp(340px, 58svh, 560px); }
-.tres { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease-salida); }
+.tres { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease-salida); cursor: grab; touch-action: pan-y; }
+.tres:active { cursor: grabbing; }
 .lienzo[data-fase="lista"] .tres { opacity: 1; }
 .tres :global(canvas) { display: block; width: 100%; height: 100%; }
 .cargando { position: absolute; inset: 0; display: grid; place-content: center; padding: 24px; text-align: center; color: var(--texto-claro); font-size: var(--t-chico); max-width: 44ch; margin: auto; }

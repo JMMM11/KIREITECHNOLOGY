@@ -4,7 +4,8 @@ import Aparece from '../../ui/Aparece.jsx';
 import { DURACION, INICIO_CICLO, PASOS, PIEZAS, T_DESARMADA, estado } from './secuencia.js';
 import s from './LaptopTaller.module.css';
 
-const MODELO = `${import.meta.env.BASE_URL}modelos/laptop.glb`;
+// Escritorio: modelo detallado; celular: versión más liviana (menos polígonos, mismas piezas y letras).
+const MODELO = (tactil) => `${import.meta.env.BASE_URL}modelos/${tactil ? 'laptop-ligero' : 'laptop'}.glb`;
 const ETIQUETAS = PIEZAS.map((pz, i) => pz.etiqueta && { i, texto: pz.etiqueta, lado: pz.lado }).filter(Boolean);
 
 // La laptop del taller en 3D: se desarma y se arma sola, en bucle, sin controles.
@@ -49,10 +50,16 @@ export default function LaptopTaller() {
       });
     };
     import('./escena.js')
-      .then((m) => m.crearEscena(lienzo.current, MODELO))
+      .then((m) => m.crearEscena(lienzo.current, MODELO(matchMedia('(pointer: coarse)').matches)))
       .then((a) => {
         if (!vivo) { a.destruir(); return; }
         api = a; setFase('lista');
+        // Arrastrar de lado gira la vista; al soltar vuelve sola. El scroll vertical del celular sigue funcionando (touch-action).
+        let inicio = null;
+        const nodo = lienzo.current;
+        nodo.onpointerdown = (ev) => { inicio = ev.clientX; nodo.setPointerCapture(ev.pointerId); };
+        nodo.onpointermove = (ev) => { if (inicio != null) { a.orbitar(((ev.clientX - inicio) / nodo.clientWidth) * 2.4); sucio.current = true; } };
+        nodo.onpointerup = nodo.onpointercancel = () => { inicio = null; a.orbitar(0); };
         io.observe(lienzo.current); addEventListener('resize', alCambiar);
         id = requestAnimationFrame(cuadro);
       })
@@ -72,7 +79,7 @@ export default function LaptopTaller() {
 
       <div className={`contenedor ${s.escenario}`}>
         <div className={s.lienzo} data-fase={fase}>
-          <div ref={lienzo} className={s.tres} role="img" aria-label="Laptop en 3D que se desarma pieza por pieza y se vuelve a armar: tornillos, teclado, batería, memoria RAM, SSD, ventilador, disipador y placa base." />
+          <div ref={lienzo} className={s.tres} role="img" aria-label="Laptop en 3D que se desarma pieza por pieza y se vuelve a armar: tornillos, teclado, batería, memoria RAM, SSD, ventilador, disipador y placa base. Se puede arrastrar para girarla." />
           {fase !== 'lista' && fase !== 'error' && <p className={s.cargando} role="status">Cargando el modelo 3D</p>}
           {fase === 'error' && <p className={s.cargando} role="status">No pudimos mostrar el modelo 3D en este navegador. El servicio es el mismo: lo ves en los pasos.</p>}
           <div className={s.etiquetas} aria-hidden="true">

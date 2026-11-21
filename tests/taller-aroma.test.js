@@ -5,7 +5,6 @@ import { DURACION, INICIO_CICLO, PASOS, PIEZAS, T_DESARMADA, avance, estado } fr
 import { FAMILIAS, PREGUNTAS } from '../src/data/aroma.js';
 import { PRODUCTOS } from '../src/data/productos.js';
 import { datosPerfume, recomendar } from '../src/lib/aroma.js';
-import { pose } from '../src/components/aroma/portada.js';
 
 test('laptop: empieza y termina armada, y en el punto fijo está del todo desarmada', () => {
   for (const t of [0, INICIO_CICLO, DURACION]) assert.ok(estado(t).piezas.every((p) => p === 0), `armada en t=${t}`);
@@ -55,14 +54,4 @@ test('aroma: el recomendador filtra el catálogo, sin azar', () => {
   assert.deepEqual(dulces.map((p) => p.id), ['lattafa-eclaire']);
   assert.deepEqual(recomendar([], r), []);
   assert.equal(PREGUNTAS.length, 4);
-});
-
-test('portada de Aroma: cada texto aparece y se va en su tramo del scroll, y el cuadro sigue al scroll', () => {
-  const casi = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `${a} ≈ ${b}`);
-  assert.deepEqual([pose(0).cuadro, pose(0.5).cuadro, pose(1).cuadro], [0, 60, 119]);
-  casi(pose(0).sube, 1); casi(pose(0.25).sube, 0);           // el frasco termina de subir al 25 %
-  casi(pose(0.28).nota, 0); casi(pose(0.39).nota, 1); casi(pose(0.58).nota, 1); casi(pose(0.68).nota, 0);
-  casi(pose(0.81).final, 0); casi(pose(0.97).final, 1);
-  casi(pose(0.3).titulo, 1); casi(pose(0.6).titulo, 0);
-  for (const p of [0, 0.25, 0.39, 0.68, 0.97, 1]) assert.deepEqual(pose(p), pose(p));  // sin estado: al subir vuelve igual
 });

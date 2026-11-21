@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import Foto from '../ui/Foto.jsx';
 import { PRODUCTOS } from '../../data/productos.js';
 import { formatoPrecio } from '../../lib/formatoPrecio.js';
 import { precioDe } from '../../lib/catalogo.js';
+import { rutaWeb } from '../../lib/fotos.js';
 import s from './TelefonosHero.module.css';
 
 const SECCIONES_MENU = ['Tecnología', 'Reparaciones', 'Aroma', 'Anime'];
@@ -25,16 +27,38 @@ function Movil({ className, children }) {
   );
 }
 
-// Decorativo: lo que dice la portada está en el texto. Los móviles flotan a destiempo para que no se vean pegados.
+// Decorativo: lo que dice la portada está en el texto. Los teléfonos se dibujan en 3D en vivo (escenaTelefonos.js);
+// mientras cargan, o sin WebGL, se ven estos mismos teléfonos hechos en CSS, que flotan a destiempo.
 export default function TelefonosHero() {
   const reducir = useReducedMotion();
+  const caja = useRef(null), lienzo = useRef(null);
+  const [listo, setListo] = useState(false);
+  useEffect(() => {
+    let api = null, vivo = true, visible = true;
+    const seguir = () => (visible && !document.hidden ? api?.arrancar() : api?.parar());
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; seguir(); });
+    const mover = (e) => { const r = caja.current.getBoundingClientRect(); api?.puntero(((e.clientX - r.left) / r.width) * 2 - 1, ((e.clientY - r.top) / r.height) * 2 - 1); };
+    const opciones = { quieto: !!reducir, foto: `${import.meta.env.BASE_URL}${encodeURI(rutaWeb(gm2.fotos[0].src, 640))}`, precio: formatoPrecio(desde) };
+    import('./escenaTelefonos.js')
+      .then((m) => m.crearTelefonos(lienzo.current, opciones))
+      .then((a) => {
+        if (!vivo) return a.destruir();
+        api = a; setListo(true);
+        io.observe(caja.current); document.addEventListener('visibilitychange', seguir);
+        if (!reducir) addEventListener('pointermove', mover);
+        seguir();
+      })
+      .catch(() => {});   // sin WebGL quedan los teléfonos de CSS
+    return () => { vivo = false; io.disconnect(); document.removeEventListener('visibilitychange', seguir); removeEventListener('pointermove', mover); api?.destruir(); };
+  }, [reducir]);
   const flota = (alto, duracion, retraso) => (reducir ? {} : {
     animate: { y: [0, -alto, 0] },
     transition: { duration: duracion, ease: 'easeInOut', repeat: Infinity, delay: retraso },
   });
   return (
-    <div className={s.escena} aria-hidden="true">
+    <div ref={caja} className={s.escena} data-listo={listo || undefined} aria-hidden="true">
       <span className={s.resplandor} />
+      <div ref={lienzo} className={s.tres} />
       <motion.div className={`${s.lado} ${s.izquierdo}`} {...flota(10, 5.2, 1.4)}>
         <Movil className={s.menuMovil}>
           <div className={s.menu}>

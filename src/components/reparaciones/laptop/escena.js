@@ -41,7 +41,7 @@ export async function crearEscena(contenedor, url) {
   const entorno = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;   // luz de estudio: da los reflejos del aluminio
   escena.environment = entorno; escena.environmentIntensity = 0.85;
   const principal = new DirectionalLight('#fff4e8', 2.4); principal.position.set(260, 520, 420);
-  principal.castShadow = !tactil; principal.shadow.mapSize.set(1024, 1024);
+  principal.castShadow = !tactil; principal.shadow.mapSize.set(2048, 2048); principal.shadow.radius = 4;   // sombra fina en escritorio
   Object.assign(principal.shadow.camera, { left: -360, right: 360, top: 360, bottom: -360, near: 100, far: 1400 }); principal.shadow.bias = -0.0015;
   const contra = new DirectionalLight('#B7C4D3', 1.1); contra.position.set(-420, 260, -380);   // contraluz niebla, frío y suave
   escena.add(principal, contra, new HemisphereLight('#dfe8f5', '#0f1216', 0.45));
@@ -69,7 +69,7 @@ export async function crearEscena(contenedor, url) {
   const obs = new ResizeObserver(medir); obs.observe(contenedor); medir();
 
   const v = new Vector3();
-  let ultimo = performance.now();
+  let ultimo = performance.now(), orbita = 0, orbitaMeta = 0;   // giro extra de la cámara al arrastrar
   return {
     // Aplica el estado del guion (ver secuencia.js) y dibuja un cuadro. t es el segundo del guion, para la órbita.
     poner(est, t) {
@@ -90,13 +90,16 @@ export async function crearEscena(contenedor, url) {
       if (rotor) rotor.rotation.y -= dt * (1.5 + 16 * est.pantalla);
       // Cámara: órbita lenta; se aleja y sube el punto de mira a medida que la laptop se abre.
       const e = est.abierta, estrecho = Math.max(1, 1.28 / camara.aspect);
-      const az = -0.5 + 0.42 * Math.sin((t / 29) * Math.PI * 2), el = 0.36 + 0.12 * e;
+      orbita += (orbitaMeta - orbita) * Math.min(1, dt * 4);   // sigue al dedo con suavidad y vuelve sola al soltar
+      const az = -0.5 + 0.42 * Math.sin((t / 29) * Math.PI * 2) + orbita, el = 0.36 + 0.12 * e;
       const r = (790 + 250 * e) * estrecho ** 0.7, cy = 64 + 62 * e;
       camara.position.set(Math.sin(az) * Math.cos(el) * r, cy + Math.sin(el) * r, 108 + Math.cos(az) * Math.cos(el) * r);
       camara.lookAt(0, cy, 96);
       renderer.render(escena, camara);
     },
     // Posición en pantalla (px dentro del contenedor) de una pieza, para las etiquetas.
+    // Giro de la cámara al arrastrar (radianes, limitado); 0 la devuelve a su órbita.
+    orbitar(rad) { orbitaMeta = Math.max(-1.1, Math.min(1.1, rad)); },
     proyectar(i) {
       const parte = partes[i]; if (!parte) return null;
       parte.o.getWorldPosition(v).project(camara);

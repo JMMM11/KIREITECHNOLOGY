@@ -9,7 +9,7 @@ from mathutils import Vector, Matrix
 
 args = sys.argv[sys.argv.index('--') + 1:]
 S, SALIDA = args[0], args[1]
-PREVIAS = len(args) > 2
+PREVIAS = 'previas' in args
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene
@@ -166,7 +166,42 @@ tarjetas = [pintar(o, M['aluminio']) for o in toma(fw, [2, 0, 1, 3])]
 for i, o in enumerate(tarjetas): o.name = o.data.name = f'TarjetaExpansion{i + 1}'
 # Cubierta del teclado (lo que Framework llama Input Cover): placa, 78 teclas, trackpad y botón de encendido.
 cubierta = pintar(toma(fw, [85])[0], M['aluminio']); cubierta.name = cubierta.data.name = 'CubiertaTeclado'
-teclas = pintar(unir(toma(fw, list(range(7, 85))), 'Teclas'), M['tecla'])
+teclas_cad = toma(fw, list(range(7, 85)))
+
+# Leyendas del teclado (distribución ANSI de la Framework Laptop 13): cada tecla del CAD se ubica por fila (de la bisagra
+# al frente) y de izquierda a derecha, y recibe su texto encima. El CAD trae las teclas sin leyenda.
+FILAS = [
+    ['esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'del'],
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace'],
+    ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+    ['caps lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'enter'],
+    ['shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'shift'],
+    ['ctrl', 'fn', '⊞', 'alt', '', 'alt', 'ctrl', '←', '↑', '↓', '→'],
+]
+FUENTE = bpy.data.fonts.load('C:/Windows/Fonts/arial.ttf')
+SIMBOLOS = bpy.data.fonts.load('C:/Windows/Fonts/seguisym.ttf')   # la tecla de Windows
+M['leyenda'] = mat('Leyenda', (0.62, 0.64, 0.67), 0, 0.55)
+def centro_tecla(o):
+    esquinas = [o.matrix_world @ Vector(c) for c in o.bound_box]
+    return (sum(v.x for v in esquinas) / 8, sum(v.y for v in esquinas) / 8, max(v.z for v in esquinas))
+CENTROS_FILA = [-33.8, -50, -69, -88, -107, -126]   # y en Blender = -z del CAD
+filas = [[] for _ in FILAS]
+for o in teclas_cad:
+    cx, cy, top = centro_tecla(o)
+    filas[min(range(6), key=lambda i: abs(cy - CENTROS_FILA[i]))].append((cx, -cy, top))
+leyendas = []
+for fila, textos in zip(filas, FILAS):
+    assert len(fila) == len(textos), (len(fila), textos)
+    for (cx, cz, top), t in zip(sorted(fila), textos):   # orden por x y, en la misma x, de atrás hacia adelante (↑ antes que ↓)
+        if not t: continue
+        bpy.ops.object.text_add(location=(cx, -cz, top + 0.03))
+        o = bpy.context.object; o.data.body = t; o.data.font = SIMBOLOS if t == '⊞' else FUENTE
+        o.data.size = 4.2 if len(t) == 1 else (2.9 if len(t) <= 3 else 2.3)
+        o.data.align_x = 'CENTER'; o.data.align_y = 'CENTER'; o.data.resolution_u = 3
+        o.data.materials.append(M['leyenda'])
+        bpy.ops.object.convert(target='MESH'); leyendas.append(bpy.context.object)
+leyendas = unir(leyendas, 'Leyendas')
+teclas = pintar(unir(teclas_cad, 'Teclas'), M['tecla'])
 trackpad = pintar(toma(fw, [86])[0], M['trackpad']); trackpad.name = trackpad.data.name = 'Trackpad'
 boton = pintar(toma(fw, [87])[0], M['aluminio_osc']); boton.name = boton.data.name = 'BotonEncendido'
 # Pantalla: tapa, bisel con sus piezas, panel y logo; los soportes de bisagra giran con ella.
@@ -270,13 +305,16 @@ def tornillo(nombre, x, z):
 tornillos = [tornillo(f'Tornillo{i + 1}', x, z) for i, (x, z) in enumerate([(-136, 17), (136, 17), (-136, 212), (136, 212), (0, 131)])]
 
 # ---------- 3. Acabado, jerarquía y exportación ----------
-piezas = [base, *tarjetas, cubierta, teclas, trackpad, boton, tapa, logo, bisel, panel, bateria, placa, ram1, ram2, ssd, wifi,
+piezas = [base, *tarjetas, cubierta, teclas, leyendas, trackpad, boton, tapa, logo, bisel, panel, bateria, placa, ram1, ram2, ssd, wifi,
           disipador, ventilador, rotor, alt_i, alt_d, *tornillos]
-for o, r in ((base, 0.3), (teclas, 0.34), (bateria, 0.16), (tapa, 0.3), (cubierta, 0.55), (bisel, 0.4)): reducir(o, r); aligerar(o, 0.6)   # vuelve a aplanar: sin esto el piso de la carcasa sombrea en abanico
+# 'ligero' (tercer argumento): versión para celular, con más reducción de polígonos.
+LIGERO = 'ligero' in args
+for o, r in (((base, 0.3), (teclas, 0.34), (bateria, 0.16), (tapa, 0.3), (cubierta, 0.55), (bisel, 0.4)) if LIGERO else
+             ((base, 0.55), (teclas, 0.6), (bateria, 0.35), (tapa, 0.55), (cubierta, 0.85), (bisel, 0.7))): reducir(o, r); aligerar(o, 0.6)   # vuelve a aplanar: sin esto el piso de la carcasa sombrea en abanico
 for o in piezas: suavizar(o, 14 if o is base else 32); centrar(o)   # carcasa: ángulo bajo, o el piso reducido sombrea en abanico
 
 raiz = vacio('Laptop', (0, 0, 0))
-teclado = vacio('Teclado', (0, -0.9, 114.5)); adoptar(teclado, [cubierta, teclas, trackpad, boton])
+teclado = vacio('Teclado', (0, -0.9, 114.5)); adoptar(teclado, [cubierta, teclas, leyendas, trackpad, boton])
 pantalla = vacio('Pantalla', (0, -2.6, 5.4)); adoptar(pantalla, [tapa, logo, bisel, panel])   # origen = eje de la bisagra
 adoptar(ventilador, [rotor])
 adoptar(raiz, [o for o in bpy.data.objects if o.parent is None and o is not raiz])
@@ -298,10 +336,10 @@ if PREVIAS:
     pantalla.rotation_euler = (math.radians(-108), 0, 0)
     foto('p_armada', (420, 420, 900), (0, 60, 60))
     # interior: sin la cubierta del teclado
-    for o in (cubierta, teclas, trackpad, boton): o.hide_render = True
+    for o in (cubierta, teclas, leyendas, trackpad, boton): o.hide_render = True
     foto('p_interior', (0, 560, 330), (0, -6, 112))
     foto('p_interior2', (-260, 230, 300), (-30, -6, 80))
-    for o in (cubierta, teclas, trackpad, boton): o.hide_render = False
+    for o in (cubierta, teclas, leyendas, trackpad, boton): o.hide_render = False
     foto('p_bisagra', (420, 60, -160), (60, 30, 40))
     pantalla.rotation_euler = (0, 0, 0)
 

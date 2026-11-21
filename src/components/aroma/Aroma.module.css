@@ -43,14 +43,14 @@
 .perfumeMedia { position: relative; display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; background: #EFECE6; }
 .perfumeMedia :global(img), .perfumeMedia :global(picture) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-salida); }
 .frasco { width: 56%; height: auto; }
-.perfumeCuerpo { display: grid; gap: 8px; align-content: start; padding: 16px; }
-.etiqueta { justify-self: start; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.04em; color: var(--cobre); background: #FDEBD3; }
+.perfumeCuerpo { display: flex; flex-direction: column; gap: 8px; padding: 16px; }   /* el botón baja al fondo: misma altura en todas */
+.etiqueta { align-self: flex-start; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.04em; color: var(--cobre); background: #FDEBD3; }
 .marca { font-size: var(--t-mini); letter-spacing: 0.12em; text-transform: uppercase; color: #666666; }
 .pagina .perfumeNombre { font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.1; }
 .nombreEnlace { color: inherit; text-decoration: none; }
 .perfumeTexto { font-size: var(--t-chico); color: var(--texto-suave); }
 .ml { font-size: var(--t-mini); color: #666666; }
-.perfumePie { display: grid; gap: 10px; margin-top: 4px; }
+.perfumePie { display: grid; gap: 10px; margin-top: auto; padding-top: 6px; }
 .accion { min-height: 44px; }
 
 /* Ingredientes: bloque azul marino */
