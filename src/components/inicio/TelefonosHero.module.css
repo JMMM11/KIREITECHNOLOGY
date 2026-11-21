@@ -1,6 +1,6 @@
 /* Dos móviles inclinados, como en una foto de producto: marco de titanio, brillo y pantallas con la tienda. */
 .escena {
-  position: relative; width: min(100%, 640px); aspect-ratio: 1 / 1; margin-inline: auto;
+  position: relative; width: min(100%, 640px); aspect-ratio: 1 / 0.84; margin-inline: auto;
   perspective: 1600px; perspective-origin: 50% 40%;
 }
 .resplandor {
@@ -13,7 +13,7 @@
 .tres :global(canvas) { display: block; width: 100%; height: 100%; }
 .escena[data-listo] .tres { opacity: 1; }
 .escena[data-listo] .lado { opacity: 0; transition: opacity 0.7s var(--ease-salida); }
-.lado { position: absolute; width: 42%; transform-style: preserve-3d; will-change: transform; }
+.lado { position: absolute; width: 38%; transform-style: preserve-3d; will-change: transform; }
 .izquierdo { left: 5%; top: 8%; z-index: 1; rotate: -7deg; }
 .izquierdo > div { transform: rotateY(16deg) rotateX(6deg); }
 .derecho { right: 5%; top: 0; z-index: 2; rotate: 6deg; }
@@ -73,8 +73,8 @@
 .boton { display: grid; place-items: center; height: 10.5cqw; border-radius: 99cqw; background: var(--accion); font-size: 4.2cqw; font-weight: 600; color: #111111; }
 
 @media (max-width: 560px) {
-  .escena { aspect-ratio: 1 / 1.08; }
-  .lado { width: 47%; }
+  .escena { aspect-ratio: 1 / 0.95; }
+  .lado { width: 42%; }
   .izquierdo { left: 0; top: 8%; }
   .derecho { right: 0; }
 }

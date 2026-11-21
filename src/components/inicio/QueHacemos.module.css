@@ -1,5 +1,5 @@
 /* Lo que hacemos: cuatro mundos en una rejilla asimétrica. Mucho aire, esquinas grandes. */
-.seccion { padding-block: clamp(72px, 10vw, 136px); }
+.seccion { padding-block: clamp(32px, 5vw, 64px) clamp(72px, 10vw, 136px); }   /* arriba poco: viene justo después de los teléfonos */
 .encabezado { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 56px); }
 .titulo { font-size: clamp(2.2rem, 6.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.045em; color: var(--marca); }
 .bajada { font-size: clamp(1.0625rem, 2vw, 1.375rem); color: var(--texto-suave); max-width: 40ch; text-wrap: balance; }

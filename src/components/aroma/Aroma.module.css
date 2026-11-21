@@ -35,23 +35,34 @@
 .filtro:focus-visible, .accion:focus-visible, .enlaceBoton:focus-visible, .nombreEnlace:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
 .enlaceBoton { border: 0; background: none; color: var(--marca); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; min-height: 44px; }
 .perfumes { list-style: none; display: grid; gap: 16px; margin-top: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.perfumes li { display: grid; }
+.perfumes li { display: grid; min-width: 0; }
 
 /* Tarjeta: blanca con borde fino, foto sobre arena, etiqueta cobre sobre durazno, botón naranja */
-.perfume { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: var(--radio-tarjeta); background: #FFFFFF; box-shadow: inset 0 0 0 1px #DDD8CF; scroll-margin-top: 24px; }
+.perfume { display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr); overflow: hidden; border-radius: var(--radio-tarjeta); background: #FFFFFF; box-shadow: inset 0 0 0 1px #DDD8CF; scroll-margin-top: 24px; }
 .perfume:target { box-shadow: inset 0 0 0 2px var(--cobre); }
 .perfumeMedia { position: relative; display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; background: #EFECE6; }
 .perfumeMedia :global(img), .perfumeMedia :global(picture) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-salida); }
 .frasco { width: 56%; height: auto; }
 .perfumeCuerpo { display: flex; flex-direction: column; gap: 8px; padding: 16px; }   /* el botón baja al fondo: misma altura en todas */
-.etiqueta { align-self: flex-start; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.04em; color: var(--cobre); background: #FDEBD3; }
+.etiqueta { align-self: flex-start; max-width: 100%; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.04em; color: var(--cobre); background: #FDEBD3; }
 .marca { font-size: var(--t-mini); letter-spacing: 0.12em; text-transform: uppercase; color: #666666; }
 .pagina .perfumeNombre { font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.1; }
 .nombreEnlace { color: inherit; text-decoration: none; }
 .perfumeTexto { font-size: var(--t-chico); color: var(--texto-suave); }
 .ml { font-size: var(--t-mini); color: #666666; }
 .perfumePie { display: grid; gap: 10px; margin-top: auto; padding-top: 6px; }
-.accion { min-height: 44px; }
+.accion { min-height: 44px; white-space: normal; text-align: center; }   /* en columnas angostas el texto baja de línea en vez de cortarse */
+
+/* Celular: dos columnas compactas, texto a la medida de la tarjeta */
+@media (max-width: 599px) {
+  .perfumes { gap: 12px; }
+  .perfumeCuerpo { gap: 6px; padding: 12px; }
+  .pagina .perfumeNombre { font-size: 1.0625rem; overflow-wrap: anywhere; }
+  .perfumeTexto { font-size: 0.875rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .etiqueta { padding: 2px 8px; font-size: 0.75rem; letter-spacing: 0; }
+  .marca { letter-spacing: 0.08em; }
+  .accion { min-height: 44px; padding: 10px 12px; font-size: 0.875rem; }
+}
 
 /* Ingredientes: bloque azul marino */
 .ingredientes { margin-top: clamp(64px, 9vw, 120px); padding-block: clamp(56px, 8vw, 104px); background: var(--marca); color: #FFFFFF; }

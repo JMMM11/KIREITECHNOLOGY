@@ -1,7 +1,7 @@
 /* Hero limpio: mucho aire, tipografía grande y apretada, colores del manual (azul marino y naranja sobre papel). */
 .hero {
-  display: grid; justify-items: center; gap: clamp(40px, 6vw, 72px);
-  padding: clamp(56px, 10vw, 120px) 0 clamp(48px, 8vw, 96px);
+  display: grid; justify-items: center; gap: clamp(24px, 4vw, 48px);
+  padding: clamp(56px, 10vw, 120px) 0 clamp(16px, 3vw, 40px);
   background: var(--bg); overflow: hidden; text-align: center;
 }
 .texto { display: grid; justify-items: center; gap: 0; }

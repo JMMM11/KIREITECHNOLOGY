@@ -56,6 +56,15 @@
         ]
       },
       {
+        "regex": "^/(?:[^.]*|.*\\.html)$",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
         "source": "**/web/*.jpg",
         "headers": [
           {
@@ -76,7 +85,7 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "!/@(assets|modelos)/**",
         "destination": "/index.html"
       }
     ]

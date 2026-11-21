@@ -107,7 +107,7 @@ export async function crearTelefonos(contenedor, { quieto = false, foto, precio 
   const medir = () => {
     const w = contenedor.clientWidth || 1, h = contenedor.clientHeight || 1;
     renderer.setSize(w, h, false); camara.aspect = w / h;
-    camara.position.set(0, 0.05, 6.2 * Math.max(1, 1 / camara.aspect)); camara.lookAt(0, -0.05, 0); camara.updateProjectionMatrix();
+    camara.position.set(0, 0.1, 5.3 * Math.max(1, 1.15 / camara.aspect)); camara.lookAt(0, 0.08, 0);   // encuadre ajustado: sin aire de sobra abajo camara.updateProjectionMatrix();
   };
   let id = 0;
   const obs = new ResizeObserver(() => { medir(); if (!id) renderer.render(escena, camara); }); obs.observe(contenedor); medir();
