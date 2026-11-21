@@ -4,6 +4,7 @@ import Icono from '../ui/Icono.jsx';
 import Foto from '../ui/Foto.jsx';
 import { ICONOS } from '../iconos.js';
 import { GRUPOS_SERVICIO } from '../../data/servicios.js';
+import { SITIO } from '../../data/sitio.js';
 import s from './Reparaciones.module.css';
 
 // Servicios en dos pestañas. Cada fila lleva directo al formulario con el servicio elegido.
@@ -50,6 +51,11 @@ export default function ListaServicios({ onElegir }) {
             ))}
           </div>
         </div>
+        <p className={s.precios}>
+          El precio depende de lo que necesite tu equipo. Escríbenos por{' '}
+          <a href={`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent('Hola Kirei, quiero cotizar una reparación.')}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          {' '}y te damos el precio antes de empezar.
+        </p>
 
         <div className={s.cuerpo}>
         <div className={s.fotoServicio} aria-hidden="true">
@@ -68,7 +74,6 @@ export default function ListaServicios({ onElegir }) {
                     <h3 className={s.filaNombre}>{sv.nombre}</h3>
                     <p className={s.filaDetalle}>{sv.detalle}</p>
                   </div>
-                  <span className={s.filaPrecio}>[precio]</span>
                   <button type="button" className={s.agendar} onClick={() => onElegir(sv.nombre)} aria-label={`Agendar ${sv.nombre}`}>
                     Agendar <Icono de={ICONOS.siguiente.de} mov={ICONOS.siguiente.mov} entrada={false} tam={16} />
                   </button>

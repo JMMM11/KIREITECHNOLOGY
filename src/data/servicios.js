@@ -1,4 +1,4 @@
-// Servicios de reparación tomados de los diseños de la tienda. Precio de referencia: [precio].
+// Servicios de reparación tomados de los diseños de la tienda. El precio depende del trabajo: se cotiza por WhatsApp.
 // Fotos: originales del dueño en la carpeta reparaciones/. Cada grupo tiene la suya; un servicio puede tener una propia.
 const r = (archivo, ancho, alto) => ({ src: `reparaciones/${archivo}`, ancho, alto });
 export const FOTOS_REPARACION = {
@@ -8,11 +8,11 @@ export const FOTOS_REPARACION = {
 
 export const GRUPOS_SERVICIO = [
   {
-    id: 'piezas', nombre: 'Piezas y reparación', foto: r('imgi_1_reparacion-ordenadores-madrid.png', 1000, 600),
+    id: 'piezas', nombre: 'Piezas y reparación', foto: r('placa-base.png', 1500, 1001),
     servicios: [
       { id: 'diagnostico', nombre: 'Diagnóstico avanzado', detalle: 'Revisamos tu equipo y te decimos qué tiene.', foto: FOTOS_REPARACION.inicio },
       { id: 'hardware-software', nombre: 'Reparación de hardware y software', detalle: 'Fallas de piezas o del sistema.' },
-      { id: 'pantalla', nombre: 'Cambio de pantalla', detalle: 'Pantallas rotas o con fallas.' },
+      { id: 'pantalla', nombre: 'Cambio de pantalla', detalle: 'Pantallas rotas o con fallas.', foto: r('pantalla-rota.png', 1170, 780) },
       { id: 'bateria', nombre: 'Cambio de batería', detalle: 'Cuando ya no aguanta la carga.' },
       { id: 'teclado', nombre: 'Cambio de teclado', detalle: 'Teclas que no responden.' },
     ],

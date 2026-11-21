@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import Aparece from '../components/ui/Aparece.jsx';
-import Frasco from '../components/aroma/Frasco.jsx';
+import Foto from '../components/ui/Foto.jsx';
 import TarjetaPerfume from '../components/aroma/TarjetaPerfume.jsx';
 import Recomendador from '../components/aroma/Recomendador.jsx';
-import { IconoAroma } from '../components/ui/IconoAroma.jsx';
-import { FAMILIAS, INGREDIENTES, PERFUMES_MUESTRA } from '../data/aroma.js';
+import { FAMILIAS, GENEROS, INGREDIENTES } from '../data/aroma.js';
 import { SITIO } from '../data/sitio.js';
 import { datosPerfume } from '../lib/aroma.js';
 import { enCategoria } from '../lib/catalogo.js';
@@ -13,16 +12,16 @@ import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from '../components/aroma/Aroma.module.css';
 
 const hablar = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent('Hola Kirei, quiero saber de los perfumes de Aroma.')}`;
+const PORTADA = { src: 'perfumes/36.png', ancho: 1080, alto: 1080 };   // Eclaire, de Lattafa
 
-// Aroma: perfumería con su propio tema (styles/tokens.css). Muestra los perfumes publicados en la categoría "aroma";
-// mientras no haya ninguno, enseña el catálogo de muestra de data/aroma.js, marcado como tal.
+// Aroma: perfumería con el tema tema-aroma (papel, durazno, marino y cobre). Muestra los perfumes publicados en la categoría "aroma".
 export default function Aroma() {
-  useTituloPagina('Aroma', 'Perfumes y fragancias en Panamá con Kirei Technology: florales, amaderadas, cítricas, orientales, frescas y dulces. Envío a domicilio o retiro gratis.');
+  useTituloPagina('Aroma', 'Perfumes de mujer y hombre en Panamá con Kirei Technology: Lattafa, Ariana Grande, Armaf y más. Envío a domicilio o retiro gratis.');
   const { productos } = useDatos();
   const [familia, setFamilia] = useState('');
-  const reales = productos.filter((p) => enCategoria(p, 'aroma')).map(datosPerfume);
-  const perfumes = reales.length ? reales : PERFUMES_MUESTRA;
-  const visibles = familia ? perfumes.filter((p) => p.familia === familia) : perfumes;
+  const [genero, setGenero] = useState('');
+  const perfumes = productos.filter((p) => enCategoria(p, 'aroma')).map(datosPerfume);
+  const visibles = perfumes.filter((p) => (!familia || p.familia === familia) && (!genero || p.genero === genero));
   const elegir = (id) => { setFamilia(id); document.getElementById('fragancias')?.scrollIntoView({ block: 'start' }); };
 
   return (
@@ -31,13 +30,12 @@ export default function Aroma() {
         <div className={`contenedor ${s.heroCaja}`}>
           <div className={s.heroTexto}>
             <Aparece como="p" className={s.sobre}>Aroma · Perfumería Kirei</Aparece>
-            <Aparece como="h1" i={1} id="aroma-titulo" className={s.heroTitulo}>The Art <em>of</em> Fragrance</Aparece>
-            <Aparece como="p" i={2} className={s.heroBajada}>Descubre fragancias que expresan tu esencia.</Aparece>
+            <Aparece como="h1" i={1} id="aroma-titulo" className={s.heroTitulo}>Tu aroma, <span>tu energía.</span></Aparece>
+            <Aparece como="p" i={2} className={s.heroBajada}>Perfumes de mujer y hombre de Lattafa, Ariana Grande, Armaf y más. Descubre el que expresa tu esencia.</Aparece>
             <Aparece i={3}><a href="#fragancias" className="btn btn-accion">Explorar fragancias</a></Aparece>
           </div>
-          <Aparece i={2} className={s.heroArte} aria-hidden="true">
-            <IconoAroma size={120} className={s.vapor} />
-            <Frasco familia="gourmand" forma={1} className={s.heroFrasco} />
+          <Aparece i={2} className={s.heroFoto}>
+            <Foto foto={PORTADA} alt="Perfume Eclaire de Lattafa con caramelo y vainilla" prioridad sizes="(min-width: 900px) 40vw, 90vw" />
           </Aparece>
         </div>
       </section>
@@ -48,7 +46,7 @@ export default function Aroma() {
         <ul className={s.familias}>
           {FAMILIAS.map((f, i) => (
             <Aparece alVer como="li" i={i % 3} key={f.id}>
-              <button type="button" className={s.familia} style={{ '--tono': f.tono, '--tinta': f.tinta }} aria-pressed={familia === f.id} onClick={() => elegir(f.id)}>
+              <button type="button" className={s.familia} data-tono={f.id} aria-pressed={familia === f.id} onClick={() => elegir(f.id)}>
                 <span className={s.familiaNombre}>{f.nombre}</span>
                 <span className={s.familiaFrase}>{f.frase}</span>
                 <span className={s.familiaNotas}>{f.notas}</span>
@@ -60,7 +58,11 @@ export default function Aroma() {
 
       <section id="fragancias" className={`contenedor ${s.bloque} ${s.ancla}`} aria-labelledby="fragancias-titulo">
         <h2 id="fragancias-titulo" className={s.titulo}>Fragancias</h2>
-        {!reales.length && <p className={s.aviso}>Catálogo de muestra. Los nombres y los precios son ejemplos mientras cargamos los perfumes de la tienda.</p>}
+        <div className={s.filtros} role="group" aria-label="Filtrar por género">
+          {[['', 'Todos'], ...GENEROS].map(([id, nombre]) => (
+            <button key={id || 'todos'} type="button" className={s.filtro} aria-pressed={genero === id} onClick={() => setGenero(id)}>{nombre}</button>
+          ))}
+        </div>
         <div className={s.filtros} role="group" aria-label="Filtrar por familia">
           {[{ id: '', nombre: 'Todas' }, ...FAMILIAS].map((f) => (
             <button key={f.id || 'todas'} type="button" className={s.filtro} aria-pressed={familia === f.id} onClick={() => setFamilia(f.id)}>{f.nombre}</button>
@@ -68,7 +70,7 @@ export default function Aroma() {
         </div>
         {visibles.length
           ? <ul className={s.perfumes}>{visibles.map((p) => <li key={p.id}><TarjetaPerfume perfume={p} i={perfumes.indexOf(p)} /></li>)}</ul>
-          : <p className={s.aviso}>Todavía no hay fragancias de esta familia. <button type="button" className={s.enlaceBoton} onClick={() => setFamilia('')}>Ver todas</button></p>}
+          : <p className={s.aviso}>{perfumes.length ? 'No hay fragancias con esos filtros. ' : 'Estamos cargando los perfumes. '}{perfumes.length > 0 && <button type="button" className={s.enlaceBoton} onClick={() => { setFamilia(''); setGenero(''); }}>Ver todas</button>}</p>}
       </section>
 
       <section className={s.ingredientes} aria-labelledby="ingredientes-titulo">
@@ -93,10 +95,10 @@ export default function Aroma() {
       </section>
 
       <section className={`contenedor ${s.cierre}`}>
-        <Aparece alVer como="p" className={s.cierreFrase}>Cada fragancia cuenta una historia. <em>Encuentra la tuya.</em></Aparece>
+        <Aparece alVer como="p" className={s.cierreFrase}>Cada fragancia cuenta una historia. <span>Encuentra la tuya.</span></Aparece>
         <Aparece alVer i={1} className={s.cierreAcciones}>
           <a href="#fragancias" className="btn btn-accion">Ver la colección</a>
-          <a href={hablar} target="_blank" rel="noopener noreferrer" className="btn btn-fantasma">Hablar con Kirei</a>
+          <a href={hablar} target="_blank" rel="noopener noreferrer" className={`btn btn-fantasma ${s.fantasmaClaro}`}>Hablar con Kirei</a>
         </Aparece>
       </section>
     </div>

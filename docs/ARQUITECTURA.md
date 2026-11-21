@@ -197,14 +197,16 @@ Las rutas no usan `#`. Firebase Hosting responde `index.html` a cualquier ruta (
 
 ## Sistema visual
 
-Los tokens viven en `src/styles/tokens.css` y `tests/contraste.test.js` verifica cada par texto/fondo.
+Manual de marca del dueño (noviembre 2026). Los tokens viven en `src/styles/tokens.css` y `tests/contraste.test.js` verifica cada par texto/fondo y las combinaciones permitidas del manual.
 
-- **Global (toda la web):** papel `#F7F5F1`, azul marino `#0B1F33` como marca, naranja `#F7931E` como acción. Poppins para leer, Unbounded para títulos. Radios: controles redondos, tarjetas 14 px. No se cambia por sección.
-- **Temas por sección:** una clase en el contenedor (`tema-taller`, `tema-aroma`) remapea los tokens de rol (`--accion`, `--marca`, `--foco`, `--fuente-display`) solo dentro de ese bloque. Los componentes no saben del tema: un `btn btn-accion` sale azul en el taller y ciruela en Aroma sin tocar su CSS.
-  - `tema-taller` (Reparaciones: portada, laptop, conceptos): grafito `#0F1216` y azul puro `#0A6CFF` como único acento, sin degradados de color. Para texto chico se usa `--acento-texto` (`#4D94FF`), porque el azul de los botones no llega a 4.5:1 sobre grafito.
-  - `tema-aroma` (Aroma): marfil `#F6F1E7`, champán `#E9D9BC`, ciruela `#4A1F3A` (marca y acción), negro `#141014`, dorado `#A8853A` solo para líneas. Títulos en serif (Cormorant Garamond 500, autoalojada en `public/fuentes/`).
-  - Anime no tiene tema propio: usa el global, con la tarjeta azul marino en la portada. Se decidió conservarla así.
-- **Reglas:** un acento por sección; tarjetas solo cuando agrupan algo que se toca; sombras y degradados solo para profundidad real (el halo de la laptop), nunca de color a color; microinteracciones de 150 a 250 ms con `--ease-salida`; todo respeta `prefers-reduced-motion`.
+- **Paleta (solo esta):** naranja Kirei `#F7931E` (hover `#E5850F`), azul marino `#0B1F33` (medio `#16324F`, noche `#071524`), negro `#111111`; neutros blanco, papel `#F7F5F1`, arena `#EFECE6`, borde `#DDD8CF`, gris texto `#4A4A4A`, gris lema `#666666`; apoyo durazno `#FDEBD3`, cobre `#9A5200`, niebla `#B7C4D3`, hielo `#E4E9EF`, plata `#D8D8D8`; estados éxito, error, info y aviso. Nada de verde, morado, ciruela ni dorado.
+- **Proporción 60-30-10:** neutros de fondo, azul marino de marca, naranja solo en botones principales, precios y detalles. Botón naranja con texto negro (nunca blanco). Texto naranja chico sobre fondo claro: cobre.
+- **Tipografía:** solo Poppins. 600 en títulos y botones, 400 en textos, 300 en frases grandes.
+- **Temas por sección** (una clase en el contenedor que remapea los tokens de rol):
+  - `tema-taller` (Reparaciones): marino noche, acentos naranja, texto blanco y niebla.
+  - `tema-aroma` (Aroma): papel y durazno, títulos en marino, líneas y etiquetas en cobre, tarjetas blancas con borde fino y la foto sobre arena.
+- **Excepciones a propósito:** el logo de Google en el botón de acceso conserva sus colores oficiales, y los marcos metálicos de los teléfonos de la portada y los materiales de la laptop 3D son materiales del dibujo, no colores de marca.
+- **Imagen para compartir:** `scripts/og/og.html` con fotos reales (tecnología, perfumes y reparación); se regenera con `node scripts/og/generar.mjs`.
 
 ## Portada y entrada de las páginas
 
@@ -223,11 +225,11 @@ Para agregar otra sección de la tienda (por ejemplo, otra línea de productos):
 
 - `secuencia.js`: el guion, datos puros. Qué pieza sale, hacia dónde (mm), cuándo sale y cuándo vuelve. `estado(t)` devuelve la posición de todo en el segundo `t`. No importa three, así que se prueba en `tests/taller-aroma.test.js`.
 - `escena.js`: three. Carga `public/modelos/laptop.glb`, pone luz de estudio (`RoomEnvironment`), aplica el estado a los nodos por nombre y mueve la cámara. Es el único archivo que importa three y se carga con `import()` cuando la sección se acerca a la pantalla: el resto de la web no lo descarga.
-- `LaptopTaller.jsx`: el componente. Reproduce el guion solo y en bucle, con Pausar, Reiniciar y una barra para recorrerlo. Fuera de pantalla o con la pestaña oculta no dibuja. Con movimiento reducido arranca quieta en la vista desarmada. Si WebGL falla, deja un mensaje y los pasos en texto.
+- `LaptopTaller.jsx`: el componente. Reproduce el guion solo y en bucle, sin controles (el dueño los pidió fuera). La pantalla se enciende con el logo de Kirei (`public/marca/kirei-logo-fondo-oscuro.svg`). Fuera de pantalla o con la pestaña oculta no dibuja. Con movimiento reducido arranca quieta en la vista desarmada. Si WebGL falla, deja un mensaje y los pasos en texto.
 
 El orden del desarme es el real del equipo: cinco tornillos por debajo, sale la cubierta del teclado y debajo están batería, memoria, SSD, WiFi, disipador con ventilador, placa y altavoces.
 
-**De dónde sale el modelo.** Chasis, pantalla, teclado (78 teclas), trackpad, tarjetas de expansión y batería (4 celdas) son el CAD oficial de Framework Laptop 13, publicado con licencia CC BY 4.0 (https://github.com/FrameworkComputer/Framework-Laptop-13). La licencia obliga a dar crédito: está en el texto bajo la escena y no se debe quitar. El CAD publicado no trae la placa ni lo que va sobre ella, así que placa base, CPU, disipador, ventilador, RAM, SSD, WiFi, altavoces y tornillos están modelados en `scripts/modelo3d/construir.py` con las medidas de sus estándares (SO-DIMM 69,6 x 30 mm, M.2 2280 y 2230) y la distribución del equipo real. No son una réplica de la placa de Framework y la web lo dice.
+**De dónde sale el modelo.** Chasis, pantalla, teclado (78 teclas), trackpad, tarjetas de expansión y batería (4 celdas) son el CAD oficial de Framework Laptop 13, publicado con licencia CC BY 4.0 (https://github.com/FrameworkComputer/Framework-Laptop-13). La licencia obliga a dar crédito: está en Términos, sección de propiedad intelectual (`src/data/textos.js`), y no se debe quitar de ahí. El CAD publicado no trae la placa ni lo que va sobre ella, así que placa base, CPU, disipador, ventilador, RAM, SSD, WiFi, altavoces y tornillos están modelados en `scripts/modelo3d/construir.py` con las medidas de sus estándares (SO-DIMM 69,6 x 30 mm, M.2 2280 y 2230) y la distribución del equipo real. No son una réplica de la placa de Framework y la web lo dice.
 
 **Regenerar el modelo** (solo si se cambia): convertir los STEP del repositorio de Framework con `scripts/modelo3d/step2obj.cjs` (usa `occt-import-js`, que se instala aparte y no es dependencia del proyecto), correr `blender -b -P scripts/modelo3d/construir.py -- <carpeta> <salida.glb>` con Blender 5.3 y pasar el resultado por `gltf-transform optimize --compress quantize`. Se cuantiza y no se usa Draco ni Meshopt a propósito: sus descompresores son WebAssembly y la política de seguridad de `firebase.json` (`script-src 'self'`) los bloquearía.
 
@@ -235,8 +237,7 @@ El orden del desarme es el real del equipo: cinco tornillos por debajo, sale la 
 
 Página propia (`src/pages/Aroma.jsx`, piezas en `src/components/aroma/`) con el tema `tema-aroma`: portada, familias olfativas, catálogo con filtro, ingredientes, recomendador y cierre.
 
-- **Perfumes reales:** se crean en `/admin` con categoría Aroma, como cualquier producto. En la tabla de datos del editor se ponen las filas `Familia` (Florales, Amaderadas, Cítricas, Orientales, Frescas o Dulces y gourmand), `Tamaño` (por ejemplo `100 ml`), `Intensidad` (Suave o Intensa) y `Momento` (Día o Noche). `datosPerfume` en `src/lib/aroma.js` las lee; de ahí salen el filtro por familia y el recomendador. No hay campos nuevos en la base ni cambios en las reglas.
-- **Catálogo de muestra:** mientras no haya ningún perfume publicado, la página enseña `PERFUMES_MUESTRA` de `src/data/aroma.js`. Son nombres y precios de ejemplo, no inventario: llevan la insignia "Muestra", el texto "precio de ejemplo" y un aviso arriba, no se pueden comprar (solo consultar por WhatsApp) y no están en el buscador, el sitemap ni Firestore. En cuanto se publique el primer perfume real, las muestras dejan de mostrarse solas.
+- **Perfumes:** son productos de la categoría Aroma. Los 29 del dueño están en `src/data/productos.js`, con sus fotos en `perfumes/` (copias livianas con `scripts/fotos-web.ps1`, igual que `Productos/`) y sin precio hasta que lo mande: sin precio, su página pide consultar por WhatsApp y no deja agregarlos al carrito. En la tabla de datos llevan las filas `Familia` (Gourmand y dulces, Frutales, Florales, Frescas y acuáticas, Orientales y amaderadas), `Para` (Mujer u Hombre), `Tamaño` (por ejemplo `100 ml`) e `Intensidad` (Suave o Intensa, solo si la descripción lo dice). `datosPerfume` en `src/lib/aroma.js` las lee para los filtros y el recomendador. Los que se creen en `/admin` funcionan igual si llevan esas filas.
 - **Sin foto:** un perfume sin foto se dibuja con `Frasco.jsx` (silueta, color de su familia e iniciales).
 - **Recomendador:** `recomendar` puntúa cada perfume del catálogo visible con las cuatro respuestas y devuelve los de mayor puntaje. No hay azar.
 - El ícono de Aroma (`src/components/ui/IconoAroma.jsx`) es el único propio; el resto son Bootstrap Icons.

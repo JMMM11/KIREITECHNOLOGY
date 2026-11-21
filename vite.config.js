@@ -4,12 +4,12 @@ import { createReadStream, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { SITIO } from './src/data/sitio.js';
 
-// En desarrollo la raíz es src/: este plugin sirve también las fotos de Productos/ y reparaciones/.
+// En desarrollo la raíz es src/: este plugin sirve también las fotos de Productos/, reparaciones/ y perfumes/.
 // En la compilación, scripts/compilar.mjs copia sus copias livianas (web/).
 const fotosProductos = {
   name: 'fotos-productos',
   configureServer(server) {
-    for (const carpeta of ['Productos', 'reparaciones']) {
+    for (const carpeta of ['Productos', 'reparaciones', 'perfumes']) {
       server.middlewares.use(`/${carpeta}`, (req, res, next) => {
         const ruta = resolve(carpeta, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, ''));
         // Solo archivos: /reparaciones también es una página y la carpeta existe con ese nombre.

@@ -4,7 +4,7 @@ import s from './Foto.module.css';
 const RUTA = import.meta.env.BASE_URL;
 
 // Foto con ancho y alto definidos para que no salte el diseño.
-// foto.src: archivo de Productos/ o reparaciones/ (se sirve su copia liviana de web/; el original no se toca)
+// foto.src: archivo de Productos/, reparaciones/ o perfumes/ (se sirve su copia liviana de web/; el original no se toca)
 // o URL completa de Cloudinary (ya llega optimizada).
 export default function Foto({ foto, alt = '', sizes = '(min-width: 900px) 40vw, 90vw', prioridad = false, className = '' }) {
   if (!foto?.src) {

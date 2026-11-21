@@ -1,4 +1,4 @@
-# Crea copias livianas (JPG) de las fotos de Productos/ y reparaciones/ en su subcarpeta web/, con el nombre completo del original (incluye la extensión).
+# Crea copias livianas (JPG) de las fotos de Productos/, reparaciones/ y perfumes/ en su subcarpeta web/, con el nombre completo del original (incluye la extensión).
 # Los originales no se tocan. Correr después de agregar fotos: powershell -File scripts/fotos-web.ps1
 # Anchos: 640 y 1280 para todas; 960 y 1920 para las de portada (principal*). Debe coincidir con src/components/ui/Foto.jsx.
 Add-Type -AssemblyName System.Drawing
@@ -8,7 +8,7 @@ $calidad = New-Object System.Drawing.Imaging.EncoderParameters 1
 $calidad.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter ([System.Drawing.Imaging.Encoder]::Quality, [long]80)
 $hechas = 0
 
-foreach ($carpeta in 'Productos', 'reparaciones') {
+foreach ($carpeta in 'Productos', 'reparaciones', 'perfumes') {
   $destino = Join-Path $raiz "$carpeta\web"
   New-Item -ItemType Directory -Force $destino | Out-Null
   Get-ChildItem (Join-Path $raiz $carpeta) -File | Where-Object { $_.Extension -match '^\.(jpe?g|png)$' } | ForEach-Object {

@@ -176,6 +176,7 @@ export const LEGAL = [
 
       '## 10. Propiedad intelectual',
       'Todos los contenidos de esta tienda (imágenes, textos, logotipos, diseño) son propiedad de Kirei Technology o de sus respectivos titulares, y están protegidos por la Ley 35 de 1996 sobre Propiedad Industrial y la Ley 15 de 1994 sobre Derecho de Autor de la República de Panamá. Queda prohibida su reproducción o uso sin autorización previa y por escrito.',
+      'Créditos: la laptop en 3D de la página de reparaciones se basa en el diseño abierto de Framework Laptop 13, de Framework Computer Inc., publicado con licencia CC BY 4.0 (creativecommons.org/licenses/by/4.0). Placa, memoria, almacenamiento, ventilador y disipador fueron modelados por Kirei Technology con medidas estándar; la imagen es ilustrativa.',
 
       '## 11. Ley aplicable y resolución de conflictos',
       'Estos términos se rigen por la legislación de la República de Panamá. Cualquier controversia que surja de la relación comercial se someterá a los tribunales competentes de la República de Panamá. Antes de acudir a la vía judicial, te invitamos a contactarnos para resolver el problema de forma amistosa.',

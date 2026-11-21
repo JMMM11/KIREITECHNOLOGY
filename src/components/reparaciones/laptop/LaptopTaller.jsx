@@ -7,19 +7,17 @@ import s from './LaptopTaller.module.css';
 const MODELO = `${import.meta.env.BASE_URL}modelos/laptop.glb`;
 const ETIQUETAS = PIEZAS.map((pz, i) => pz.etiqueta && { i, texto: pz.etiqueta, lado: pz.lado }).filter(Boolean);
 
-// La laptop del taller en 3D: se desarma y se arma sola, en bucle. Se puede pausar, reiniciar o recorrer con la barra.
-// El modelo y three se cargan cuando la sección se acerca a la pantalla. Con movimiento reducido arranca quieta y desarmada.
+// La laptop del taller en 3D: se desarma y se arma sola, en bucle, sin controles.
+// El modelo y three se cargan cuando la sección se acerca a la pantalla. Con movimiento reducido queda quieta y desarmada.
 export default function LaptopTaller() {
   const reducir = useReducedMotion();
-  const seccion = useRef(null), lienzo = useRef(null), barra = useRef(null), etiquetas = useRef([]);
+  const seccion = useRef(null), lienzo = useRef(null), etiquetas = useRef([]);
   const t = useRef(reducir ? T_DESARMADA : 0);
   const sucio = useRef(true);
   const [cerca, setCerca] = useState(false);
   const [fase, setFase] = useState('espera');   // espera | cargando | lista | error
-  const [andando, setAndando] = useState(!reducir);
   const [paso, setPaso] = useState(reducir ? 2 : 0);
-  const andandoRef = useRef(andando);
-  andandoRef.current = andando;
+  const andandoRef = useRef(!reducir);
 
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setCerca(true); io.disconnect(); } }, { rootMargin: '700px' });
@@ -42,7 +40,6 @@ export default function LaptopTaller() {
       sucio.current = false;
       const est = estado(t.current);
       api.poner(est, t.current);
-      if (barra.current) barra.current.value = t.current;
       setPaso((p) => (p === est.paso ? p : est.paso));
       ETIQUETAS.forEach((et, k) => {
         const el = etiquetas.current[k], p = est.piezas[et.i], pos = api.proyectar(et.i);
@@ -63,8 +60,6 @@ export default function LaptopTaller() {
     return () => { vivo = false; cancelAnimationFrame(id); io.disconnect(); removeEventListener('resize', alCambiar); api?.destruir(); };
   }, [cerca]);
 
-  const reiniciar = () => { t.current = 0; setAndando(true); };
-  const recorrer = (e) => { t.current = Number(e.target.value); sucio.current = true; setAndando(false); };
   const actual = PASOS[paso];
 
   return (
@@ -99,19 +94,8 @@ export default function LaptopTaller() {
             <h3 key={actual.titulo} className={s.pasoTitulo}>{actual.titulo}</h3>
             <p key={actual.texto} className={s.pasoTexto}>{actual.texto}</p>
           </div>
-          <div className={s.controles} role="group" aria-label="Control de la animación">
-            <button type="button" className={s.boton} onClick={() => setAndando((a) => !a)} disabled={fase !== 'lista'}>{andando ? 'Pausar' : 'Reproducir'}</button>
-            <button type="button" className={s.boton} onClick={reiniciar} disabled={fase !== 'lista'}>Reiniciar</button>
-            <input ref={barra} className={s.barra} type="range" min="0" max={DURACION} step="0.05" defaultValue={t.current} onInput={recorrer} disabled={fase !== 'lista'} aria-label="Recorrer el desarme" />
-          </div>
         </div>
       </div>
-
-      <p className={`contenedor ${s.credito}`}>
-        Modelo 3D basado en el CAD abierto de{' '}
-        <a href="https://github.com/FrameworkComputer/Framework-Laptop-13" target="_blank" rel="noopener noreferrer">Framework Laptop 13</a>{' '}
-        (CC BY 4.0). Placa, memoria, SSD, ventilador y disipador modelados por Kirei con medidas estándar. Imagen ilustrativa: reparamos laptops y PCs con Windows de distintas marcas.
-      </p>
     </section>
   );
 }

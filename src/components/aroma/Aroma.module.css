@@ -1,115 +1,121 @@
-/* Aroma: editorial. Serif grande, líneas doradas finas, mucho aire. Los colores salen del tema (.tema-aroma). */
+/* Aroma: lujo suave dentro de la paleta Kirei. 60 % papel, durazno, blanco y arena; 30 % azul marino; 10 % naranja.
+   Cobre para líneas finas y etiquetas. Poppins: 300 grande para nombres y frases, 600 para botones y precios. */
 .pagina { padding-bottom: clamp(56px, 8vw, 112px); }
-.pagina h1, .pagina h2, .pagina h3 { font-weight: 500; letter-spacing: -0.01em; }
-.pagina em { font-style: italic; }
+.pagina h1, .pagina h2, .pagina h3 { font-family: var(--fuente); font-weight: 300; letter-spacing: -0.01em; color: var(--marca); }
 
-/* Portada: negro profundo, el frasco y su estela */
-.hero { background: var(--aroma-negro); color: var(--aroma-marfil); --accion: #E9D9BC; --accion-hover: #F6F1E7; --accion-texto: #141014; --foco: #F6F1E7; overflow: hidden; }
-.heroCaja { display: grid; gap: 24px; align-items: center; padding-block: clamp(48px, 8vw, 112px); min-height: min(78svh, 760px); }
+/* Portada: banner azul marino, texto blanco y detalles naranja, con un frasco real grande */
+.hero { background: var(--marca); color: #FFFFFF; --foco: #FFFFFF; overflow: hidden; }
+.heroCaja { display: grid; gap: 28px; align-items: center; padding-block: clamp(40px, 7vw, 96px); }
 .heroTexto { display: grid; gap: 18px; justify-items: start; }
-.sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #C9A85A; }
-.heroTitulo { font-size: clamp(3.2rem, 11vw, 8.5rem); line-height: 0.92; text-wrap: balance; }
-.heroTitulo em { color: #C9A85A; }
-.heroBajada { font-size: clamp(1.0625rem, 2vw, 1.375rem); color: #D9CFC2; max-width: 30ch; }
-.heroArte { position: relative; display: grid; justify-items: center; }
-.heroFrasco { width: min(62vw, 340px); height: auto; filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.55)); }
-.vapor { position: absolute; top: -6%; left: 50%; translate: -18% 0; color: rgb(233 217 188 / 0.5); animation: vapor 7s ease-in-out infinite alternate; }
-@keyframes vapor { from { transform: translateY(8px) scale(0.96); opacity: 0.35; } to { transform: translateY(-10px) scale(1.04); opacity: 0.8; } }
+.sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accion); }
+.pagina .heroTitulo { font-size: clamp(2.8rem, 9vw, 6.5rem); line-height: 0.98; letter-spacing: -0.03em; color: #FFFFFF; text-wrap: balance; }
+.heroTitulo span { color: var(--accion); }
+.heroBajada { font-size: clamp(1.0625rem, 2vw, 1.3125rem); font-weight: 300; color: #D8D8D8; max-width: 34ch; letter-spacing: 0.01em; }
+.heroFoto { aspect-ratio: 1; overflow: hidden; border-radius: var(--radio-tarjeta); background: #EFECE6; box-shadow: 0 30px 60px rgb(7 21 36 / 0.45); }
+.heroFoto :global(img), .heroFoto :global(picture) { width: 100%; height: 100%; object-fit: cover; }
 
-.bloque { padding-top: clamp(64px, 9vw, 128px); }
+.bloque { padding-top: clamp(64px, 9vw, 120px); }
 .ancla { scroll-margin-top: 24px; }
-.titulo { font-size: clamp(2.4rem, 6.4vw, 4.75rem); line-height: 1; color: var(--aroma-ciruela); }
-.bajada { margin-top: 12px; font-size: clamp(1rem, 1.8vw, 1.1875rem); color: var(--aroma-texto-suave); max-width: 46ch; }
-.aviso { margin-top: 14px; font-size: var(--t-chico); color: var(--aroma-texto-suave); max-width: 70ch; }
+.pagina .titulo { font-size: clamp(2.2rem, 6vw, 4.25rem); line-height: 1.02; }
+.bajada { margin-top: 12px; font-size: clamp(1rem, 1.8vw, 1.1875rem); color: var(--texto-suave); max-width: 46ch; }
+.aviso { margin-top: 14px; font-size: var(--t-chico); color: var(--texto-suave); max-width: 70ch; }
 
-/* Familias: rejilla asimétrica; cada mundo con su color */
+/* Familias: cada una con un fondo de la paleta */
 .familias { list-style: none; display: grid; gap: 12px; margin-top: clamp(24px, 3vw, 40px); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .familias li { display: grid; }
 .familia {
-  display: grid; gap: 6px; align-content: end; justify-items: start; text-align: left; min-height: 190px; padding: 20px; border: 0; border-radius: 4px;
-  background: var(--tono); color: var(--tinta); transition: transform 0.25s var(--ease-salida), box-shadow 0.25s;
+  display: grid; gap: 6px; align-content: end; justify-items: start; text-align: left; min-height: 180px; padding: 20px; border: 0; border-radius: var(--radio-tarjeta);
+  background: #FDEBD3; color: #8A4B00; transition: transform 0.25s var(--ease-salida), box-shadow 0.25s;
 }
+.familia[data-tono="frutal"] { background: #EFECE6; color: #111111; }
+.familia[data-tono="floral"] { background: #FFFFFF; color: #0B1F33; box-shadow: inset 0 0 0 1px #DDD8CF; }
+.familia[data-tono="fresca"] { background: #E4E9EF; color: #0B1F33; }
+.familia[data-tono="oriental"] { background: #0B1F33; color: #FFFFFF; }
 .familia:active { transform: scale(0.985); }
-.familia[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--aroma-marfil), 0 0 0 4px var(--aroma-dorado); }
+.familia[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--cobre); }
 .familia:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
-.familiaNombre { font-family: var(--fuente-display); font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1; }
+.familiaNombre { font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; }
 .familiaFrase { font-size: var(--t-chico); }
-.familiaNotas { font-size: var(--t-mini); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.86; }
+.familiaNotas { font-size: var(--t-mini); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* Catálogo */
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-.filtro { min-height: 44px; padding: 0 16px; border: 1px solid var(--aroma-ciruela); border-radius: 99px; background: none; color: var(--aroma-ciruela); font-size: var(--t-chico); font-weight: 600; transition: background-color 0.2s, color 0.2s; }
-.filtro[aria-pressed="true"] { background: var(--aroma-ciruela); color: #FFFFFF; }
-.filtro:focus-visible, .accion:focus-visible, .enlaceBoton:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
-.enlaceBoton { border: 0; background: none; color: var(--aroma-ciruela); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; min-height: 44px; }
-.perfumes { list-style: none; display: grid; gap: 28px 16px; margin-top: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.filtros + .filtros { margin-top: 10px; }
+.filtro { min-height: 44px; padding: 0 16px; border: 1px solid #DDD8CF; border-radius: 99px; background: #FFFFFF; color: var(--marca); font-size: var(--t-chico); font-weight: 600; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.filtro[aria-pressed="true"] { background: var(--marca); border-color: var(--marca); color: #FFFFFF; }
+.filtro:focus-visible, .accion:focus-visible, .enlaceBoton:focus-visible, .nombreEnlace:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
+.enlaceBoton { border: 0; background: none; color: var(--marca); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; min-height: 44px; }
+.perfumes { list-style: none; display: grid; gap: 16px; margin-top: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .perfumes li { display: grid; }
-.perfume { display: grid; grid-template-rows: auto 1fr; scroll-margin-top: 24px; }
-.perfume:target .perfumeMedia { box-shadow: 0 0 0 2px var(--aroma-dorado); }
-.perfumeMedia { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: color-mix(in srgb, var(--tono, #E9D9BC) 55%, #F6F1E7); }
-.perfumeMedia :global(img) { width: 100%; height: 100%; object-fit: cover; }
-.frasco { width: 62%; height: auto; transition: transform 0.5s var(--ease-salida); }
-.muestra { position: absolute; top: 10px; left: 10px; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; color: var(--aroma-ciruela); background: rgb(255 255 255 / 0.82); }
-.perfumeCuerpo { display: grid; gap: 6px; align-content: start; padding-top: 14px; border-top: 1px solid var(--aroma-dorado); margin-top: 14px; }
-.perfumeMeta { font-size: var(--t-mini); letter-spacing: 0.08em; text-transform: uppercase; color: var(--aroma-texto-suave); }
-.perfumeNombre { font-family: var(--fuente-display); font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.05; }
-.perfumeTexto { font-size: var(--t-chico); color: var(--aroma-texto-suave); }
-.perfumePie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; margin-top: 6px; }
-.precio { font-size: 1.125rem; font-weight: 600; }
-.precio small { display: block; font-size: var(--t-mini); font-weight: 400; color: var(--aroma-texto-suave); }
-.accion { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 600; color: var(--aroma-ciruela); text-decoration: none; }
-.accion span { font-size: 1.3em; line-height: 1; transition: transform 0.2s var(--ease-salida); }
 
-/* Ingredientes: bloque ciruela, lista editorial */
-.ingredientes { margin-top: clamp(64px, 9vw, 128px); padding-block: clamp(56px, 8vw, 112px); background: var(--aroma-ciruela); color: var(--aroma-marfil); }
-.ingredientes .titulo { color: var(--aroma-marfil); }
+/* Tarjeta: blanca con borde fino, foto sobre arena, etiqueta cobre sobre durazno, botón naranja */
+.perfume { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: var(--radio-tarjeta); background: #FFFFFF; box-shadow: inset 0 0 0 1px #DDD8CF; scroll-margin-top: 24px; }
+.perfume:target { box-shadow: inset 0 0 0 2px var(--cobre); }
+.perfumeMedia { position: relative; display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; background: #EFECE6; }
+.perfumeMedia :global(img), .perfumeMedia :global(picture) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-salida); }
+.frasco { width: 56%; height: auto; }
+.perfumeCuerpo { display: grid; gap: 8px; align-content: start; padding: 16px; }
+.etiqueta { justify-self: start; padding: 3px 10px; border-radius: 99px; font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.04em; color: var(--cobre); background: #FDEBD3; }
+.marca { font-size: var(--t-mini); letter-spacing: 0.12em; text-transform: uppercase; color: #666666; }
+.pagina .perfumeNombre { font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.1; }
+.nombreEnlace { color: inherit; text-decoration: none; }
+.perfumeTexto { font-size: var(--t-chico); color: var(--texto-suave); }
+.ml { font-size: var(--t-mini); color: #666666; }
+.perfumePie { display: grid; gap: 10px; margin-top: 4px; }
+.precio { font-size: 1.0625rem; font-weight: 600; color: #111111; }
+.accion { min-height: 44px; }
+
+/* Ingredientes: bloque azul marino */
+.ingredientes { margin-top: clamp(64px, 9vw, 120px); padding-block: clamp(56px, 8vw, 104px); background: var(--marca); color: #FFFFFF; }
+.pagina .ingredientes .titulo { color: #FFFFFF; }
 .listaIngredientes { list-style: none; display: grid; margin-top: clamp(24px, 3vw, 40px); }
-.ingrediente { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 4px 12px; padding-block: 22px; border-top: 1px solid rgb(233 217 188 / 0.4); }
-.ingrediente h3 { font-family: var(--fuente-display); font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1; }
-.ingrediente p { grid-column: 2; color: #E4D6DC; font-size: var(--t-chico); max-width: 42ch; }
-.numero { font-size: var(--t-mini); letter-spacing: 0.1em; color: #E0C27A; padding-top: 0.9em; }
+.ingrediente { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 4px 12px; padding-block: 22px; border-top: 1px solid rgb(183 196 211 / 0.35); }
+.pagina .ingrediente h3 { font-size: clamp(1.8rem, 4.4vw, 3rem); line-height: 1; color: #FFFFFF; }
+.ingrediente p { grid-column: 2; color: #B7C4D3; font-size: var(--t-chico); max-width: 42ch; }
+.numero { font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.1em; color: var(--accion); padding-top: 0.8em; }
 
 /* Recomendador */
 .recomendador { display: grid; gap: 24px; margin-top: clamp(24px, 3vw, 40px); }
 .preguntas { display: grid; gap: 22px; }
 .pregunta { border: 0; padding: 0; min-width: 0; }
-.pregunta legend { font-family: var(--fuente-display); font-size: clamp(1.35rem, 2.6vw, 1.75rem); line-height: 1.15; margin-bottom: 10px; }
+.pregunta legend { font-size: clamp(1.25rem, 2.4vw, 1.6rem); font-weight: 300; line-height: 1.2; color: var(--marca); margin-bottom: 10px; }
 .opciones { display: flex; flex-wrap: wrap; gap: 8px; }
 .opcion { position: relative; }
 .opcion input { position: absolute; opacity: 0; inset: 0; }
-.opcion span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid var(--aroma-ciruela); border-radius: 99px; font-size: var(--t-chico); font-weight: 600; color: var(--aroma-ciruela); transition: background-color 0.2s, color 0.2s; }
-.opcion input:checked + span { background: var(--aroma-ciruela); color: #FFFFFF; }
+.opcion span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid #DDD8CF; border-radius: 99px; background: #FFFFFF; font-size: var(--t-chico); font-weight: 600; color: var(--marca); transition: background-color 0.2s, color 0.2s; }
+.opcion input:checked + span { background: var(--marca); border-color: var(--marca); color: #FFFFFF; }
 .opcion input:focus-visible + span { outline: 3px solid var(--foco); outline-offset: 3px; }
-.resultado { align-self: start; padding: clamp(20px, 3vw, 32px); border-radius: 4px; background: var(--aroma-champan); min-height: 180px; }
-.resultadoVacio { color: var(--aroma-texto-suave); max-width: 40ch; }
-.resultadoVacio a { color: var(--aroma-ciruela); font-weight: 600; }
-.resultadoTitulo { font-size: var(--t-mini); letter-spacing: 0.14em; text-transform: uppercase; color: var(--aroma-texto-suave); }
+.resultado { align-self: start; padding: clamp(20px, 3vw, 32px); border-radius: var(--radio-tarjeta); background: #FDEBD3; min-height: 180px; }
+.resultadoVacio { color: var(--texto-suave); max-width: 40ch; }
+.resultadoVacio a { color: var(--marca); font-weight: 600; }
+.resultadoTitulo { font-size: var(--t-mini); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cobre); }
 .sugeridos { list-style: none; display: grid; margin-top: 8px; }
-.sugeridos a { display: flex; align-items: center; min-height: 48px; font-family: var(--fuente-display); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--aroma-ciruela); text-decoration: none; }
-.sugeridos li + li { border-top: 1px solid rgb(168 133 58 / 0.5); }
+.sugeridos a { display: flex; align-items: center; min-height: 48px; font-size: clamp(1.3rem, 2.6vw, 1.8rem); font-weight: 300; color: var(--marca); text-decoration: none; }
+.sugeridos li + li { border-top: 1px solid var(--cobre); }
 
-/* Cierre */
-.cierre { display: grid; gap: 24px; justify-items: center; text-align: center; padding-top: clamp(72px, 10vw, 144px); }
-.cierreFrase { font-family: var(--fuente-display); font-size: clamp(2.2rem, 6vw, 4.5rem); line-height: 1.02; max-width: 16ch; text-wrap: balance; color: var(--aroma-ciruela); }
+/* Cierre: banner azul marino */
+.cierre { display: grid; gap: 24px; justify-items: center; text-align: center; margin-top: clamp(72px, 10vw, 128px); padding: clamp(48px, 7vw, 88px) 24px; border-radius: var(--radio-tarjeta); background: var(--marca); --foco: #FFFFFF; }
+.cierreFrase { font-size: clamp(2rem, 5.4vw, 4rem); font-weight: 300; line-height: 1.05; max-width: 18ch; text-wrap: balance; color: #FFFFFF; }
+.cierreFrase span { color: var(--accion); }
 .cierreAcciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.fantasmaClaro { color: #FFFFFF; border-color: #FFFFFF; }
 
 @media (hover: hover) and (pointer: fine) {
   .familia:hover { transform: translateY(-3px); }
-  .perfume:hover .frasco { transform: translateY(-6px) rotate(-2deg); }
-  .accion:hover { text-decoration: underline; text-underline-offset: 6px; }
-  .accion:hover span { transform: translateX(3px); }
-  .filtro:not([aria-pressed="true"]):hover { background: rgb(74 31 58 / 0.08); }
+  .perfume:hover .perfumeMedia :global(img) { transform: scale(1.04); }
+  .nombreEnlace:hover { text-decoration: underline; text-underline-offset: 5px; }
+  .filtro:not([aria-pressed="true"]):hover { border-color: var(--marca); }
+  .fantasmaClaro:hover { background: #FFFFFF; color: var(--marca); }
 }
 @media (min-width: 900px) {
-  .heroCaja { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); }
-  .familias { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
-  .familias li:nth-child(1) { grid-column: span 5; } .familias li:nth-child(2) { grid-column: span 3; } .familias li:nth-child(3) { grid-column: span 4; }
-  .familias li:nth-child(4) { grid-column: span 4; } .familias li:nth-child(5) { grid-column: span 5; } .familias li:nth-child(6) { grid-column: span 3; }
-  .familia { min-height: 260px; padding: 28px; }
-  .familias li:nth-child(odd) .familia { min-height: 300px; }
-  .perfumes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 28px; }
+  .heroCaja { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 56px; }
+  .familias { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+  .familias li:nth-child(-n+2) { grid-column: span 3; }
+  .familias li:nth-child(n+3) { grid-column: span 2; }
+  .familia { min-height: 240px; padding: 28px; }
+  .perfumes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
   .listaIngredientes { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
   .recomendador { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 48px; }
   .resultado { position: sticky; top: 24px; }
 }
-@media (prefers-reduced-motion: reduce) { .vapor { animation: none; } }
+@media (min-width: 1200px) { .perfumes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

@@ -44,7 +44,8 @@ export function estado(t) {
   return {
     piezas,
     tapa: tramo(t, 0.4, 2.8),                                    // 0 cerrada, 1 abierta
-    abierta: piezas.reduce((a, b) => a + b, 0) / piezas.length,   // qué tan desarmada está, para la cámara
+    // qué tan desarmada está, para la cámara: el teclado solo ya cuenta como abierta, porque sube muy alto
+    abierta: Math.max(piezas.reduce((a, b) => a + b, 0) / piezas.length, piezas[PIEZAS.findIndex((p) => p.nodo === 'Teclado')]),
     pantalla: tramo(t, 28, 29.4),                                 // la pantalla se enciende al final
     paso: Math.max(0, PASOS.findIndex((p) => t < p.hasta)),
   };

@@ -2,9 +2,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DURACION, INICIO_CICLO, PASOS, PIEZAS, T_DESARMADA, avance, estado } from '../src/components/reparaciones/laptop/secuencia.js';
-import { FAMILIAS, PERFUMES_MUESTRA, PREGUNTAS } from '../src/data/aroma.js';
+import { FAMILIAS, PREGUNTAS } from '../src/data/aroma.js';
+import { PRODUCTOS } from '../src/data/productos.js';
 import { datosPerfume, recomendar } from '../src/lib/aroma.js';
-import { contraste } from './contraste.test.js';
 
 test('laptop: empieza y termina armada, y en el punto fijo está del todo desarmada', () => {
   for (const t of [0, INICIO_CICLO, DURACION]) assert.ok(estado(t).piezas.every((p) => p === 0), `armada en t=${t}`);
@@ -26,22 +26,32 @@ test('laptop: orden real del desarme y armado en orden inverso', () => {
   assert.deepEqual(PASOS.map((p) => estado(p.hasta - 0.1).paso), [0, 1, 2, 3]);
 });
 
-test('aroma: cada familia se lee sobre su color y el catálogo de muestra está marcado', () => {
-  for (const f of FAMILIAS) assert.ok(contraste(f.tinta, f.tono) >= 4.5, `${f.nombre}: ${contraste(f.tinta, f.tono).toFixed(2)}`);
-  assert.ok(PERFUMES_MUESTRA.every((p) => p.ejemplo === true && FAMILIAS.some((f) => f.id === p.familia)));
-  assert.deepEqual([...new Set(PERFUMES_MUESTRA.map((p) => p.familia))].sort(), FAMILIAS.map((f) => f.id).sort());
+const PERFUMES = PRODUCTOS.filter((p) => p.categoriaId === 'aroma').map(datosPerfume);
+
+test('aroma: los 29 perfumes del dueño tienen familia, género y foto, y ninguno tiene precio inventado', () => {
+  assert.equal(PERFUMES.length, 29);
+  assert.equal(PERFUMES.filter((p) => p.genero === 'mujer').length, 20);
+  assert.equal(PERFUMES.filter((p) => p.genero === 'hombre').length, 9);
+  for (const p of PERFUMES) {
+    assert.ok(FAMILIAS.some((f) => f.id === p.familia), `${p.id}: familia`);
+    assert.equal(p.precioCentavos, null, `${p.id}: el precio lo da el dueño`);
+    assert.ok(p.fotos.length >= 1, `${p.id}: foto`);
+  }
+  assert.equal(PERFUMES.find((p) => p.id === 'joop-joop-homme').ml, 125);
 });
 
-test('aroma: un perfume del panel saca familia, tamaño, intensidad y momento de su tabla de datos', () => {
-  const p = datosPerfume({ id: 'x', nombre: 'X', descripcion: 'Rosa y jazmín.\n\n- Familia: Florales\n- Tamaño: 100 ml\n- Intensidad: Intensa\n- Momento: Noche' });
-  assert.deepEqual([p.familia, p.ml, p.intensidad, p.momento, p.descripcion], ['floral', 100, 'intensa', 'noche', 'Rosa y jazmín.']);
+test('aroma: un perfume del panel saca familia, género, tamaño e intensidad de su tabla de datos', () => {
+  const p = datosPerfume({ id: 'x', nombre: 'X', descripcion: 'Rosa y jazmín.\n\n- Familia: Florales\n- Para: Mujer\n- Tamaño: 100 ml\n- Intensidad: Intensa' });
+  assert.deepEqual([p.familia, p.genero, p.ml, p.intensidad, p.descripcion], ['floral', 'mujer', 100, 'intensa', 'Rosa y jazmín.']);
+  assert.equal(datosPerfume({ id: 'y', nombre: 'Y', descripcion: 'Sin datos.' }).familia, null);
 });
 
 test('aroma: el recomendador filtra el catálogo, sin azar', () => {
-  const r = { caracter: 'dulce', intensidad: 'intensa', momento: 'noche', familia: 'oriental' };
-  assert.deepEqual(recomendar(PERFUMES_MUESTRA, r).map((p) => p.id), ['ambar-nocturno']);
-  assert.deepEqual(recomendar(PERFUMES_MUESTRA, r), recomendar(PERFUMES_MUESTRA, r));
-  assert.deepEqual(recomendar(PERFUMES_MUESTRA, { caracter: 'fresco', intensidad: 'suave', momento: 'dia', familia: 'citrica' }).map((p) => p.id), ['citrico-507']);
+  const r = { genero: 'hombre', caracter: 'fresco', intensidad: 'intensa', familia: 'fresca' };
+  assert.deepEqual(recomendar(PERFUMES, r).map((p) => p.id), ['nautica-voyage-intense']);
+  assert.deepEqual(recomendar(PERFUMES, r), recomendar(PERFUMES, r));
+  const dulces = recomendar(PERFUMES, { genero: 'mujer', caracter: 'dulce', intensidad: 'intensa', familia: 'gourmand' });
+  assert.deepEqual(dulces.map((p) => p.id), ['lattafa-eclaire']);
   assert.deepEqual(recomendar([], r), []);
   assert.equal(PREGUNTAS.length, 4);
 });

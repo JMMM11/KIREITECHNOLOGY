@@ -15,7 +15,7 @@ const salida = process.env.SALIDA ?? (pages ? '_pages' : 'dist');
 await build({ build: { outDir: `../${salida}`, emptyOutDir: true } });
 
 // Solo las copias livianas (web/) de las fotos: los originales no se publican.
-for (const carpeta of ['Productos', 'reparaciones']) cpSync(`${carpeta}/web`, `${salida}/${carpeta}/web`, { recursive: true });
+for (const carpeta of ['Productos', 'reparaciones', 'perfumes']) cpSync(`${carpeta}/web`, `${salida}/${carpeta}/web`, { recursive: true });
 // GitHub Pages responde 404.html a las rutas que no son archivos: así /producto/x abre la tienda.
 copyFileSync(`${salida}/index.html`, `${salida}/404.html`);
 

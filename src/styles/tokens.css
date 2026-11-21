@@ -1,4 +1,5 @@
-/* Tokens por rol. Colores de marca: naranja #F7931E (acción), azul marino #0B1F33 (marca), papel #F7F5F1 (fondo).
+/* Tokens por rol, solo con la paleta oficial de Kirei (manual de marca, noviembre 2026). Proporción 60-30-10:
+   neutros de fondo, azul marino #0B1F33 de marca, naranja #F7931E solo en botones principales, precios y detalles.
    Los pares texto/fondo se verifican en tests/contraste.test.js. */
 :root {
   color-scheme: light;
@@ -9,7 +10,7 @@
   --texto: #111111;
   --texto-suave: #4A4A4A;
   --borde: #DDD8CF;
-  --borde-fuerte: #8A857C;
+  --borde-fuerte: #666666;   /* gris lema: bordes de controles a 3:1 */
 
   --accion: #F7931E;
   --accion-texto: #111111;
@@ -18,6 +19,13 @@
   --marca: #0B1F33;
   --marca-texto: #FFFFFF;
   --marca-hover: #16324F;
+  --marino-noche: #071524;
+  --cobre: #9A5200;   /* naranja para texto chico sobre fondo claro, y líneas finas */
+  --gris-lema: #666666;
+  --durazno: #FDEBD3;
+  --hielo: #E4E9EF;
+  --niebla: #B7C4D3;
+  --plata: #D8D8D8;
   --foco: #0B1F33;
 
   --error: #B3261E;
@@ -26,24 +34,24 @@
   /* Estados de producto */
   --e-nuevo-fg: #0B4F8A;     --e-nuevo-bg: #E3EEF8;
   --e-oferta-fg: #8A4B00;    --e-oferta-bg: #FDEBD3;
-  --e-ultimas-fg: #8C2F0B;   --e-ultimas-bg: #FBE4D8;
+  --e-ultimas-fg: #B3261E;   --e-ultimas-bg: #FCEDEC;
   --e-agotado-fg: #FFFFFF;   --e-agotado-bg: #4A4A4A;
   /* Estados de pedido */
-  --e-recibido-fg: #3D3A35;  --e-recibido-bg: #ECE9E3;
+  --e-recibido-fg: #4A4A4A;  --e-recibido-bg: #EFECE6;
   --e-confirmado-fg: #0B4F8A; --e-confirmado-bg: #E3EEF8;
-  --e-enviado-fg: #5B3591;   --e-enviado-bg: #EFE7F8;
-  --e-entregado-fg: #FFFFFF; --e-entregado-bg: #1E6B3A;
+  --e-enviado-fg: #0B1F33;   --e-enviado-bg: #E4E9EF;
+  --e-entregado-fg: #1E6B3A; --e-entregado-bg: #E6F2EA;
   --e-cancelado-fg: #B3261E; --e-cancelado-bg: #FCEDEC;
   /* Pago en efectivo: verde billete */
   --efectivo-fg: #1E6B3A;    --efectivo-bg: #E6F2EA;
   /* Favorito: el corazón marcado */
-  --favorito: #C2185B;
+  --favorito: #B3261E;
   /* Ejemplo */
-  --e-ejemplo-fg: #4A4A4A;   --e-ejemplo-bg: #ECE9E3;
+  --e-ejemplo-fg: #4A4A4A;   --e-ejemplo-bg: #EFECE6;
 
   --fuente: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /* Títulos: Unbounded, ancha y técnica, da la voz propia; Poppins queda para leer. */
-  --fuente-display: 'Unbounded', 'Poppins', system-ui, sans-serif;
+  /* Una sola familia, Poppins: 600 en títulos y botones, 400 en textos, 300 en frases grandes. */
+  --fuente-display: var(--fuente);
   --t-hero: clamp(2rem, 1.2rem + 4vw, 4.25rem);
   --t-display: clamp(1.75rem, 1.2rem + 2.6vw, 3.125rem);
   --t-titulo: clamp(1.375rem, 1.1rem + 1.1vw, 1.875rem);
@@ -68,33 +76,22 @@
 }
 @media (min-width: 768px) { :root { --gutter: 32px; } }
 
-/* Temas por sección. Cada uno es una superficie: remapea los tokens de rol dentro de su bloque y nada más.
-   Taller (Reparaciones): grafito y azul puro, sin degradados de color. Aroma: marfil, champán, ciruela, negro y dorado, con serif. */
+/* Temas por sección. Cada uno remapea los tokens de rol dentro de su bloque y nada más.
+   Taller (Reparaciones): marino noche con acentos naranja y texto blanco. Aroma: papel y durazno, títulos en marino, líneas en cobre. */
 .tema-taller {
-  --fondo-taller: #0F1216;
-  --fondo-taller-2: #161B21;
+  --fondo-taller: #071524;
+  --fondo-taller-2: #0B1F33;
   --texto-claro: #B7C4D3;
-  --accion: #0A6CFF;
-  --accion-hover: #0557D6;
-  --accion-texto: #FFFFFF;
-  --acento-texto: #4D94FF; /* el azul para texto chico: el de los botones no llega a 4.5:1 sobre grafito */
+  --accion: #F7931E;
+  --accion-hover: #E5850F;
+  --accion-texto: #111111;
+  --acento-texto: #F7931E;
   --foco: #FFFFFF;
   background: var(--fondo-taller); color: #FFFFFF;
 }
 .tema-aroma {
-  --aroma-marfil: #F6F1E7;
-  --aroma-champan: #E9D9BC;
-  --aroma-ciruela: #4A1F3A;
-  --aroma-negro: #141014;
-  --aroma-dorado: #A8853A; /* solo líneas y detalles: no alcanza para texto sobre marfil */
-  --aroma-texto-suave: #5E4A52;
-  --marca: #4A1F3A;
-  --marca-hover: #5E2A4B;
-  --accion: #4A1F3A;
-  --accion-hover: #5E2A4B;
-  --accion-texto: #FFFFFF;
-  --foco: #4A1F3A;
-  --fuente-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  background: var(--aroma-marfil); color: var(--aroma-negro);
+  --fondo-aroma: #F7F5F1;
+  --fondo-aroma-2: #FDEBD3;
+  --foco: #0B1F33;
+  background: var(--fondo-aroma); color: #111111;
 }
-

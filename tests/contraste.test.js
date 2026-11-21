@@ -41,25 +41,27 @@ test('bordes de controles y foco (3:1)', () => {
   }
 });
 
-test('tema taller: azul puro sobre grafito', () => {
+test('tema taller: naranja y blanco sobre marino noche', () => {
   const t = bloque('.tema-taller');
-  assert.ok(contraste(t['accion-texto'], t.accion) >= 4.5, 'texto del botón azul');
-  assert.ok(contraste(t['acento-texto'], t['fondo-taller']) >= 4.5, 'azul de texto sobre grafito');
-  assert.ok(contraste(t['texto-claro'], t['fondo-taller']) >= 4.5, 'texto claro sobre grafito');
-  assert.ok(contraste(t.accion, t['fondo-taller']) >= 3, 'botón azul sobre grafito');
+  assert.ok(contraste(t['accion-texto'], t.accion) >= 4.5, 'texto del botón naranja');
+  assert.ok(contraste(t['acento-texto'], t['fondo-taller']) >= 4.5, 'naranja de texto sobre marino noche');
+  assert.ok(contraste(t['texto-claro'], t['fondo-taller']) >= 4.5, 'niebla sobre marino noche');
+  assert.ok(contraste(t.accion, t['fondo-taller']) >= 3, 'botón naranja sobre marino noche');
   assert.ok(contraste('#FFFFFF', t['fondo-taller-2']) >= 4.5);
 });
 
-test('tema aroma: ciruela y negro sobre marfil y champán', () => {
-  const t = bloque('.tema-aroma');
-  for (const fondo of ['aroma-marfil', 'aroma-champan']) {
-    assert.ok(contraste(t['aroma-negro'], t[fondo]) >= 4.5, `negro sobre ${fondo}`);
-    assert.ok(contraste(t['aroma-texto-suave'], t[fondo]) >= 4.5, `texto suave sobre ${fondo}`);
-    assert.ok(contraste(t['aroma-ciruela'], t[fondo]) >= 4.5, `ciruela sobre ${fondo}`);
-  }
-  // El dorado es de línea y detalle, nunca texto: basta 3:1 sobre marfil; sobre champán va solo como borde fino.
-  assert.ok(contraste(t['aroma-dorado'], t['aroma-marfil']) >= 3, 'dorado (detalle) sobre marfil');
-  assert.ok(contraste(t['accion-texto'], t.accion) >= 4.5, 'texto del botón ciruela');
+test('combinaciones permitidas del manual de marca', () => {
+  const pares = [
+    ['#111111', '#F7931E', 'negro sobre naranja (botón)'], ['#111111', '#E5850F', 'negro sobre naranja hover'],
+    ['#F7931E', '#0B1F33', 'naranja sobre marino'], ['#FFFFFF', '#0B1F33', 'blanco sobre marino'],
+    ['#B7C4D3', '#0B1F33', 'niebla sobre marino'], ['#D8D8D8', '#0B1F33', 'plata sobre marino'],
+    ['#9A5200', '#F7F5F1', 'cobre sobre papel'], ['#9A5200', '#FDEBD3', 'cobre sobre durazno'], ['#8A4B00', '#FDEBD3', 'aviso sobre durazno'],
+    ['#0B1F33', '#E4E9EF', 'marino sobre hielo'], ['#666666', '#F7F5F1', 'gris lema sobre papel'], ['#666666', '#FFFFFF', 'gris lema sobre blanco'],
+    ['#111111', '#EFECE6', 'negro sobre arena'], ['#0B1F33', '#FFFFFF', 'marino sobre blanco'],
+  ];
+  for (const [fg, bg, nombre] of pares) assert.ok(contraste(fg, bg) >= 4.5, `${nombre}: ${contraste(fg, bg).toFixed(2)}`);
+  // Prohibido por el manual: texto blanco sobre naranja (no llega ni a 3:1).
+  assert.ok(contraste('#FFFFFF', '#F7931E') < 3);
 });
 
 test('pie de página: texto claro y foco naranja sobre azul marino', () => {

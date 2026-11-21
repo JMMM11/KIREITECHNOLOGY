@@ -5,7 +5,7 @@
 }
 .media { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--superficie); }
 .media img { width: 100%; height: 100%; object-fit: contain; padding: 8%; transition: transform var(--dur-larga) var(--ease-salida); }
-.oscuro { background: #061F32; }
+.oscuro { background: #0B1F33; }
 .oscuro img { padding: 4%; }
 .foto img { object-fit: cover; padding: 0; }
 .insignias { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 6px; }

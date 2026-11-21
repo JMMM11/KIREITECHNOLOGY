@@ -5,13 +5,11 @@ import Icono from '../ui/Icono.jsx';
 import { ICONOS, ICONOS_CATEGORIA } from '../iconos.js';
 import { CATEGORIAS } from '../../data/catalogos.js';
 import { PRODUCTOS } from '../../data/productos.js';
-import { SITIO } from '../../data/sitio.js';
 import s from './QueHacemos.module.css';
 
 // Foto de ambiente de la tienda: los thinkplus en sus colores.
 const ESCENA = PRODUCTOS.find((p) => p.id === 'lenovo-thinkplus-xt62')?.fotos[4];
 const CATEGORIAS_TECNO = CATEGORIAS.filter((c) => c.seccion === 'tecnologia' && c.visible);
-const aviso = (seccion) => `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, avísenme cuando abran la sección ${seccion}.`)}`;
 
 // Introducción de la portada: qué hace y qué vende Kirei. La compra ocurre en cada sección, no aquí.
 export default function QueHacemos() {
@@ -20,7 +18,7 @@ export default function QueHacemos() {
       <div className="contenedor">
         <div className={s.encabezado}>
           <Aparece alVer como="h2" id="que-hacemos" className={s.titulo}>Lo que hacemos.</Aparece>
-          <Aparece alVer como="p" i={1} className={s.bajada}>Vendemos tecnología, reparamos tu computadora y muy pronto sumamos perfumes.</Aparece>
+          <Aparece alVer como="p" i={1} className={s.bajada}>Vendemos tecnología, reparamos tu computadora y ahora también perfumes.</Aparece>
         </div>
 
         <div className={s.rejilla}>
@@ -55,12 +53,11 @@ export default function QueHacemos() {
             </Aparece>
 
             <div className={s.par}>
-              <Aparece alVer como="article" i={2} className={`${s.tarjeta} ${s.aroma} tema-aroma`} aria-labelledby="t-aroma">
+              <Aparece alVer como="article" i={2} className={`${s.tarjeta} ${s.aroma}`} aria-labelledby="t-aroma">
                 <Icono de={ICONOS_CATEGORIA.aroma.de} mov={ICONOS_CATEGORIA.aroma.mov} entrada={false} tam={28} />
                 <h3 id="t-aroma" className={s.nombre}>Aroma</h3>
                 <p className={s.texto}>Perfumes y fragancias.</p>
-                <span className={s.pronto}>Próximamente</span>
-                <Link href="/aroma" className={s.enlace}>Conocer <span aria-hidden="true">›</span></Link>
+                <Link href="/aroma" className={s.enlace}>Ver perfumes <span aria-hidden="true">›</span></Link>
               </Aparece>
               <Aparece alVer como="article" i={3} className={`${s.tarjeta} ${s.anime}`} aria-labelledby="t-anime">
                 <Icono de={ICONOS_CATEGORIA.anime.de} mov={ICONOS_CATEGORIA.anime.mov} entrada={false} tam={28} />
@@ -71,10 +68,6 @@ export default function QueHacemos() {
             </div>
           </div>
         </div>
-        <p className={s.pie}>
-          ¿Quieres que te avisemos cuando abra Aroma?{' '}
-          <a href={aviso('Aroma')} target="_blank" rel="noopener noreferrer" className="enlace">Escríbenos por WhatsApp</a>.
-        </p>
       </div>
     </section>
   );

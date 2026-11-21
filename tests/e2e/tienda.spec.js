@@ -110,25 +110,24 @@ test('los enlaces directos y las rutas que no existen responden bien', async ({ 
   await expect(page.getByRole('heading', { name: 'Aquí no hay señal.' })).toBeVisible();
 });
 
-test('Aroma existe como sección y avisa que llega pronto', async ({ page }) => {
+test('Aroma muestra los perfumes con filtros y recomendador', async ({ page }) => {
   await page.goto('/');
   // Menú de escritorio o barra del teléfono: Aroma siempre está a un toque.
   await expect(page.getByRole('link', { name: 'Aroma' }).first()).toBeVisible();
   await page.goto('/aroma');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The Art of Fragrance');
-  // Sin perfumes publicados se ve el catálogo de muestra, marcado como tal y sin compra.
-  await expect(page.getByText('Catálogo de muestra.')).toBeVisible();
-  await expect(page.getByText('Muestra', { exact: true })).toHaveCount(6);
-  await page.getByRole('group', { name: 'Filtrar por familia' }).getByRole('button', { name: 'Cítricas' }).click();
-  await expect(page.getByRole('heading', { level: 3, name: 'Cítrico 507' })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 3, name: 'Madera Negra' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: /Consultar/ }).first()).toHaveAttribute('href', /wa\.me\/50761560839/);
-  // Recomendador: dulce, intensa, de noche y oriental lleva a Ámbar Nocturno.
-  for (const opcion of ['Dulces', 'Intensas', 'Noche', 'Oriental']) await page.getByRole('radio', { name: opcion, exact: true }).check();
-  await expect(page.getByRole('status').getByRole('link', { name: /Ámbar Nocturno/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tu aroma, tu energía.');
+  // Los perfumes del dueño, con filtro por género y por familia.
+  await page.getByRole('group', { name: 'Filtrar por género' }).getByRole('button', { name: 'Hombre' }).click();
+  await page.getByRole('group', { name: 'Filtrar por familia' }).getByRole('button', { name: 'Frescas y acuáticas' }).click();
+  await expect(page.getByRole('heading', { level: 3, name: 'Voyage Intense' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'Eclaire' })).toHaveCount(0);
+  await expect(page.getByText('Precio a consultar').first()).toBeVisible();
+  // Recomendador: hombre, fresco, intenso y acuático lleva a Voyage Intense.
+  for (const opcion of ['Hombre', 'Frescos', 'Intensas', 'Frescas y acuáticas']) await page.getByRole('radio', { name: opcion, exact: true }).check();
+  await expect(page.getByRole('status').getByRole('link', { name: /Voyage Intense/ })).toBeVisible();
 });
 
-test('la laptop 3D vive solo en reparaciones: carga, se reproduce sola y se puede pausar y recorrer', async ({ page }) => {
+test('la laptop 3D vive solo en reparaciones, carga y se reproduce sola', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#taller-titulo')).toHaveCount(0);            // en la portada no hay laptop
   await expect(page.getByRole('heading', { level: 3, name: 'Reparación' })).toBeVisible();
@@ -136,28 +135,19 @@ test('la laptop 3D vive solo en reparaciones: carga, se reproduce sola y se pued
   await page.locator('#taller-titulo').scrollIntoViewIfNeeded();
   await expect(page.locator('[data-fase="lista"]')).toHaveCount(1, { timeout: 60_000 });
   await expect(page.locator('[data-fase] canvas')).toHaveCount(1);
-  const barra = page.getByRole('slider', { name: 'Recorrer el desarme' });
-  const antes = Number(await barra.inputValue());
-  await page.waitForTimeout(1500);
-  expect(Number(await barra.inputValue())).toBeGreaterThan(antes);         // avanza sin tocar nada
-  await page.getByRole('button', { name: 'Pausar' }).click();
-  const pausada = await barra.inputValue();
-  await page.waitForTimeout(700);
-  expect(await barra.inputValue()).toBe(pausada);
-  await barra.fill('18');                                                    // recorrer a mano hasta la vista desarmada
-  await expect(page.locator('li[aria-current="step"]')).toContainText('Reparación y mejora');
-  await expect(page.getByRole('link', { name: 'Framework Laptop 13' })).toBeVisible();   // atribución de la licencia CC BY
+  await expect(page.getByRole('button', { name: /Pausar|Reproducir|Reiniciar/ })).toHaveCount(0);   // sin controles: es automática
+  // Avanza sola: del diagnóstico (0 a 5 s) pasa al desarme.
+  await expect(page.locator('li[aria-current="step"]')).toContainText('Desarme', { timeout: 15_000 });
+  await expect(page.getByText('El precio depende de lo que necesite tu equipo.')).toBeVisible();
 });
 
-test('con movimiento reducido la laptop 3D arranca quieta y desarmada', async ({ browser }) => {
+test('con movimiento reducido la laptop 3D queda quieta y desarmada', async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: 'reduce' });
   const page = await ctx.newPage();
   await page.goto('http://localhost:' + (process.env.PUERTO ?? '5190') + '/reparaciones');
   await page.locator('#taller-titulo').scrollIntoViewIfNeeded();
   await expect(page.locator('[data-fase="lista"]')).toHaveCount(1, { timeout: 60_000 });
-  const barra = page.getByRole('slider', { name: 'Recorrer el desarme' });
-  await page.waitForTimeout(900);
-  expect(Number(await barra.inputValue())).toBe(18);
-  await expect(page.getByRole('button', { name: 'Reproducir' })).toBeVisible();
+  await page.waitForTimeout(1200);
+  await expect(page.locator('li[aria-current="step"]')).toContainText('Reparación y mejora');
   await ctx.close();
 });

@@ -9,16 +9,23 @@ import { PIEZAS } from './secuencia.js';
 
 const ANGULO_TAPA = (108 * Math.PI) / 180;
 
-// Lo que muestra la pantalla al encender: dibujado en un lienzo para no cargar otra imagen.
+// Lo que muestra la pantalla al encender: el logo de Kirei sobre marino noche, dibujado en un lienzo.
+// El logo es un SVG del sitio; se dibuja cuando carga y la textura se actualiza.
 function texturaPantalla() {
   const c = document.createElement('canvas'); c.width = 1024; c.height = 684;
   const x = c.getContext('2d');
-  const g = x.createLinearGradient(0, 0, 1024, 684); g.addColorStop(0, '#0d1520'); g.addColorStop(1, '#0a3f9c');
-  x.fillStyle = g; x.fillRect(0, 0, 1024, 684);
-  x.fillStyle = '#FFFFFF'; x.textAlign = 'center';
-  x.font = '600 76px Unbounded, Poppins, sans-serif'; x.fillText('KIREI', 512, 330);
-  x.font = '400 30px Poppins, sans-serif'; x.fillStyle = '#C9D6E6'; x.fillText('Todo funcionando.', 512, 392);
-  const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
+  const fondo = () => {
+    x.fillStyle = '#071524'; x.fillRect(0, 0, 1024, 684);
+    const g = x.createRadialGradient(512, 330, 20, 512, 330, 520); g.addColorStop(0, 'rgb(247 147 30 / 0.28)'); g.addColorStop(1, 'rgb(247 147 30 / 0)');
+    x.fillStyle = g; x.fillRect(0, 0, 1024, 684);
+    x.fillStyle = '#F7931E'; x.textAlign = 'center'; x.font = '600 32px Poppins, sans-serif'; x.fillText('Todo funcionando.', 512, 470);
+  };
+  fondo();
+  const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace;
+  const logo = new Image();
+  logo.onload = () => { fondo(); x.drawImage(logo, 512 - 360, 240, 720, 172); t.needsUpdate = true; };
+  logo.src = `${import.meta.env.BASE_URL}marca/kirei-logo-fondo-oscuro.svg`;
+  return t;
 }
 
 export async function crearEscena(contenedor, url) {
@@ -36,7 +43,7 @@ export async function crearEscena(contenedor, url) {
   const principal = new DirectionalLight('#fff4e8', 2.4); principal.position.set(260, 520, 420);
   principal.castShadow = !tactil; principal.shadow.mapSize.set(1024, 1024);
   Object.assign(principal.shadow.camera, { left: -360, right: 360, top: 360, bottom: -360, near: 100, far: 1400 }); principal.shadow.bias = -0.0015;
-  const contra = new DirectionalLight('#4d94ff', 1.3); contra.position.set(-420, 260, -380);   // el único azul de la escena: el contraluz
+  const contra = new DirectionalLight('#B7C4D3', 1.1); contra.position.set(-420, 260, -380);   // contraluz niebla, frío y suave
   escena.add(principal, contra, new HemisphereLight('#dfe8f5', '#0f1216', 0.45));
 
   const piso = new Mesh(new PlaneGeometry(2400, 2400), new ShadowMaterial({ opacity: 0.38 }));

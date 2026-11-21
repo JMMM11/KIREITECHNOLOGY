@@ -8,7 +8,7 @@ const plantilla = fileURLToPath(new URL('./og.html', import.meta.url));
 const salida = fileURLToPath(new URL('../../public/og-kirei.jpg', import.meta.url));
 const navegador = await chromium.launch({ channel: 'chrome' });
 const grande = await navegador.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 2 });
-await grande.goto(pathToFileURL(plantilla).href, { waitUntil: 'networkidle' });
+await grande.goto(pathToFileURL(plantilla).href, { waitUntil: 'load' });
 await grande.evaluate(() => document.fonts.ready);
 const png = await grande.screenshot({ type: 'png' });
 
