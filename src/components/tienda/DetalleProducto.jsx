@@ -30,7 +30,10 @@ export default function DetalleProducto({ producto: p }) {
   const precio = precioDe(p, v);
   const agotado = p.estadoVenta === 'agotado';
   const categoria = categoriaPorId(p.categoriaId);
-  const consulta = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, quiero saber el precio de ${p.nombre}${v.nombre ? ` (${v.nombre})` : ''}.`)}`;
+  const perfume = p.categoriaId === 'aroma';   // los perfumes los atiende otro número
+  const consulta = perfume
+    ? `https://wa.me/${SITIO.whatsappAroma}?text=${encodeURIComponent(`Hola Kirei, quiero pedir el perfume ${p.nombre}${p.marca ? ` de ${p.marca}` : ''}.`)}`
+    : `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(`Hola Kirei, quiero saber el precio de ${p.nombre}${v.nombre ? ` (${v.nombre})` : ''}.`)}`;
 
   const elegirVariante = (nueva) => {
     setVarianteId(nueva.id);
@@ -110,7 +113,7 @@ export default function DetalleProducto({ producto: p }) {
         <div className={s.comprar}>
         {precio == null ? (
           <a className="btn btn-accion btn-bloque" href={consulta} target="_blank" rel="noopener noreferrer">
-            <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={18} /> Consultar precio por WhatsApp
+            <Icono de={ICONOS.whatsapp.de} mov={ICONOS.whatsapp.mov} entrada={false} tam={18} /> {perfume ? `Pedir por WhatsApp al ${SITIO.telefonoAroma}` : 'Consultar precio por WhatsApp'}
           </a>
         ) : agotado ? (
           <button type="button" className="btn btn-accion btn-bloque" disabled>Agotado por ahora</button>

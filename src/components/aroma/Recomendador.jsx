@@ -4,7 +4,7 @@ import { SITIO } from '../../data/sitio.js';
 import { recomendar } from '../../lib/aroma.js';
 import s from './Aroma.module.css';
 
-const ayuda = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent('Hola Kirei, ayúdenme a elegir un perfume.')}`;
+const ayuda = `https://wa.me/${SITIO.whatsappAroma}?text=${encodeURIComponent('Hola Kirei, ayúdenme a elegir un perfume.')}`;
 
 // Cuatro preguntas que filtran el catálogo que se le pasa (ver lib/aroma.js). El resultado enlaza a la ficha de cada perfume.
 export default function Recomendador({ perfumes }) {

@@ -121,10 +121,16 @@ test('Aroma muestra los perfumes con filtros y recomendador', async ({ page }) =
   await page.getByRole('group', { name: 'Filtrar por familia' }).getByRole('button', { name: 'Frescas y acuáticas' }).click();
   await expect(page.getByRole('heading', { level: 3, name: 'Voyage Intense' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'Eclaire' })).toHaveCount(0);
-  await expect(page.getByText('Precio a consultar').first()).toBeVisible();
+  // Sin precios: es una exhibición, y el pedido va al WhatsApp de perfumes.
+  await expect(page.getByText(/Precio/)).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Pedir por WhatsApp' }).first()).toHaveAttribute('href', /wa\.me\/50768682290/);
   // Recomendador: hombre, fresco, intenso y acuático lleva a Voyage Intense.
   for (const opcion of ['Hombre', 'Frescos', 'Intensas', 'Frescas y acuáticas']) await page.getByRole('radio', { name: opcion, exact: true }).check();
   await expect(page.getByRole('status').getByRole('link', { name: /Voyage Intense/ })).toBeVisible();
+  // La página de un perfume tampoco muestra precio y pide al WhatsApp de perfumes.
+  await page.goto('/producto/lattafa-eclaire');
+  await expect(page.getByText(/Precio/)).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Pedir por WhatsApp al \+507 6868 2290/ })).toHaveAttribute('href', /wa\.me\/50768682290/);
 });
 
 test('la laptop 3D vive solo en reparaciones, carga y se reproduce sola', async ({ page }) => {

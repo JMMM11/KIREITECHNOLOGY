@@ -10,7 +10,8 @@ import s from './Paginas.module.css';
 export default function Contacto() {
   useTituloPagina('Contacto', `Escríbenos por WhatsApp al ${SITIO.telefono} o por Instagram. Tienda en línea desde Panamá Oeste, pagos con Yappy o efectivo.`);
   const canales = [
-    { icono: ICONOS.whatsapp, titulo: 'WhatsApp', enlace: SITIO.telefono, texto: 'Pedidos, citas y dudas. Respondemos lo antes posible.', href: `https://wa.me/${SITIO.whatsapp}` },
+    { icono: ICONOS.whatsapp, titulo: 'WhatsApp', enlace: SITIO.telefono, texto: 'Tecnología, reparaciones, citas y dudas. Respondemos lo antes posible.', href: `https://wa.me/${SITIO.whatsapp}` },
+    { icono: ICONOS.whatsapp, titulo: 'WhatsApp de perfumes', enlace: SITIO.telefonoAroma, texto: 'Todo lo de Aroma: pedidos y dudas de perfumes.', href: `https://wa.me/${SITIO.whatsappAroma}` },
     ...SITIO.instagram.map((cuenta) => ({ icono: ICONOS.instagram, titulo: 'Instagram', enlace: `@${cuenta}`, texto: 'Novedades y productos nuevos.', href: `https://instagram.com/${cuenta}` })),
     SITIO.correo
       ? { icono: ICONOS.correo, titulo: 'Correo', enlace: SITIO.correo, texto: 'Para lo que prefieras dejar por escrito.', href: `mailto:${SITIO.correo}` }

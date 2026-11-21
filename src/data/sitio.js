@@ -6,6 +6,9 @@ export const SITIO = {
   lema: 'POWER UP YOUR BEST SELF', // pendiente de confirmar
   telefono: '+507 6156 0839',
   whatsapp: '50761560839',
+  // Perfumes (Aroma): los atiende otra persona, con su propio WhatsApp.
+  telefonoAroma: '+507 6868 2290',
+  whatsappAroma: '50768682290',
   correo: '', // [pendiente]: al definirlo, las citas también se pueden enviar por correo a la tienda
   instagram: ['kireitechnology'], // cuentas de Instagram, sin @
   ubicacion: 'Tienda en línea desde Panamá Oeste',

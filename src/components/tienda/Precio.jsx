@@ -5,6 +5,7 @@ import s from './Precio.module.css';
 export default function Precio({ producto, grande = false, desde = false }) {
   const { precioCentavos: precio, precioAntesCentavos: antes } = producto;
   const descuento = porcentajeDescuento(precio, antes);
+  if (precio == null && producto.categoriaId === 'aroma') return null;   // los perfumes se muestran de exhibición, sin precio
   return (
     <p className={`${s.precio} ${grande ? s.grande : ''}`}>
       <span className={precio == null ? s.pendiente : ''}>{precio == null ? 'Precio [pendiente]' : `${desde ? 'Desde ' : ''}${formatoPrecio(precio)}`}</span>

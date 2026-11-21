@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
 import Aparece from '../components/ui/Aparece.jsx';
 import Foto from '../components/ui/Foto.jsx';
 import TarjetaPerfume from '../components/aroma/TarjetaPerfume.jsx';
 import Recomendador from '../components/aroma/Recomendador.jsx';
+import Rocio from '../components/aroma/Rocio.jsx';
 import { FAMILIAS, GENEROS, INGREDIENTES } from '../data/aroma.js';
 import { SITIO } from '../data/sitio.js';
 import { datosPerfume } from '../lib/aroma.js';
@@ -11,7 +13,7 @@ import { useDatos } from '../context/DatosContext.jsx';
 import { useTituloPagina } from '../hooks/useTituloPagina.js';
 import s from '../components/aroma/Aroma.module.css';
 
-const hablar = `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent('Hola Kirei, quiero saber de los perfumes de Aroma.')}`;
+const hablar = `https://wa.me/${SITIO.whatsappAroma}?text=${encodeURIComponent('Hola Kirei, quiero saber de los perfumes de Aroma.')}`;
 const PORTADA = { src: 'perfumes/36.png', ancho: 1080, alto: 1080 };   // Eclaire, de Lattafa
 
 // Aroma: perfumería con el tema tema-aroma (papel, durazno, marino y cobre). Muestra los perfumes publicados en la categoría "aroma".
@@ -22,19 +24,28 @@ export default function Aroma() {
   const [genero, setGenero] = useState('');
   const perfumes = productos.filter((p) => enCategoria(p, 'aroma')).map(datosPerfume);
   const visibles = perfumes.filter((p) => (!familia || p.familia === familia) && (!genero || p.genero === genero));
+  // Portada: el rocío del perfume escribe el título. Con movimiento reducido, el título está desde el inicio.
+  const reducir = useReducedMotion();
+  const [titulo, setTitulo] = useState(reducir);
+  const [rociando, setRociando] = useState(!reducir);
+  const hero = useRef(null), h1 = useRef(null), frasco = useRef(null);
   const elegir = (id) => { setFamilia(id); document.getElementById('fragancias')?.scrollIntoView({ block: 'start' }); };
 
   return (
     <div className={`tema-aroma ${s.pagina}`}>
-      <section className={s.hero} aria-labelledby="aroma-titulo">
+      <section ref={hero} className={s.hero} aria-labelledby="aroma-titulo">
+        {rociando && <Rocio escena={hero} titulo={h1} boquilla={frasco} alMostrar={() => setTitulo(true)} alTerminar={() => setRociando(false)} />}
         <div className={`contenedor ${s.heroCaja}`}>
           <div className={s.heroTexto}>
             <Aparece como="p" className={s.sobre}>Aroma · Perfumería Kirei</Aparece>
-            <Aparece como="h1" i={1} id="aroma-titulo" className={s.heroTitulo}>Tu aroma, <span>tu energía.</span></Aparece>
+            <h1 ref={h1} id="aroma-titulo" className={s.heroTitulo} data-oculto={titulo ? undefined : ''}>Tu aroma, <span>tu energía.</span></h1>
             <Aparece como="p" i={2} className={s.heroBajada}>Perfumes de mujer y hombre de Lattafa, Ariana Grande, Armaf y más. Descubre el que expresa tu esencia.</Aparece>
-            <Aparece i={3}><a href="#fragancias" className="btn btn-accion">Explorar fragancias</a></Aparece>
+            <Aparece i={3} className={s.heroAcciones}>
+              <a href="#fragancias" className="btn btn-accion">Explorar fragancias</a>
+              <a href={hablar} target="_blank" rel="noopener noreferrer" className={s.heroTelefono}>Pedidos de perfumes: {SITIO.telefonoAroma}</a>
+            </Aparece>
           </div>
-          <Aparece i={2} className={s.heroFoto}>
+          <Aparece i={2} ref={frasco} className={s.heroFoto}>
             <Foto foto={PORTADA} alt="Perfume Eclaire de Lattafa con caramelo y vainilla" prioridad sizes="(min-width: 900px) 40vw, 90vw" />
           </Aparece>
         </div>
@@ -98,7 +109,7 @@ export default function Aroma() {
         <Aparece alVer como="p" className={s.cierreFrase}>Cada fragancia cuenta una historia. <span>Encuentra la tuya.</span></Aparece>
         <Aparece alVer i={1} className={s.cierreAcciones}>
           <a href="#fragancias" className="btn btn-accion">Ver la colección</a>
-          <a href={hablar} target="_blank" rel="noopener noreferrer" className={`btn btn-fantasma ${s.fantasmaClaro}`}>Hablar con Kirei</a>
+          <a href={hablar} target="_blank" rel="noopener noreferrer" className={`btn btn-fantasma ${s.fantasmaClaro}`}>Escribir al {SITIO.telefonoAroma}</a>
         </Aparece>
       </section>
     </div>
