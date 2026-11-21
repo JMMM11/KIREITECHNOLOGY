@@ -1,0 +1,36 @@
+/* Portada de Aroma: estudio a oscuras (marino noche), la palabra grande detrás y el frasco flotando delante.
+   Paleta Kirei y Poppins: 300 para lo grande, 600 para botones. */
+.pista { position: relative; height: 360svh; background: var(--marino-noche); color: #FFFFFF; --foco: #FFFFFF; }
+.escena { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.lienzo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+/* .pista delante: la página de Aroma pinta sus h1 y h2 en marino; aquí van claros. */
+.pista .titulo {
+  position: absolute; left: 6%; top: 7%; z-index: 1; margin: 0;
+  font-family: var(--fuente); font-weight: 300; font-size: clamp(4.5rem, 17vw, 16rem); line-height: 0.9; letter-spacing: 0.04em;
+  text-transform: uppercase; color: #FFFFFF;
+}
+.copia { position: absolute; left: 6%; bottom: 9%; z-index: 3; display: grid; gap: 10px; max-width: 34ch; }
+.sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accion); }
+.texto { font-size: clamp(1rem, 1.6vw, 1.1875rem); font-weight: 300; line-height: 1.5; color: #B7C4D3; }
+.telefono { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-chico); font-weight: 600; color: #FFFFFF; text-underline-offset: 4px; }
+
+.nota {
+  position: absolute; left: 6%; top: 42%; z-index: 3; margin: 0; transform-origin: left center;
+  font-size: clamp(1.6rem, 3.6vw, 3rem); font-weight: 300; line-height: 1.1; color: #FDEBD3;
+}
+
+.final { position: absolute; left: 6%; bottom: 10%; z-index: 3; display: grid; gap: 22px; justify-items: start; transform-origin: left bottom; }
+.pista .finalTitulo { margin: 0; font-family: var(--fuente); font-weight: 300; font-size: clamp(2.4rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.02em; color: #FFFFFF; }
+.finalTitulo span { color: var(--accion); }
+.boton { min-height: 48px; }
+.telefono:focus-visible, .boton:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+
+/* Celular: el bloque final ocupa hasta el 80 % abajo, sin tapar el frasco */
+@media (max-width: 599px) {
+  .pista .titulo { top: 9%; }
+  .nota { top: 26%; }
+  /* la barra de navegación del celular tapa el borde inferior de la escena */
+  .copia { right: 6%; bottom: calc(var(--alto-nav-movil) + 20px); }
+  .final { left: 10%; right: 10%; bottom: calc(var(--alto-nav-movil) + 24px); }
+}

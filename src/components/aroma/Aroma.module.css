@@ -3,20 +3,6 @@
 .pagina { padding-bottom: clamp(56px, 8vw, 112px); }
 .pagina h1, .pagina h2, .pagina h3 { font-family: var(--fuente); font-weight: 300; letter-spacing: -0.01em; color: var(--marca); }
 
-/* Portada: marino noche, como un estudio a oscuras. El frasco a la izquierda rocía hacia el título (idea del dueño). */
-.hero { position: relative; background: var(--marino-noche); color: #FFFFFF; --foco: #FFFFFF; overflow: hidden; }
-.heroCaja { display: grid; gap: 28px; align-items: center; padding-block: clamp(40px, 7vw, 96px); }
-.heroTexto { display: grid; gap: 18px; justify-items: start; }
-.sobre { font-size: var(--t-chico); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accion); }
-.pagina .heroTitulo { font-size: clamp(2.8rem, 9vw, 6.5rem); line-height: 0.98; letter-spacing: -0.03em; color: #FFFFFF; text-wrap: balance; }
-.heroTitulo span { color: var(--accion); }
-/* Mientras el rocío escribe el título, el texto real espera oculto (sigue en la página para Google y lectores de pantalla). */
-.heroTitulo { transition: opacity 0.9s var(--ease-salida), filter 0.9s var(--ease-salida); }
-.heroTitulo[data-oculto] { opacity: 0; filter: blur(8px); }
-.heroBajada { font-size: clamp(1.0625rem, 2vw, 1.3125rem); font-weight: 300; color: #D8D8D8; max-width: 34ch; letter-spacing: 0.01em; }
-.heroFoto { aspect-ratio: 1; overflow: hidden; border-radius: var(--radio-tarjeta); background: #EFECE6; box-shadow: 0 30px 60px rgb(7 21 36 / 0.45); }
-.heroFoto :global(img), .heroFoto :global(picture) { width: 100%; height: 100%; object-fit: cover; }
-
 .bloque { padding-top: clamp(64px, 9vw, 120px); }
 .ancla { scroll-margin-top: 24px; }
 .pagina .titulo { font-size: clamp(2.2rem, 6vw, 4.25rem); line-height: 1.02; }
@@ -66,8 +52,6 @@
 .ml { font-size: var(--t-mini); color: #666666; }
 .perfumePie { display: grid; gap: 10px; margin-top: 4px; }
 .accion { min-height: 44px; }
-.heroAcciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
-.heroTelefono { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-chico); font-weight: 600; color: #FFFFFF; text-underline-offset: 4px; }
 
 /* Ingredientes: bloque azul marino */
 .ingredientes { margin-top: clamp(64px, 9vw, 120px); padding-block: clamp(56px, 8vw, 104px); background: var(--marca); color: #FFFFFF; }
@@ -112,8 +96,6 @@
   .fantasmaClaro:hover { background: #FFFFFF; color: var(--marca); }
 }
 @media (min-width: 900px) {
-  .heroCaja { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; }
-  .heroFoto { order: -1; }
   .familias { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
   .familias li:nth-child(-n+2) { grid-column: span 3; }
   .familias li:nth-child(n+3) { grid-column: span 2; }

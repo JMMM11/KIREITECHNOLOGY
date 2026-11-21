@@ -115,7 +115,7 @@ test('Aroma muestra los perfumes con filtros y recomendador', async ({ page }) =
   // Menú de escritorio o barra del teléfono: Aroma siempre está a un toque.
   await expect(page.getByRole('link', { name: 'Aroma' }).first()).toBeVisible();
   await page.goto('/aroma');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tu aroma, tu energía.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Aroma.');
   // Los perfumes del dueño, con filtro por género y por familia.
   await page.getByRole('group', { name: 'Filtrar por género' }).getByRole('button', { name: 'Hombre' }).click();
   await page.getByRole('group', { name: 'Filtrar por familia' }).getByRole('button', { name: 'Frescas y acuáticas' }).click();
