@@ -27,9 +27,12 @@ function rectRedondo(w, h, r) {
   return g;
 }
 
-// Pantallas: 900 x 1920 px. Se dibujan de una vez y se actualizan cuando llegan las imágenes.
+// Pantallas: se dibujan en 900 x 1920 y se guardan al doble (1800 x 3840) para que el texto salga nítido.
+const K = 2;
+function lienzo() { const c = document.createElement('canvas'); c.width = 900 * K; c.height = 1920 * K; const x = c.getContext('2d'); x.scale(K, K); return [c, x]; }
+// Pantallas: Se dibujan de una vez y se actualizan cuando llegan las imágenes.
 function pantallaLogo(logo) {
-  const c = document.createElement('canvas'); c.width = 900; c.height = 1920; const x = c.getContext('2d');
+  const [c, x] = lienzo();
   x.fillStyle = '#071524'; x.fillRect(0, 0, 900, 1920);
   const g = x.createRadialGradient(450, 900, 30, 450, 900, 700); g.addColorStop(0, 'rgb(247 147 30 / 0.35)'); g.addColorStop(1, 'rgb(247 147 30 / 0)');
   x.fillStyle = g; x.fillRect(0, 0, 900, 1920);
@@ -40,7 +43,7 @@ function pantallaLogo(logo) {
   return c;
 }
 function pantallaTienda(foto, icono, precio) {
-  const c = document.createElement('canvas'); c.width = 900; c.height = 1920; const x = c.getContext('2d');
+  const [c, x] = lienzo();
   x.fillStyle = '#F7F5F1'; x.fillRect(0, 0, 900, 1920);
   if (icono) x.drawImage(icono, 70, 150, 34, 64);
   x.strokeStyle = '#0B1F33'; x.lineWidth = 6; x.beginPath(); x.roundRect(770, 160, 56, 56, 10); x.stroke();
@@ -64,7 +67,7 @@ function telefono(lienzo, materiales) {
   cuerpo.translate(0, 0, -(GRUESO - 0.04) / 2); g.add(new Mesh(cuerpo, materiales.marco));
   const vidrio = new Mesh(rectRedondo(ANCHO - BORDE * 2, ALTO - BORDE * 2, RADIO - BORDE), materiales.negro);
   vidrio.position.z = GRUESO / 2 + 0.0015; g.add(vidrio);
-  const tex = new CanvasTexture(lienzo); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 8;
+  const tex = new CanvasTexture(lienzo); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 16;   // three lo limita al máximo de la tarjeta gráfica
   const pantalla = new Mesh(rectRedondo(ANCHO - BORDE * 2 - 0.03, ALTO - BORDE * 2 - 0.03, RADIO - BORDE - 0.01), new MeshBasicMaterial({ map: tex, toneMapped: false }));
   pantalla.position.z = GRUESO / 2 + 0.003; g.add(pantalla);
   const brillo = new Mesh(rectRedondo(ANCHO - BORDE * 2, ALTO - BORDE * 2, RADIO - BORDE), materiales.cristal);   // reflejos sobre la pantalla
@@ -78,9 +81,8 @@ function telefono(lienzo, materiales) {
 }
 
 export async function crearTelefonos(contenedor, { quieto = false, foto, precio } = {}) {
-  const tactil = matchMedia('(pointer: coarse)').matches;
   const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, tactil ? 1.75 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
   contenedor.appendChild(renderer.domElement);
@@ -98,7 +100,9 @@ export async function crearTelefonos(contenedor, { quieto = false, foto, precio 
     negro: new MeshPhysicalMaterial({ color: '#050709', roughness: 0.2, clearcoat: 1 }),
     cristal: new MeshPhysicalMaterial({ color: '#FFFFFF', roughness: 0.05, transparent: true, opacity: 0.06, clearcoat: 1, envMapIntensity: 2, depthWrite: false }),
   };
-  const [logo, icono, imgFoto] = await Promise.all([cargar(`${RUTA}marca/kirei-logo-fondo-oscuro.svg`), cargar(`${RUTA}marca/kirei-icono-naranja.svg`), cargar(foto)]);
+  // Las letras de las pantallas usan Poppins: se espera a que cargue para no dibujar con otra fuente.
+  const fuentes = Promise.all(['400 40px Poppins', '600 40px Poppins'].map((f) => document.fonts.load(f))).catch(() => {});
+  const [logo, icono, imgFoto] = await Promise.all([cargar(`${RUTA}marca/kirei-logo-fondo-oscuro.svg`), cargar(`${RUTA}marca/kirei-icono-naranja.svg`), cargar(foto), fuentes]);
   const izq = telefono(pantallaLogo(logo), materiales), der = telefono(pantallaTienda(imgFoto, icono, precio), materiales);
   const grupoIzq = new Group(), grupoDer = new Group(); grupoIzq.add(izq.g); grupoDer.add(der.g);
   escena.add(grupoIzq, grupoDer);

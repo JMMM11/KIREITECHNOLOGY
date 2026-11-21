@@ -50,7 +50,7 @@
 /* En el celular el botón de compra queda al alcance del pulgar, sobre la barra de abajo, mientras se ve el producto. */
 @media (max-width: 899px) {
   .comprar {
-    position: sticky; bottom: calc(var(--alto-nav-movil) + env(safe-area-inset-bottom) + 8px); z-index: 5;
+    position: sticky; bottom: calc(var(--alto-nav-movil) + env(safe-area-inset-bottom) + 16px); z-index: 5;
     margin-inline: -8px; padding: 8px; border-radius: calc(var(--radio-detalle) + 8px);
     background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px);
   }

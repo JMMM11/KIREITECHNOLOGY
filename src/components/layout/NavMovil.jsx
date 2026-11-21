@@ -19,7 +19,7 @@ function Item({ href, texto, icono, activo }) {
   const I = activo ? icono.lleno : icono.de;
   return (
     <Link href={href} className={s.item} aria-current={activo ? 'page' : undefined}>
-      <Icono de={I} mov={icono.mov} entrada={false} tam={22} />
+      <span className={s.icono}><Icono de={I} mov={icono.mov} entrada={false} tam={22} /></span>
       <span>{texto}</span>
     </Link>
   );
@@ -30,23 +30,27 @@ export default function NavMovil() {
   const [ubicacion] = useLocation();
   const { articulos, abrir } = useCarrito();
   const [mas, setMas] = useState(false);
+  const activos = [ubicacion === '/', esActivo(ubicacion, '/tecnologia'), esActivo(ubicacion, '/aroma'), esActivo(ubicacion, '/anime')];
+  const indice = activos.indexOf(true);   // -1 fuera de estas secciones: la burbuja se esconde
 
   return (
     <>
       <nav className={s.barra} aria-label="Navegación principal del teléfono">
-        <Item href="/" texto="Inicio" icono={ICONOS_NAV.inicio} activo={ubicacion === '/'} />
-        <Item href="/tecnologia" texto="Tecnología" icono={ICONOS_NAV.tecnologia} activo={esActivo(ubicacion, '/tecnologia')} />
-        <Item href="/aroma" texto="Aroma" icono={ICONOS_NAV.aroma} activo={esActivo(ubicacion, '/aroma')} />
-        <Item href="/anime" texto="Anime" icono={ICONOS_NAV.anime} activo={esActivo(ubicacion, '/anime')} />
+        {/* Burbuja naranja que se desliza hasta la sección activa */}
+        <span className={s.burbuja} style={{ '--i': Math.max(indice, 0) }} data-oculta={indice < 0 || undefined} aria-hidden="true" />
+        <Item href="/" texto="Inicio" icono={ICONOS_NAV.inicio} activo={activos[0]} />
+        <Item href="/tecnologia" texto="Tecnología" icono={ICONOS_NAV.tecnologia} activo={activos[1]} />
+        <Item href="/aroma" texto="Aroma" icono={ICONOS_NAV.aroma} activo={activos[2]} />
+        <Item href="/anime" texto="Anime" icono={ICONOS_NAV.anime} activo={activos[3]} />
         <button type="button" className={s.item} onClick={abrir} aria-haspopup="dialog">
-          <span className={s.conCuenta}>
+          <span className={`${s.icono} ${s.conCuenta}`}>
             <Icono de={ICONOS_NAV.carrito.de} mov={ICONOS_NAV.carrito.mov} entrada={false} tam={22} />
             {articulos > 0 && <span className={s.cuenta} aria-hidden="true">{articulos}</span>}
           </span>
           <span>Carrito<span className="sr-only">, {articulos} {articulos === 1 ? 'artículo' : 'artículos'}</span></span>
         </button>
         <button type="button" className={s.item} onClick={() => setMas(true)} aria-haspopup="dialog">
-          <Icono de={ICONOS_NAV.mas.de} mov={ICONOS_NAV.mas.mov} entrada={false} tam={22} />
+          <span className={s.icono}><Icono de={ICONOS_NAV.mas.de} mov={ICONOS_NAV.mas.mov} entrada={false} tam={22} /></span>
           <span>Más</span>
         </button>
       </nav>

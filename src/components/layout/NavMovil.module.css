@@ -1,21 +1,41 @@
+/* Cápsula de vidrio flotante con una burbuja naranja que se desliza a la sección activa (el ícono sube a la burbuja). */
 .barra {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-  display: grid; grid-template-columns: repeat(6, 1fr); align-items: center;
-  height: calc(var(--alto-nav-movil) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(255, 255, 255, 0.94);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  backdrop-filter: saturate(180%) blur(14px);
-  border-top: 1px solid var(--borde);
+  --rebote: cubic-bezier(0.34, 1.45, 0.64, 1);
+  position: fixed; left: 10px; right: 10px; bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 30;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end;
+  height: var(--alto-nav-movil); padding: 0 4px 6px;
+  border-radius: 26px;
+  background: rgb(255 255 255 / 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  box-shadow: 0 12px 32px -12px rgb(11 31 51 / 0.35), 0 2px 6px rgb(11 31 51 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.9);
 }
+.burbuja {
+  position: absolute; top: 0; left: 4px; z-index: 0; width: calc((100% - 8px) / 6); height: 100%; pointer-events: none;
+  transform: translateX(calc(var(--i) * 100%));
+  transition: transform 0.55s var(--rebote), opacity 0.25s ease-out;
+}
+.burbuja::before {
+  content: ''; position: absolute; top: -22px; left: 50%; width: 50px; height: 50px; margin-left: -25px; border-radius: 50%;
+  background: var(--accion);
+  box-shadow: 0 0 0 6px var(--bg), 0 10px 18px -4px rgb(247 147 30 / 0.55);   /* el anillo del color del fondo hace la muesca */
+  transition: transform 0.45s var(--rebote);
+}
+.burbuja[data-oculta] { opacity: 0; }
+.burbuja[data-oculta]::before { transform: scale(0.6); }
 .item {
-  display: grid; justify-items: center; gap: 2px; min-height: 52px; padding: 6px 0;
+  position: relative; z-index: 1;
+  display: grid; justify-items: center; gap: 3px; min-height: 52px; padding: 6px 0 0;
   border: 0; background: none; color: var(--texto-suave); font-size: 0.6875rem; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 @media (max-width: 380px) { .item { font-size: 0.625rem; } }
+.icono { display: inline-flex; transition: transform 0.55s var(--rebote), color 0.3s ease-out; }
 .item[aria-current="page"] { color: var(--marca); font-weight: 600; }
-.item:active { transform: scale(0.94); }
-.conCuenta { position: relative; display: inline-flex; }
+.item[aria-current="page"] .icono { transform: translateY(-21px); color: #111111; }   /* negro sobre naranja, como pide el manual */
+.item:active .icono { scale: 0.9; }
+.conCuenta { position: relative; }
 .cuenta {
   position: absolute; top: -6px; right: -10px; min-width: 18px; height: 18px; padding: 0 5px;
   border-radius: 9px; background: var(--accion); color: var(--accion-texto);
@@ -26,4 +46,6 @@
   display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 4px;
   border-bottom: 1px solid var(--borde); font-weight: 600; text-decoration: none;
 }
+@media (prefers-reduced-motion: reduce) { .burbuja, .burbuja::before, .icono { transition: none; } }
+@media (prefers-reduced-transparency: reduce) { .barra { background: #FFFFFF; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 @media (min-width: 900px) { .barra { display: none; } }
